@@ -527,17 +527,6 @@ export default function CompraEntrada() {
                   </div>
                 ))}
               </div>
-              {message && (
-                <div
-                  className={`mt-5 p-4 rounded-2xl border-2 text-sm font-semibold transition-all duration-300 ${
-                    message.type === "success"
-                      ? "bg-green-500/20 text-green-300 border-green-500/50 animate-pulse"
-                      : "bg-red-500/20 text-red-300 border-red-500/50"
-                  }`}
-                >
-                  {message.text}
-                </div>
-              )}
 
               {/* Cart Summary */}
               <div className="mt-6 pt-5 border-t border-blue-500/30">
@@ -615,7 +604,7 @@ export default function CompraEntrada() {
 
         {/* Right Panel - Form CON VERIFICACIÓN */}
         <div className="w-full lg:w-1/3">
-          <div className="panel-item bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl p-6 sm:p-7 border-2 border-cyan-500/30 shadow-2xl sticky top-4 max-h-[calc(100vh-2rem)] overflow-y-auto">
+          <div className="panel-item bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl p-6 sm:p-7 border-2 border-cyan-500/30 shadow-2xl sticky top-4 max-h-[calc(100vh-2rem)] overflow-y-hidden">
             <h2 className="text-3xl font-bold mb-7 bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent flex items-center gap-2">
               <span className="text-3xl">👤</span>
               {paso === "form"
@@ -690,7 +679,7 @@ export default function CompraEntrada() {
                 <button
                   type="submit"
                   disabled={loading || !form.nombre || !form.dni || !form.email}
-                  className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold py-4 px-6 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-2xl hover:shadow-cyan-500/50 mt-6 btn-glow"
+                  className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold py-4 px-6 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-2xl hover:shadow-cyan-500/50 mt-2 btn-glow"
                 >
                   {loading ? "Enviando..." : "✉️ Enviar Código"}
                 </button>
@@ -729,7 +718,7 @@ export default function CompraEntrada() {
                 <button
                   type="submit"
                   disabled={loading || codigoOTP.length !== 6}
-                  className="w-full bg-gradient-to-r from-green-500 to-cyan-600 hover:from-green-600 hover:to-cyan-700 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold py-4 px-6 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-2xl hover:shadow-green-500/50 mt-6 btn-glow"
+                  className="w-full bg-gradient-to-r from-green-500 to-cyan-600 hover:from-green-600 hover:to-cyan-700 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold py-4 px-6 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-2xl hover:shadow-green-500/50 mt-6 btn-glow cursor-pointer"
                 >
                   {loading ? "Verificando..." : "✓ Verificar Código"}
                 </button>
@@ -737,7 +726,7 @@ export default function CompraEntrada() {
                 <button
                   type="button"
                   onClick={() => setPaso("form")}
-                  className="w-full bg-slate-700 hover:bg-slate-600 text-gray-300 font-bold py-2 px-4 rounded-xl transition-colors mt-2"
+                  className="w-full bg-slate-700 hover:bg-slate-600 text-gray-300 font-bold py-2 px-4 rounded-xl transition-colors mt-2 cursor-pointer"
                 >
                   Volver
                 </button>
@@ -747,11 +736,6 @@ export default function CompraEntrada() {
             {/* PASO 3: Enviar compra */}
             {paso === "compra" && emailVerificado && (
               <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="bg-green-500/20 border border-green-500/50 rounded-xl p-4 mb-4 flex items-center gap-2">
-                  <FiCheck className="text-green-400 text-xl" />
-                  <p className="text-green-300 font-bold">Email verificado</p>
-                </div>
-
                 <div>
                   <label className="block text-sm font-bold text-cyan-300 mb-3">
                     Subir voucher
@@ -785,7 +769,7 @@ export default function CompraEntrada() {
                 <button
                   type="submit"
                   disabled={loading || cart.length === 0 || !file}
-                  className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold py-4 px-6 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-2xl hover:shadow-cyan-500/50 mt-6 btn-glow"
+                  className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold py-4 px-6 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-2xl hover:shadow-cyan-500/50 mt-6 btn-glow cursor-pointer"
                 >
                   {loading ? (
                     <span className="flex items-center justify-center">
