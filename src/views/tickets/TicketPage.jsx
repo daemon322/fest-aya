@@ -1,4 +1,5 @@
 import CompraEntrada from "../../components/CompraEntrada";
+import "../../styles/tickets/TicketStyle.css";
 const TicketPage = () => {
   const eventoId = import.meta.env.VITE_EVENTO_ID || null;
   return (
