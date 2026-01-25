@@ -1,5 +1,7 @@
 @import "tailwindcss";
-
+body{
+  background:black;
+}
 .input-field:focus {
   border-color: #a855f7;
   box-shadow: 0 0 20px rgba(168, 85, 247, 0.3);

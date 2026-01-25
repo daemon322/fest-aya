@@ -23,7 +23,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="relative bg-black text-white pt-24 pb-12 overflow-hidden border-t border-white/5">
+    <footer className="relative bg-black text-white pt-24 pb-12 overflow-hidden border-t border-white/5 z-60">
       {/* Efecto de Fondo Parallax / Marquee sutil */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-[0.02] pointer-events-none">
         <motion.div 
@@ -44,7 +44,7 @@ const Footer = () => {
             <div className="flex items-center gap-4">
               <Crown className="text-amber-500" size={32} strokeWidth={1.5} />
               <div className="flex flex-col">
-                <span className="text-xl tracking-[0.5em] font-black uppercase">Gala Real</span>
+                <span className="text-xl tracking-[0.5em] font-black uppercase">AYAFEST</span>
                 <span className="text-[9px] tracking-[0.2em] text-amber-500/60 uppercase font-bold">Patrimonio Musical del Perú</span>
               </div>
             </div>
@@ -101,13 +101,13 @@ const Footer = () => {
                 <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-amber-500 transition-colors">
                   <MapPin size={14} className="group-hover:text-black" />
                 </div>
-                <span>Lima, San Isidro • Sedes Privadas</span>
+                <span>Ayacucho, Huamanga • Sedes Privadas</span>
               </li>
               <li className="flex items-center gap-4 text-xs font-light text-zinc-300 group cursor-pointer">
                 <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-amber-500 transition-colors">
                   <Mail size={14} className="group-hover:text-black" />
                 </div>
-                <span>protocolo@galareal.pe</span>
+                <span>daemonbel32@gmail.com</span>
               </li>
               <li className="flex items-center gap-4 text-xs font-light text-zinc-300 group cursor-pointer">
                 <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-amber-500 transition-colors">
@@ -152,6 +152,7 @@ const Footer = () => {
           <p className="text-[8px] tracking-[0.8em] uppercase text-zinc-700 font-bold">
             Desarrollado para la Excelencia Musical • Made in Peru
           </p>
+          <span>@2026 THREUS</span>
         </div>
       </div>
     </footer>

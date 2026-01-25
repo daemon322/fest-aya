@@ -54,7 +54,7 @@ const GalaNavbar = () => {
   return (
     <>
       <header
-        className={`fixed top-0 w-full z-[110] px-6 md:px-12 py-6 transition-all duration-500 flex justify-between items-center ${
+        className={`fixed top-0 w-full z-[1200] px-6 md:px-12 py-6 transition-all duration-500 flex justify-between items-center ${
           isScrolled
             ? "bg-black/90 backdrop-blur-md py-4 border-b border-white/5 shadow-2xl"
             : "bg-transparent"
@@ -70,7 +70,7 @@ const GalaNavbar = () => {
             <Crown size={24} className="text-amber-500" strokeWidth={1.5} />
             <div className="flex flex-col">
               <span className="text-[11px] md:text-[12px] tracking-[0.6em] uppercase font-black text-white leading-none">
-                Gala Real
+                AYAFEST
               </span>
               <span className="text-[7px] tracking-[0.3em] uppercase text-amber-500/60 font-bold mt-1">
                 Patrimonio del Perú

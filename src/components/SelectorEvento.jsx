@@ -62,7 +62,7 @@ export default function SelectorEvento({ onChange }) {
   if (loading)
     return (
       <div className="flex items-center justify-center py-12">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-400"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-400"></div>
       </div>
     );
   if (error)
@@ -78,65 +78,20 @@ export default function SelectorEvento({ onChange }) {
 
   return (
     <div className="flex flex-col">
-      {/* Evento Info - Diseño Premium */}
-      <style>{`
-        @keyframes slideInDown {
-          from {
-            opacity: 0;
-            transform: translateY(-20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        @keyframes glow {
-          0%, 100% {
-            box-shadow: 0 0 20px rgba(34, 211, 238, 0.3);
-          }
-          50% {
-            box-shadow: 0 0 40px rgba(34, 211, 238, 0.6);
-          }
-        }
-
-        @keyframes fadeInScale {
-          from {
-            opacity: 0;
-            transform: scale(0.95);
-          }
-          to {
-            opacity: 1;
-            transform: scale(1);
-          }
-        }
-
-        .evento-card {
-          animation: slideInDown 0.6s ease-out;
-        }
-
-        .tipo-card {
-          animation: fadeInScale 0.5s ease-out;
-        }
-
-        .glow-border {
-          animation: glow 3s ease-in-out infinite;
-        }
-      `}</style>
 
       <div className="w-full evento-card">
         <div className="sm:absolute top-28 flex justify-center mb-4">
-          <label className="block p-2 px-4 font-bold bg-gradient-to-r from-cyan-500 to-blue-500 text-center text-white rounded-2xl shadow-lg shadow-cyan-500/50">
+          <label className="block p-2 px-4 font-bold bg-gradient-to-r from-amber-500 to-amber-500 text-center text-white rounded-2xl shadow-lg shadow-amber-500/50">
             🎵 EVENTO DESTACADO
           </label>
         </div>
-        <div className="p-6 rounded-3xl text-white bg-gradient-to-br from-slate-900/20 via-slate-800/20 to-slate-900/20 border-2 border-cyan-500/50 glow-border top-44 left-8 overflow-hidden sm:absolute ">
+        <div className="p-6 rounded-3xl text-white top-44 left-8 overflow-hidden sm:absolute ">
           {/* Background effect */}
-          <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 via-transparent to-blue-500/10 pointer-events-none"></div>
+          <div className="absolute inset-0 pointer-events-none"></div>
           <div className="relative z-10">
             {eventoActual ? (
               <>
-                <span className="font-bold sm:text-6xl text-3xl block mb-2 bg-gradient-to-r from-cyan-300 via-blue-300 to-purple-300 bg-clip-text text-transparent">
+                <span className="font-bold sm:text-6xl text-3xl block mb-2">
                   {eventoActual.nombre}
                 </span>
                 {eventoActual.descripcion && (
@@ -192,15 +147,15 @@ export default function SelectorEvento({ onChange }) {
               <div
                 key={t.id}
                 onClick={() => onChange(selectedEvento, t)}
-                className="tipo-card group relative p-5 border-2 border-gray-700 rounded-2xl hover:border-cyan-400 bg-gradient-to-br from-slate-800 to-slate-900 hover:from-slate-800 hover:to-slate-950 transition-all duration-300 cursor-pointer overflow-hidden"
+                className="tipo-card group relative p-5 rounded-2xl bg-black/50 transition-all duration-300 cursor-pointer overflow-hidden"
               >
                 {/* Hover glow effect */}
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-r from-cyan-500/10 via-transparent to-blue-500/10 "></div>
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-r from-amber-500/10 via-transparent to-amber-500/10 "></div>
 
                 <div className="relative z-10">
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex-1">
-                      <h3 className="font-bold text-lg text-white mb-1 group-hover:text-cyan-300 transition-colors">
+                      <h3 className="font-bold text-lg text-white mb-1 transition-colors">
                         {t.nombre}
                       </h3>
                       {t.descripcion && (
@@ -209,7 +164,7 @@ export default function SelectorEvento({ onChange }) {
                         </p>
                       )}
                       <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-cyan-400"></div>
+                        <div className="w-2 h-2 rounded-full bg-green-400"></div>
                         <p className="text-sm text-gray-400">
                           {t.capacidad_maxima > 0
                             ? `${t.capacidad_maxima} Capacidad disponible`
@@ -219,7 +174,7 @@ export default function SelectorEvento({ onChange }) {
                     </div>
                     {t.color_hex && (
                       <div
-                        className="w-8 h-8 rounded-xl flex-shrink-0 ml-3 ring-2 ring-offset-2 ring-offset-slate-900 ring-cyan-400 shadow-lg"
+                        className="w-8 h-8 rounded-xl flex-shrink-0 ml-3 shadow-lg"
                         style={{ background: t.color_hex }}
                       />
                     )}
@@ -229,11 +184,11 @@ export default function SelectorEvento({ onChange }) {
                       <p className="text-xs text-gray-500 mb-1">
                         Precio por entrada
                       </p>
-                      <span className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
+                      <span className="text-2xl font-bold bg-gradient-to-r from-amber-400 to-amber-400 bg-clip-text text-transparent">
                         S/ {Number(t.precio).toFixed(2)}
                       </span>
                     </div>
-                    <div className="px-3 py-1 bg-gradient-to-r from-cyan-500/30 to-blue-500/30 border border-cyan-500/50 text-xs font-semibold text-cyan-300 rounded-lg group-hover:from-cyan-500/50 group-hover:to-blue-500/50 transition-all">
+                    <div className="px-3 py-1 bg-gradient-to-r from-amber-500/30 to-amber-500/30 border border-amber-500/50 text-xs font-semibold text-white rounded-lg group-hover:from-amber-400/50 group-hover:to-amber-400/50 transition-all">
                       Comprar
                     </div>
                   </div>

@@ -1,13 +1,15 @@
-import FestivalHero from './ladingpage/FestivalHero';
-import FestivalMid from './ladingpage/FestivalMid';
+import FestivalHero from "./ladingpage/FestivalHero";
+import FestivalTop from "./ladingpage/FestivalTop";
 
 const HomePage = () => {
   return (
     <>
-    <FestivalHero/>
-    <FestivalMid/>
+      <div className="bg-black">
+        <FestivalTop/>
+        <FestivalHero />
+      </div>
     </>
-  )
-}
+  );
+};
 
-export default HomePage
+export default HomePage;

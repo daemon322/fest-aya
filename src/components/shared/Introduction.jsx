@@ -18,7 +18,7 @@ const Introduction = () => {
           className="flex flex-col items-center gap-6"
         >
           <Crown className="text-amber-500 mb-4" size={40} strokeWidth={1} />
-          <h2 className="text-white text-[10px] tracking-[1.5em] uppercase font-light">Legado Real del Perú</h2>
+          <h2 className="text-white text-[10px] tracking-[1.5em] uppercase font-light">Cargando....</h2>
           <div className="w-40 h-[1px] bg-gradient-to-r from-transparent via-amber-500 to-transparent" />
         </motion.div>
         <motion.div 

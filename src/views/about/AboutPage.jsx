@@ -31,7 +31,7 @@ const GalaAbout = () => {
         className="absolute top-20 left-0 w-full select-none pointer-events-none opacity-[0.03] whitespace-nowrap"
       >
         <h2 className="text-[35vw] font-black uppercase tracking-tighter leading-none">
-          PERÚ PRESTIGIO
+          Athreus
         </h2>
       </motion.div>
 
@@ -88,7 +88,7 @@ const GalaAbout = () => {
                 <div className="relative mb-20">
                   <Quote className="absolute -top-6 -left-8 text-amber-500/20" size={60} />
                   <p className="text-2xl md:text-3xl text-zinc-300 font-light leading-snug tracking-tight">
-                    "La cumbia es el pulso de una nación. En Gala Real, esa pulsación se transforma en arte puro, en una ceremonia donde el <span className="text-white font-bold italic">lujo</span> y la <span className="text-white font-bold italic">identidad</span> convergen."
+                    "La cumbia es el pulso de una nación. En el festival más esperado, esa pulsación se transforma en arte puro, en una ceremonia donde el <span className="text-white font-bold italic">lujo</span> y la <span className="text-white font-bold italic">identidad</span> convergen."
                   </p>
                 </div>
 
@@ -120,7 +120,7 @@ const GalaAbout = () => {
                     className="relative group overflow-hidden bg-white text-black px-12 py-6 rounded-full"
                   >
                     <div className="absolute inset-0 bg-amber-500 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
-                    <span className="relative z-10 text-[10px] tracking-[0.4em] font-black uppercase">Unirse a la Gala</span>
+                    <span className="relative z-10 text-[10px] tracking-[0.4em] font-black uppercase">Unirse</span>
                   </motion.button>
                   
                   <div className="flex flex-col">
