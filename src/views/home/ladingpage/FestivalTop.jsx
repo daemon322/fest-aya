@@ -129,27 +129,6 @@ export default function App() {
         }}
       />
 
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@300;400;700;900&display=swap');
-        
-        .font-outline {
-          -webkit-text-stroke: 2px rgba(255,255,255,0.1);
-          paint-order: stroke fill;
-        }
-        
-        .clip-diagonal {
-          clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
-        }
-        
-        .text-glow {
-          text-shadow: 0 0 30px currentColor;
-        }
-        
-        .border-glow {
-          box-shadow: 0 0 20px rgba(255,255,255,0.1);
-        }
-      `}</style>
-
       {/* Layout principal con mejor división */}
       <div className="relative flex flex-col lg:flex-row h-screen sm:pt-2 pt-16">
         {/* Lado izquierdo - Mejorado */}
@@ -166,11 +145,11 @@ export default function App() {
               </span>
             </div>
             <div className="flex items-center gap-3">
-              <span className="text-xs font-bold tracking-widest text-white/30 px-3 py-1 border border-white/10 rounded-full">
+              <span className="text-xs font-bold tracking-widest text-white px-3 py-1 border border-white/10 rounded-full">
                 AYACUCHO, PE
               </span>
-              <div className="w-1 h-1 rounded-full bg-white/20" />
-              <span className="text-xs font-bold tracking-widest text-white/30">
+              <div className="w-1 h-1 rounded-full bg-white" />
+              <span className="text-xs font-bold tracking-widest text-white">
                 MARZ 2026
               </span>
             </div>
@@ -211,12 +190,12 @@ export default function App() {
 
                 {/* Información adicional */}
                 <div className="flex items-center gap-6 pt-4 border-t border-white/10">
-                  <div className="flex items-center gap-2 text-white/50 text-sm">
+                  <div className="flex items-center gap-2 text-white text-sm">
                     <Volume2 size={14} />
                     <span>{active.tracks} éxitos</span>
                   </div>
-                  <div className="w-1 h-1 rounded-full bg-white/20" />
-                  <div className="text-white/50 text-sm">
+                  <div className="w-1 h-1 rounded-full bg-white" />
+                  <div className="text-white text-sm">
                     Desde {active.year}
                   </div>
                 </div>
@@ -381,9 +360,9 @@ export default function App() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: i * 0.1 }}
                 whileHover={{ x: 5, scale: 1.1 }}
-                className="group flex items-center gap-3 text-white/40 hover:text-white transition-colors"
+                className="group flex items-center gap-3 text-white hover:text-white transition-colors"
               >
-                <div className="p-2 border border-white/10 group-hover:border-white/30 rounded-sm">
+                <div className="p-2 border border-white group-hover:border-white rounded-sm">
                   <social.icon size={16} />
                 </div>
                 <span className="text-xs font-bold tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">

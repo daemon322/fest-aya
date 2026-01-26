@@ -1,4 +1,4 @@
-import FestivalHero from "./ladingpage/FestivalHero";
+import FestivalMid from "./ladingpage/FestivalMid";
 import FestivalTop from "./ladingpage/FestivalTop";
 
 const HomePage = () => {
@@ -6,7 +6,7 @@ const HomePage = () => {
     <>
       <div className="bg-black">
         <FestivalTop/>
-        <FestivalHero />
+        <FestivalMid/>
       </div>
     </>
   );

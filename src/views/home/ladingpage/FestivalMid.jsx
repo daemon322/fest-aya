@@ -5,6 +5,7 @@ import { Crown, Fingerprint, ArrowUpRight, Calendar, Sparkles, MapPin, Award, Mu
 import daniela from "../../../assets/daniela.jpg";
 import grupmarina from "../../../assets/grupmarina.jpg";
 import yaipen from "../../../assets/yaipen.png";
+import FestivalHero from "./FestivalHero";
 
 // --- Variantes de Animación ---
 const containerVariants = {
@@ -135,7 +136,7 @@ export default function FestivalMid() {
   const smoothY = useSpring(scrollYProgress, { stiffness: 40, damping: 30 });
 
   return (
-    <div className="text-[#f4f4f4] font-serif bg-transparent overflow-x-hidden z-50 relative">
+    <div className="text-[#f4f4f4] font-serif bg-transparent overflow-x-hidden relative pt-10">
       {/* SECCIÓN: EL VALOR DEL TIEMPO (DETALLES) */}
       <motion.section
         initial="hidden"
@@ -189,13 +190,15 @@ export default function FestivalMid() {
         </div>
       </motion.section>
 
+      <FestivalHero/>
+
       {/* SECCIÓN: ELENCO DE HONOR */}
       <motion.section
         initial="hidden"
         whileInView="visible"
         viewport={{ once: false, amount: 0.1 }}
         variants={containerVariants}
-        className="py-40 px-6 md:px-20"
+        className="py-40 px-6 md:px-20 relative z-50"
       >
         <div className="max-w-7xl mx-auto">
           <motion.div
@@ -232,7 +235,7 @@ export default function FestivalMid() {
         whileInView="visible"
         viewport={{ once: false, amount: 0.2 }}
         variants={containerVariants}
-        className="py-40 bg-zinc-100 text-black px-6 md:px-20"
+        className="py-40 bg-zinc-100 text-black px-6 md:px-20 relative z-50"
       >
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-32 items-center">
           <motion.div variants={itemVariants} className="space-y-16">
@@ -313,7 +316,7 @@ export default function FestivalMid() {
         whileInView="visible"
         viewport={{ once: false, amount: 0.2 }}
         variants={containerVariants}
-        className="py-40 px-6 md:px-20"
+        className="py-40 px-6 md:px-20 relative z-50"
       >
         <div className="max-w-7xl mx-auto flex flex-col items-center">
           <motion.div
@@ -339,12 +342,8 @@ export default function FestivalMid() {
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black flex flex-col justify-end p-12">
-                <h4 className="text-3xl font-light uppercase tracking-tighter">
-                  Mansión de los Virreyes
-                </h4>
-                <p className="text-[9px] tracking-[0.3em] uppercase text-amber-500 font-bold mt-2">
-                  Centro Histórico • Lima
-                </p>
+                <h4 className="text-3xl font-light uppercase tracking-tighter">La Real Fortaleza </h4>
+                <p className="text-[9px] tracking-[0.3em] uppercase text-amber-500 font-bold mt-2">Carmen Alto</p>
               </div>
             </motion.div>
             <motion.div
@@ -356,12 +355,8 @@ export default function FestivalMid() {
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black flex flex-col justify-end p-12">
-                <h4 className="text-3xl font-light uppercase tracking-tighter">
-                  Palacete Real San Isidro
-                </h4>
-                <p className="text-[9px] tracking-[0.3em] uppercase text-amber-500 font-bold mt-2">
-                  Zona Financiera • Lima
-                </p>
+                <h4 className="text-3xl font-light uppercase tracking-tighter"> Millwa Country Club</h4>
+                <p className="text-[9px] tracking-[0.3em] uppercase text-amber-500 font-bold mt-2">Avenida Javier Heraud N°463</p>
               </div>
             </motion.div>
           </div>
@@ -374,7 +369,7 @@ export default function FestivalMid() {
         whileInView="visible"
         viewport={{ once: false, amount: 0.3 }}
         variants={containerVariants}
-        className="h-[90vh] flex flex-col items-center justify-center relative overflow-hidden"
+        className="h-[90vh] flex flex-col items-center justify-center relative overflow-hidden relative z-50"
       >
         <motion.div
           variants={itemVariants}
@@ -410,7 +405,7 @@ export default function FestivalMid() {
 
         {/* Marquee de fondo */}
         <div className="absolute inset-0 flex items-center justify-center opacity-[0.02] pointer-events-none select-none">
-          <span className="text-[40vw] font-black italic">PATRIMONIO</span>
+          <span className="text-[40vw] font-black italic">ATHREUS</span>
         </div>
       </motion.section>
 

@@ -7,7 +7,7 @@ const Introduction = () => {
     <motion.div 
       initial={{ opacity: 1 }}
       animate={{ opacity: 0, pointerEvents: "none" }}
-      transition={{ duration: 1, delay: 2.5, ease: "easeInOut" }}
+      transition={{ duration: 0.3, delay: 0.3, ease: "easeInOut" }}
       className="fixed inset-0 z-[200] flex items-center justify-center bg-[#050505]"
     >
       <div className="relative overflow-hidden">
@@ -24,7 +24,7 @@ const Introduction = () => {
         <motion.div 
           initial={{ scaleX: 0 }}
           animate={{ scaleX: 1 }}
-          transition={{ duration: 2, ease: "easeInOut" }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
           className="absolute bottom-0 left-0 w-full h-[1px] bg-amber-500 origin-left"
         />
       </div>
