@@ -373,7 +373,7 @@ export default function FestivalMid() {
       >
         <motion.div
           variants={itemVariants}
-          className="z-10 text-center space-y-12 px-6"
+          className="z-10 text-center space-y-12 px-6 pb-20"
         >
           <Fingerprint
             size={50}
@@ -397,7 +397,7 @@ export default function FestivalMid() {
               </motion.button>
             </Link>
 
-            <a href="./terms" className="text-[10px] tracking-[0.5em] uppercase font-bold text-zinc-500 border-b border-zinc-900 pb-2 hover:text-white transition-colors">
+            <a href="./paginas/TerminoCondiciones" className="text-[10px] tracking-[0.5em] uppercase font-bold text-zinc-500 border-b border-zinc-900 pb-2 hover:text-white transition-colors">
               Términos y Condiciones
             </a>
           </div>

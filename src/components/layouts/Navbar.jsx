@@ -25,10 +25,10 @@ const GalaNavbar = () => {
   }, [isOpen]);
 
   const navLinks = [
-    { name: "Entradas", href: "./tickets" },
-    { name: "Experiencia", href: "./" },
+    { name: "Entradas", href: "/tickets" },
+    { name: "Experiencia", href: "/" },
     { name: "Sedes", href: "#" },
-    { name: "About", href: "./about" },
+    { name: "About", href: "/about" },
   ];
 
   // Variantes para la animación de revelación circular
@@ -61,7 +61,7 @@ const GalaNavbar = () => {
         }`}
       >
         {/* Logo / Identidad */}
-        <a href="./">
+        <a href="/">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
