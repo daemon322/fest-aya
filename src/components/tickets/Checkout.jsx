@@ -127,6 +127,33 @@ const Checkout = ({ cart = [], onBack, onComplete }) => {
     };
 
     try {
+      // Convertir archivo a base64 si existe
+      let voucherBase64 = null;
+      let voucherFileName = null;
+
+      if (voucher) {
+        voucherFileName = voucher.name;
+        const reader = new FileReader();
+
+        const base64Promise = new Promise((resolve, reject) => {
+          reader.onload = () => {
+            voucherBase64 = reader.result; // Contiene "data:image/png;base64,..."
+            resolve();
+          };
+          reader.onerror = reject;
+          reader.readAsDataURL(voucher);
+        });
+
+        try {
+          await base64Promise;
+        } catch (error) {
+          console.error("Error al leer archivo:", error);
+          setFormErrors(["Error al procesar el archivo. Intenta de nuevo."]);
+          setIsSubmitting(false);
+          return;
+        }
+      }
+
       // Enviar a través del API endpoint del servidor (JSON)
       const response = await fetch("/api/send-reservation", {
         method: "POST",
@@ -142,6 +169,8 @@ const Checkout = ({ cart = [], onBack, onComplete }) => {
           cartDetails: JSON.stringify(safeCart),
           timestamp: new Date().toISOString(),
           subject: `Nueva Reserva - ${sanitizedData.name}`,
+          voucherBase64: voucherBase64,
+          voucherFileName: voucherFileName,
         }),
       });
 
