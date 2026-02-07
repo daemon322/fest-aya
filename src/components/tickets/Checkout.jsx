@@ -169,7 +169,7 @@ const Checkout = ({ cart = [], onBack, onComplete }) => {
           ]);
         } catch (e) {
           setFormErrors([
-            "Error al procesar la reserva. Verifica tu conexión e intenta de nuevo.",
+            "Error al procesar las reservas. Verifica tu conexión e intenta de nuevo.",
           ]);
         }
         setIsSubmitting(false);
