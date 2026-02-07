@@ -127,30 +127,22 @@ const Checkout = ({ cart = [], onBack, onComplete }) => {
     };
 
     try {
-      // Crear FormData para enviar archivo + datos
-      const formDataWithFile = new FormData();
-      formDataWithFile.append("name", sanitizedData.name);
-      formDataWithFile.append("email", sanitizedData.email);
-      formDataWithFile.append("phone", sanitizedData.phone);
-      formDataWithFile.append("document", sanitizedData.document);
-      formDataWithFile.append("refNumber", refNumber);
-      formDataWithFile.append("cartDetails", JSON.stringify(safeCart));
-      formDataWithFile.append("timestamp", new Date().toISOString());
-      formDataWithFile.append(
-        "subject",
-        `Nueva Reserva - ${sanitizedData.name}`,
-      );
-
-      // Agregar el archivo del comprobante
-      if (voucher) {
-        formDataWithFile.append("voucherFile", voucher);
-      }
-
-      // Enviar a través del API endpoint del servidor (sin CORS)
+      // Enviar a través del API endpoint del servidor (JSON)
       const response = await fetch("/api/send-reservation", {
         method: "POST",
-        body: formDataWithFile,
-        // NO incluir Content-Type header - el navegador lo establece automáticamente
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: sanitizedData.name,
+          email: sanitizedData.email,
+          phone: sanitizedData.phone,
+          document: sanitizedData.document,
+          refNumber,
+          cartDetails: JSON.stringify(safeCart),
+          timestamp: new Date().toISOString(),
+          subject: `Nueva Reserva - ${sanitizedData.name}`,
+        }),
       });
 
       if (response.ok) {
@@ -169,17 +161,17 @@ const Checkout = ({ cart = [], onBack, onComplete }) => {
           ]);
         } catch (e) {
           setFormErrors([
-            "Error al procesar las reservas. Verifica tu conexión e intenta de nuevo.",
+            "Error al procesar la reserva. Verifica tu conexión e intenta de nuevo.",
           ]);
         }
         setIsSubmitting(false);
       }
     } catch (error) {
-        console.error("Error en la conexión:", error);
-        setFormErrors([
-            "Error de conexión. Verifica tu internet e intenta de nuevo.",
-        ]);
-        setIsSubmitting(false);
+      console.error("Error enviando reserva:", error);
+      setFormErrors([
+        "Error de conexión. Verifica tu internet e intenta de nuevo.",
+      ]);
+      setIsSubmitting(false);
     }
   };
 

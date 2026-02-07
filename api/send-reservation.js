@@ -1,7 +1,6 @@
 /**
  * API Serverless para enviar reservas a Formspree
  * Resuelve problemas de CORS haciendo la llamada desde el servidor
- * Maneja archivos (comprobantes) en multipart/form-data
  */
 
 export default async function handler(req, res) {
@@ -22,9 +21,6 @@ export default async function handler(req, res) {
       subject,
     } = req.body;
 
-    // Si hay archivo en la request (Vercel multipart)
-    const hasFile = req.files && req.files.voucherFile;
-
     // Validación básica
     if (!email || !name) {
       return res.status(400).json({
@@ -37,6 +33,7 @@ export default async function handler(req, res) {
     const FORMSPREE_ID = "xojnqjwk";
 
     // Preparar el cuerpo para Formspree (JSON)
+    // Nota: Los archivos se validan en el cliente, aquí solo enviamos datos
     const emailBody = {
       name,
       email,
@@ -46,8 +43,14 @@ export default async function handler(req, res) {
       cartDetails,
       timestamp,
       _subject: subject || "Nueva Reserva",
-      comprobante_adjunto: hasFile ? "✓ Sí" : "✗ No",
+      _replyto: email, // Agregar email de respuesta
     };
+
+    console.log("📧 Enviando reserva a Formspree:", {
+      nombre: name,
+      email: email,
+      referencia: refNumber,
+    });
 
     // Enviar a Formspree desde el servidor (sin problemas de CORS)
     const response = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
@@ -59,24 +62,30 @@ export default async function handler(req, res) {
     });
 
     if (!response.ok) {
-      console.error("Error de Formspree:", response.status);
+      const errorText = await response.text();
+      console.error(
+        "Error de Formspree:",
+        response.status,
+        errorText
+      );
       return res.status(500).json({
         success: false,
-        message: "Error al procesar la reserva en el servidor",
+        message: `Error en Formspree: ${response.status}`,
       });
     }
 
+    console.log("✅ Reserva enviada exitosamente a Formspree");
+
     return res.status(200).json({
       success: true,
-      message: "Reserva enviada exitosamente" + (hasFile ? " con comprobante" : ""),
+      message: "Reserva enviada exitosamente",
       refNumber,
-      fileReceived: hasFile ? true : false,
     });
   } catch (error) {
-    console.error("Error en send-reservation:", error);
+    console.error("❌ Error en send-reservation:", error.message);
     return res.status(500).json({
       success: false,
-      message: "Error de conexión con el servidor de email",
+      message: "Error: " + error.message,
     });
   }
 }
