@@ -10,9 +10,9 @@ import {
   ChevronRight,
   Volume2,
 } from "lucide-react";
-import aguamarina from "../../../assets/aguamarina.jpg";
-import grupo5 from "../../../assets/grupo5.png";
-import armonia10 from "../../../assets/armonia10.jpg";
+import aguamarina from "../../../assets/aguamarina.webp";
+import grupo5 from "../../../assets/grupo5.webp";
+import armonia10 from "../../../assets/armonia10.webp";
 import corazonserrano from "../../../assets/corazonserrano.jpg";
 
 const ARTISTS = [
@@ -314,7 +314,7 @@ export default function App() {
             >
               <img
                 src={active.image}
-                className="w-full h-full object-cover"
+                className="w-auto h-screen object-cover"
                 alt={active.name}
                 style={{ filter: "" }}
               />

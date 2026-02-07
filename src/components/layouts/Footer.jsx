@@ -1,20 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import {
-  Facebook,
-  Instagram,
-  Twitter,
-  Youtube,
-  Mail,
-  MapPin,
-  Phone,
-  ArrowRight,
-  Globe,
-  ChevronRight,
-  ShieldCheck,
-  CreditCard,
-  Zap,
-  Award,
-} from "lucide-react";
+import { Facebook, Instagram, Twitter, Youtube, Mail, MapPin, Phone, ArrowRight, Globe, ChevronRight, ShieldCheck, CreditCard, Zap, Award, } from "lucide-react";
+import libroreclamaciones from "../../assets/libroreclamaciones.webp"
 
 const Footer = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -169,7 +155,6 @@ const Footer = () => {
               {[
                 {label: "Términos de Uso", icon: Zap, href: "/paginas/TerminoCondiciones",},
                 { label: "Centro de Ayuda", icon: Mail },
-                { label: "Libro de Reclamaciones", icon: Award, href:"/paginas/LibroReclamaciones" },
                 { label: "Preguntas Frecuentes", icon: Globe },
               ].map((item) => (
                 <li key={item.label}>
@@ -197,6 +182,10 @@ const Footer = () => {
               Entérate antes que todos sobre la venta de entradas para la{" "}
               <span className="text-white font-bold">Semana Santa</span>.
             </p>
+            <a href="/paginas/LibroReclamaciones" className="text-gray-500 hover:text-white text-sm">
+            <span className="text-sm mb-6">Libro de reclamaciones</span>
+              <img src={libroreclamaciones} alt="Libro de reclamaciones" className="h-[73px] w-[100px]" />
+            </a>
           </div>
         </div>
 

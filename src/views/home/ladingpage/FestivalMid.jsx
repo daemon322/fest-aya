@@ -2,9 +2,9 @@ import { Link } from "react-router-dom";
 import React, { useState } from "react";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { Crown, Fingerprint, ArrowUpRight, Calendar, Sparkles, MapPin, Award, Music, Wine, ShieldCheck, Star, Clock, Users, Gem,} from "lucide-react";
-import daniela from "../../../assets/daniela.jpg";
-import grupmarina from "../../../assets/grupmarina.jpg";
-import yaipen from "../../../assets/yaipen.png";
+import daniela from "../../../assets/daniela.webp";
+import grupmarina from "../../../assets/grupmarina.webp";
+import yaipen from "../../../assets/yaipen.webp";
 import FestivalHero from "./FestivalHero";
 
 // --- Variantes de Animación ---
