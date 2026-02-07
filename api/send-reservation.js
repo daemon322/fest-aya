@@ -62,7 +62,7 @@ export default async function handler(req, res) {
       console.error("Error de Formspree:", response.status);
       return res.status(500).json({
         success: false,
-        message: "Error al procesar las reservas en el servidor",
+        message: "Error al procesar la reserva en el servidor",
       });
     }
 
