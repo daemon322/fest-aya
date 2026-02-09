@@ -136,10 +136,10 @@ const DualidadVHS = () => {
                 alt="Voley Femenino"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
-              <div className="absolute top-12 sm:left-8 left-18">
+              <div className="absolute top-12 sm:left-8 left-18 sm:block hidden">
                  <span className="text-4xl md:text-7xl font-bold italic uppercase text-[#D4AF37] tracking-tighter drop-shadow-xl drop-shadow-black select-none">MASCULINO</span>
               </div>
-              <div className="absolute sm:bottom-36 bottom-18 sm:left-44 left-20">
+              <div className="absolute sm:bottom-36 bottom-18 sm:left-44 left-20 sm:block hidden">
                  <span className="text-4xl md:text-7xl font-bold italic uppercase text-[#ff0000] tracking-tighter drop-shadow-xl drop-shadow-black select-none">FEMENINO</span>
               </div>
             </motion.div>
@@ -251,7 +251,7 @@ const Hero = () => {
             transition={{ duration: 10, ease: "linear" }}
             className="absolute inset-0"
           >
-            <img src={slides[current].image} className="w-full h-[450px] sm:h-[1000px] object-cover opacity-90 brightness-75 select-none" alt="Inca Volley" />
+            <img src={slides[current].image} className="w-full h-screen sm:h-[1000px] object-cover opacity-90 brightness-75 select-none" alt="Inca Volley" />
           </motion.div>
           <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-[#050505]" />
         </motion.div>
