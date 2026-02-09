@@ -88,7 +88,7 @@ const Marquee = ({ text, speed = 20, reverse = false }) => {
   );
 };
 
-export default function App() {
+export default function FestivalTop() {
   const [index, setIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const active = ARTISTS[index];
