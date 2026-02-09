@@ -88,11 +88,10 @@ const DualidadVHS = () => {
                <p className="text-xl md:text-3xl font-bold leading-tight text-white/90">
                  La elegancia de la táctica <span className="text-[#FF1E1E]">femenina</span> colisiona con la potencia explosiva del juego <span className="text-[#D4AF37]">masculino</span>.
                </p>
-               <div className="sm:relative flex flex-wrap gap-4 items-center justify-center">
-                  <div className="px-4 py-2 border-2 border-red-600/90 rounded-br-full rounded-tl-full text-[10px] font-black tracking-widest uppercase bg-red-600 hover:bg-white hover:text-red-600 z-10">Fuerza: 100%</div>
-                  <span className='bg-red-600 px-4 py-1 absolute sm:top-2 top-90 left-42'></span>
-                  <div className="px-4 py-2 border-2 border-red-600/90 rounded-bl-full rounded-tr-full text-[10px] font-black tracking-widest uppercase bg-red-600 hover:bg-white hover:text-red-600 z-10">Táctica: Elite</div>
-                  <div className="px-4 py-2 border-2 border-red-600/90 rounded-b-full text-[10px] font-black tracking-widest uppercase bg-white text-red-500 hover:bg-red-600 hover:text-white">Experiencia: Pro</div>
+               <div className="sm:relative grid sm:grid-cols-3 grid-cols-1 items-center justify-center w-full">
+                  <div className="px-4 py-2 border-2 border-red-600/90 text-[10px] font-black tracking-widest uppercase bg-red-600 hover:bg-white hover:text-red-600 z-10 text-center">Fuerza: 100%</div>
+                  <div className="px-4 py-2 border-2 border-white/90 text-[10px] font-black tracking-widest uppercase bg-white text-red-500 hover:bg-red-600 hover:text-white text-center">Expe: Pro</div>
+                  <div className="px-4 py-2 border-2 border-red-600/90 text-[10px] font-black tracking-widest uppercase bg-red-600 hover:bg-white hover:text-red-600 z-10 text-center">Táctica: Elite</div>
                </div>
             </div>
           </SectionReveal>
@@ -137,11 +136,11 @@ const DualidadVHS = () => {
                 alt="Voley Femenino"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
-              <div className="absolute top-12 sm:left-22 left-18">
+              <div className="absolute top-12 sm:left-8 left-18">
                  <span className="text-4xl md:text-7xl font-bold italic uppercase text-[#D4AF37] tracking-tighter drop-shadow-xl drop-shadow-black select-none">MASCULINO</span>
               </div>
-              <div className="absolute sm:bottom-36 bottom-22 sm:left-28 left-20">
-                 <span className="text-4xl md:text-7xl font-bold italic uppercase text-[#FF1E1E] tracking-tighter drop-shadow-xl drop-shadow-black select-none">FEMENINO</span>
+              <div className="absolute sm:bottom-36 bottom-18 sm:left-44 left-20">
+                 <span className="text-4xl md:text-7xl font-bold italic uppercase text-[#ff0000] tracking-tighter drop-shadow-xl drop-shadow-black select-none">FEMENINO</span>
               </div>
             </motion.div>
             
@@ -252,7 +251,7 @@ const Hero = () => {
             transition={{ duration: 10, ease: "linear" }}
             className="absolute inset-0"
           >
-            <img src={slides[current].image} className="w-full h-full object-cover opacity-90 brightness-75 select-none" alt="Inca Volley" />
+            <img src={slides[current].image} className="w-full h-[450px] sm:h-[1000px] object-cover opacity-90 brightness-75 select-none" alt="Inca Volley" />
           </motion.div>
           <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-[#050505]" />
         </motion.div>
