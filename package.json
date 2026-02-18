@@ -30,7 +30,6 @@
     "react-intersection-observer": "^10.0.2",
     "react-qr-code": "^2.0.18",
     "react-router-dom": "^7.13.0",
-    "react-three": "^0.9.7",
     "react-tsparticles": "^2.12.2",
     "resend": "^6.9.2",
     "three": "^0.182.0",
