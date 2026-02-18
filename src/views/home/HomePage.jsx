@@ -1,29 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform, useSpring } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { 
-  Trophy, 
-  ChevronRight, 
-  Zap,
-  Users,
-  Activity,
-  Star,
-  MapPin,
-  Ticket,
-  Flame,
-  ShieldCheck,
-  MousePointer2,
-  Globe,
-  ChevronLeft,
-  Crown
-} from 'lucide-react';
-import voley2 from '../../assets/voley2.png';
-import voley from '../../assets/voley.png';
-import fymv from '../../assets/fymv.png';
-import nataliam from '../../assets/nataliam.png';
-import nataliam2 from '../../assets/nataliam2.png';
-import ceciliat from '../../assets/ceciliat.png';
-import angelal from '../../assets/angelal.png';
+import { Trophy, Zap, Users, Activity, Ticket, Flame, ShieldCheck, MousePointer2, Crown} from 'lucide-react';
+import fymv from '../../assets/fymv.webp';
+import nataliam from '../../assets/nataliam.webp';
+import nataliam2 from '../../assets/nataliam2.webp';
+import ceciliat from '../../assets/ceciliat.webp';
+import angelal from '../../assets/angelal.webp';
+import HomeTop from '../../components/home/HomeTop';
 // --- Gancho para Efecto Tilt 3D Suave (Spring Physics) ---
 const useTilt = () => {
   const x = useSpring(0, { stiffness: 60, damping: 20 });
@@ -196,134 +180,6 @@ const ParallaxText = ({ children, baseVelocity = 100, className = "" }) => {
   );
 };
 
-// --- HERO: CINEMATIC RESPONSIVE SLIDER ---
-const slides = [
-  {
-    image: voley,
-    titleLine1: "SOMOS",
-    titleLine2: "INCA",
-    titleLine3: "VOLLEY",
-    subtitle: "La colisión definitiva entre la potencia eléctrica y la maestría ancestral."
-  },
-  {
-    image: voley2,
-    titleLine1: "NUEVA",
-    titleLine2: "ERA",
-    titleLine3: "ELITE",
-    subtitle: "Unificando la tradición peruana con el alto rendimiento internacional."
-  },
-  {
-    image: "https://images.unsplash.com/photo-1628779238951-be2c9f2a59f4?auto=format&fit=crop&q=80&w=2000",
-    titleLine1: "PURO",
-    titleLine2: "ADN",
-    titleLine3: "LIMA",
-    subtitle: "Vive la intensidad del mejor voley del mundo en el corazón de la ciudad."
-  }
-];
-
-const Hero = () => {
-  const [current, setCurrent] = useState(0);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % slides.length);
-    }, 10000);
-    return () => clearInterval(timer);
-  }, []);
-
-  const nextSlide = () => setCurrent((prev) => (prev + 1) % slides.length);
-  const prevSlide = () => setCurrent((prev) => (prev - 1 + slides.length) % slides.length);
-
-  return (
-    <section className="relative w-full bg-[#050505] overflow-hidden mb-5">
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={current}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 1.5, ease: "easeInOut" }}
-          className="absolute inset-0"
-        >
-          <motion.div 
-            initial={{ scale: 1.15 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 10, ease: "linear" }}
-            className="absolute inset-0"
-          >
-            <img src={slides[current].image} className="w-full h-screen sm:h-[1000px] object-cover opacity-90 brightness-75 select-none" alt="Inca Volley" />
-          </motion.div>
-          <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-[#050505]" />
-        </motion.div>
-      </AnimatePresence>
-
-      <div className="container mx-auto h-full relative z-20 flex flex-col justify-center items-center px-4 md:px-6">
-        <div className="text-center w-full max-w-5xl pt-20">
-          <SectionReveal delay={0.2}>
-            <div className="inline-flex items-center gap-2 md:gap-3 bg-[#FF1E1E]/15 backdrop-blur-xl border border-[#D4AF37]/40 px-5 md:px-8 py-2 md:py-3 mb-6 md:mb-10 rounded-full">
-              <Crown className="text-[#D4AF37]" size={14} />
-              <span className="text-white font-black tracking-[0.3em] md:tracking-[0.4em] text-[9px] md:text-[11px] uppercase whitespace-nowrap select-none">
-                VIDA Y SALUD • AYACUCHO 2026
-              </span>
-            </div>
-          </SectionReveal>
-
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={current}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -30 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-              className="mb-8 md:mb-14 select-none"
-            >
-              <h1 className="text-[16vw] md:text-[13vw] lg:text-[11vw] font-[1000] leading-[0.8] uppercase italic text-white tracking-tighter">
-                <span className="text-[#f10505] stroke-white block md:inline">{slides[current].titleLine1}</span> <br className="md:hidden" />
-                <span className="text-[#ffffff]">{slides[current].titleLine2}</span> <br className="md:hidden" />
-                <span className="text-[#f10505] block md:inline">{slides[current].titleLine3}</span>
-              </h1>
-              <p className="text-zinc-200 text-lg md:text-2xl lg:text-3xl font-bold leading-snug md:leading-relaxed mt-6 md:mt-10 max-w-3xl mx-auto">
-                {slides[current].subtitle}
-              </p>
-            </motion.div>
-          </AnimatePresence>
-
-          <SectionReveal delay={0.6}>
-            <div className="flex flex-col sm:flex-row gap-4 md:gap-8 justify-center items-center w-full max-w-sm sm:max-w-none mx-auto sm:pt-0 pt-10">
-              <a href='/tickets' className="w-full sm:w-auto bg-[#FF1E1E] text-white px-8 md:px-16 py-5 md:py-8 font-[1000] text-xs md:text-sm uppercase tracking-[0.3em] hover:bg-[#D4AF37] hover:text-black transition-all duration-500 shadow-[0_0_30px_rgba(255,30,30,0.4)] group flex items-center justify-center gap-4 cursor-pointer">
-                ADQUIRIR TICKET <ChevronRight className="group-hover:translate-x-2 transition-transform" />
-              </a>
-              <a href='#' className="w-full sm:w-auto bg-transparent border-2 border-[#D4AF37]/50 backdrop-blur-sm text-white px-8 md:px-16 py-5 md:py-8 font-black text-xs md:text-sm uppercase tracking-[0.3em] hover:bg-white hover:text-black transition-all cursor-pointer">
-                VER FIXTURE
-              </a>
-            </div>
-          </SectionReveal>
-        </div>
-      </div>
-
-      <div className="absolute bottom-8 md:bottom-12 left-0 w-full z-30 px-6 md:px-10 flex flex-col items-center">
-        <div className="flex gap-2 md:gap-4 mb-6">
-          {slides.map((_, i) => (
-            <button 
-              key={i} 
-              onClick={() => setCurrent(i)}
-              className={`h-1 transition-all duration-500 rounded-full relative sm:bottom-10 bottom-24 ${current === i ? 'w-16 md:w-24 bg-[#D4AF37]' : 'w-6 md:w-8 bg-white/20 hover:bg-white/40'}`}
-            />
-          ))}
-        </div>
-        <div className="flex gap-8 md:gap-12">
-           <button onClick={prevSlide} className="absolute left-4 bottom-60 p-3 md:p-4 rounded-full border border-white/10 hover:border-[#FF1E1E] bg-black/20 hover:bg-red-500/20 backdrop-blur-md transition-colors group cursor-pointer">
-             <ChevronLeft className="text-white group-hover:text-[#ffffff]" size={20} />
-           </button>
-           <button onClick={nextSlide} className="absolute right-4 bottom-60 p-3 md:p-4 rounded-full border border-white/10 hover:border-[#FF1E1E] bg-black/20 hover:bg-red-500/20 backdrop-blur-md transition-colors group cursor-pointer">
-             <ChevronRight className="text-white group-hover:text-[#ffffff]" size={20} />
-           </button>
-        </div>
-      </div>
-    </section>
-  );
-};
-
 const ExperienceGrid = () => (
   <section className="pb-40 bg-[#080808] relative overflow-hidden">
     <div className="container mx-auto px-6 relative z-10">
@@ -402,7 +258,7 @@ const App = () => {
       `}</style>
 
       <main>
-        <Hero />
+        <HomeTop />
 
         {/* MARQUESINA */}
         <div className="relative z-30 py-8 bg-[#FF1E1E] -rotate-1 scale-105 select-none">
