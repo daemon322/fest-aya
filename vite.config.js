@@ -112,5 +112,4 @@ const apiPlugin = {
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss(), apiPlugin],
-  assetsInclude: ['**/*.glb', '**/*.gltf'],
 });
