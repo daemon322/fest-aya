@@ -22,6 +22,8 @@ import {
   AlertCircle,
 } from "lucide-react";
 import Checkout from "./Checkout";
+import Tribuna from "./Tribuna";
+import Guide from "./Guide";
 
 const CartSidebar = ({ isOpen, onClose, cart, onRemoveItem, onCheckout }) => {
   const subtotal = cart.reduce(
@@ -194,7 +196,7 @@ const TicketCard = ({
 
   return (
     <div
-      className={`relative flex flex-col h-full p-12 rounded-[3rem] border border-white/5 bg-[#0a0a0a] transition-all duration-700 hover:border-amber-500/20 group overflow-hidden`}
+      className={`relative flex flex-col h-full p-12 rounded-[3rem] hover:bg-[#00000093] transition-all duration-700 group overflow-hidden`}
     >
       {/* Resplandor de fondo interactivo (CSS sutil) */}
       <div className="absolute -top-24 -right-24 w-48 h-48 bg-amber-500/5 blur-[80px] group-hover:bg-amber-500/10 transition-all duration-700 rounded-full" />
@@ -214,27 +216,27 @@ const TicketCard = ({
             <h3 className="text-4xl font-serif text-white tracking-tight italic group-hover:text-amber-500 transition-colors duration-700">
               {title}
             </h3>
-            <p className="text-[10px] font-medium uppercase tracking-[0.5em] text-white/20">
+            <p className="text-[10px] font-medium uppercase tracking-[0.5em] text-white/80">
               {subtitle}
             </p>
           </div>
           <div className="mt-10 flex items-baseline gap-2">
-            <span className="text-xs font-light text-amber-500/50 uppercase tracking-tighter">
+            <span className="text-xl font-light text-amber-500/90 uppercase tracking-tighter">
               PEN
             </span>
             <div className="text-6xl font-light text-white tracking-tighter font-mono group-hover:scale-105 transition-transform duration-700 origin-left">
               {currentPrice.toFixed(0)}
-              <span className="text-xl opacity-30">.00</span>
+              <span className="text-xl opacity-80">.00</span>
             </div>
           </div>
         </header>
 
         <div className="mb-12 space-y-4">
           <div className="flex justify-between text-[9px] font-bold uppercase tracking-[0.3em]">
-            <span className="text-white/30">Disponibilidad</span>
+            <span className="text-white/90">Disponibilidad</span>
             <span
               className={
-                isCritical ? "text-red-500 animate-pulse" : "text-amber-500/60"
+                isCritical ? "text-red-500 animate-pulse" : "text-amber-500/90"
               }
             >
               {isCritical && (
@@ -258,13 +260,13 @@ const TicketCard = ({
               className="flex items-center gap-5 translate-x-0 group-hover:translate-x-2 transition-transform duration-700"
               style={{ transitionDelay: `${idx * 100}ms` }}
             >
-              <div className="w-8 h-8 rounded-full border border-white/5 flex items-center justify-center text-white/20 group-hover:text-amber-500 group-hover:border-amber-500/20 transition-all duration-500">
+              <div className="w-8 h-8 rounded-full border border-white/5 flex items-center justify-center text-white/90 group-hover:text-amber-500 group-hover:border-amber-500/90 transition-all duration-500">
                 {React.cloneElement(feature.icon, {
                   size: 12,
                   strokeWidth: 1.5,
                 })}
               </div>
-              <span className="text-[10px] text-white/40 font-light tracking-[0.2em] uppercase group-hover:text-white/70 transition-colors duration-500">
+              <span className="text-[10px] text-white/70 font-light tracking-[0.2em] uppercase group-hover:text-white/90 transition-colors duration-500">
                 {feature.text}
               </span>
             </li>
@@ -272,10 +274,10 @@ const TicketCard = ({
         </ul>
 
         <div className="mt-auto space-y-6">
-          <div className="flex items-center justify-between bg-white/[0.02] rounded-2xl px-6 py-4 border border-white/5">
+          <div className="flex items-center justify-between rounded-2xl px-6 py-4 border border-white/5">
             <button
               onClick={() => setQuantity(Math.max(0, quantity - 1))}
-              className="w-10 h-10 flex items-center justify-center text-white/20 hover:text-white hover:bg-white/5 rounded-full transition-all cursor-pointer"
+              className="w-10 h-10 flex items-center justify-center text-white/90 hover:text-black hover:bg-white/90 rounded-full transition-all cursor-pointer"
             >
               <Minus size={14} />
             </button>
@@ -284,7 +286,7 @@ const TicketCard = ({
             </span>
             <button
               onClick={() => setQuantity(Math.max(0, quantity + 1))}
-              className="w-10 h-10 flex items-center justify-center text-white/20 hover:text-white hover:bg-white/5 rounded-full transition-all cursor-pointer"
+              className="w-10 h-10 flex items-center justify-center text-white/90 hover:text-black hover:bg-white/90 rounded-full transition-all cursor-pointer"
             >
               <Plus size={14} />
             </button>
@@ -425,7 +427,8 @@ const App = () => {
           onComplete={handleCheckoutComplete}
         />
       ) : (
-        <div className="min-h-screen bg-black text-white p-6 sm:p-12 lg:p-24 font-sans selection:bg-amber-500/30 flex items-center justify-center">
+        <div className="min-h-screen text-white font-sans selection:bg-amber-500/30 flex items-center justify-center flex-col">
+          <Tribuna/>
           <CartSidebar
             isOpen={isCartOpen}
             onClose={() => setIsCartOpen(false)}
@@ -467,7 +470,7 @@ const App = () => {
             </div>
 
             {/* Grid de Entradas con espaciado amplio */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 px-5">
               {ticketData.map((ticket) => (
                 <TicketCard
                   key={ticket.id}
@@ -483,10 +486,10 @@ const App = () => {
           {cart.length > 0 && !isCartOpen && (
             <button
               onClick={() => setIsCartOpen(true)}
-              className="fixed bottom-12 left-12 z-[80] group"
+              className="fixed bottom-12 right-12 z-[80] group cursor-pointer"
             >
               <div className="absolute inset-0 bg-amber-500 rounded-3xl blur-2xl opacity-20 group-hover:opacity-40 transition-opacity animate-pulse" />
-              <div className="relative bg-white text-black h-20 w-20 rounded-3xl shadow-2xl flex items-center justify-center hover:bg-amber-500 hover:-translate-y-2 transition-all duration-500 active:scale-90">
+              <div className="relative bg-white text-black hover:text-white h-20 w-20 rounded-3xl shadow-2xl flex items-center justify-center hover:bg-red-600 hover:-translate-y-2 transition-all duration-500 active:scale-90">
                 <div className="relative">
                   <ShoppingCart size={24} strokeWidth={2.5} />
                   <span className="absolute -top-5 -right-5 bg-amber-500 text-black text-[11px] font-black h-7 w-7 flex items-center justify-center rounded-xl border-[3px] border-black group-hover:bg-white transition-colors">
@@ -496,6 +499,7 @@ const App = () => {
               </div>
             </button>
           )}
+          <Guide/>
 
           <style>{`
         .custom-scrollbar::-webkit-scrollbar { width: 3px; }

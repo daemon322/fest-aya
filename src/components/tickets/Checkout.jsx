@@ -315,7 +315,7 @@ const Checkout = ({ cart = [], onBack, onComplete }) => {
   );
 
   return (
-    <div className="min-h-screen bg-black overflow-y-auto flex flex-col items-center">
+    <div className="relative min-h-screen bg-black overflow-y-auto flex flex-col items-center">
       <div className="max-w-4xl w-full p-8 pt-20">
         {/* Navegación Superior */}
         <div className="flex justify-between items-center mb-12">

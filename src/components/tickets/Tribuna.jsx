@@ -1,12 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { 
-  Trophy, 
   MapPin, 
-  Navigation, 
   Maximize, 
   RotateCcw, 
   Users, 
-  DoorOpen,
   CheckCircle2,
   Info,
   Calendar
@@ -16,7 +13,6 @@ const Tribuna = () => {
   const mountRef = useRef(null);
   const [activeZone, setActiveZone] = useState('Overview');
   const [isRotating, setIsRotating] = useState(true);
-  const [isLoaded, setIsLoaded] = useState(false);
 
   // Referencias persistentes para Three.js
   const sceneRef = useRef(null);
@@ -229,7 +225,6 @@ const Tribuna = () => {
       animate();
 
       threeInitialized.current = true;
-      setIsLoaded(true);
     };
 
     loadThree();
@@ -291,17 +286,8 @@ const Tribuna = () => {
   };
 
   return (
-    <div className="relative w-full h-screen bg-[#020202] overflow-hidden font-sans text-white">
+    <div className="relative w-full h-screen overflow-hidden font-sans text-white">
       <div ref={mountRef} className="absolute inset-0 z-0" />
-      
-      {!isLoaded && (
-        <div className="absolute inset-0 flex items-center justify-center bg-black z-50">
-          <div className="flex flex-col items-center gap-4">
-            <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
-            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-400">Cargando Entorno 3D</p>
-          </div>
-        </div>
-      )}
 
       <div className="relative z-10 h-full flex flex-col justify-between pointer-events-none pt-10 px-10">
         <div className="flex flex-col lg:flex-row justify-between items-start gap-4 pt-10 h-full">
