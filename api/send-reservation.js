@@ -1,10 +1,9 @@
-/**
- * API Serverless para enviar reservas a Formspree
- * Resuelve problemas de CORS haciendo la llamada desde el servidor
- */
-
+// /api/send-reservation.js
 export default async function handler(req, res) {
-  const FORMSPREE_ID = import.meta.env.VITE_FORMSPREE_ID;
+  // En producción Vercel -> usar process.env
+  const FORMSPREE_ID = process.env.FORMSPREE_ID || process.env.VITE_FORMSPREE_ID;
+  const FORMSPREE_API_KEY = process.env.FORMSPREE_API_KEY || null;
+
   // Solo aceptar POST
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Método no permitido" });
@@ -32,11 +31,14 @@ export default async function handler(req, res) {
       });
     }
 
-    // ID del formulario en Formspree
-    
+    if (!FORMSPREE_ID) {
+      console.error("Falta FORMSPREE_ID en process.env");
+      return res.status(500).json({
+        success: false,
+        message: "Configuración del servidor incompleta",
+      });
+    }
 
-    // Preparar el cuerpo para Formspree (JSON)
-    // Nota: Los archivos se validan en el cliente, aquí solo enviamos datos
     const emailBody = {
       name,
       email,
@@ -46,14 +48,11 @@ export default async function handler(req, res) {
       cartDetails,
       timestamp,
       _subject: subject || "Nueva Reserva",
-      _replyto: email, // Agregar email de respuesta
+      _replyto: email,
     };
 
-    // Si hay comprobante, incluirlo en el email
     if (voucherBase64 && voucherFileName) {
       emailBody.comprobante_archivo = voucherFileName;
-      // Crear HTML con la imagen embebida
-      const imageMimeType = voucherBase64.split(";")[0].replace("data:", ""); // e.g., "image/png"
       emailBody._html = `
         <h3>Reserva Confirmada</h3>
         <p><strong>Referencia:</strong> ${refNumber}</p>
@@ -65,24 +64,29 @@ export default async function handler(req, res) {
         <img src="${voucherBase64}" alt="Comprobante" style="max-width: 500px; border: 1px solid #ddd; padding: 10px;" />
         <hr />
         <p><strong>Detalles:</strong></p>
-        <pre>${JSON.stringify(cartDetails, null, 2)}</pre>
+        <pre>${JSON.stringify(cartDetails ?? {}, null, 2)}</pre>
         <p><small>Enviado: ${timestamp}</small></p>
       `;
     }
 
     console.log("📧 Enviando reserva a Formspree:", {
       nombre: name,
-      email: email,
+      email,
       referencia: refNumber,
       conComprobante: voucherBase64 ? "✓ Sí" : "✗ No",
     });
 
-    // Enviar a Formspree desde el servidor (sin problemas de CORS)
+    const headers = {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    };
+    if (FORMSPREE_API_KEY) {
+      headers["Authorization"] = `Bearer ${FORMSPREE_API_KEY}`;
+    }
+
     const response = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers,
       body: JSON.stringify(emailBody),
     });
 
@@ -92,27 +96,23 @@ export default async function handler(req, res) {
       return res.status(500).json({
         success: false,
         message: `Error en Formspree: ${response.status}`,
+        detail: errorText,
       });
     }
 
-    console.log(
-      "✅ Reserva enviada exitosamente a Formspree" +
-        (voucherBase64 ? " con comprobante" : ""),
-    );
+    console.log("✅ Reserva enviada exitosamente a Formspree" + (voucherBase64 ? " con comprobante" : ""));
 
     return res.status(200).json({
       success: true,
-      message:
-        "Reserva enviada exitosamente" +
-        (voucherBase64 ? " con comprobante" : ""),
+      message: "Reserva enviada exitosamente" + (voucherBase64 ? " con comprobante" : ""),
       refNumber,
-      voucherReceived: voucherBase64 ? true : false,
+      voucherReceived: !!voucherBase64,
     });
   } catch (error) {
-    console.error("❌ Error en send-reservation:", error.message);
+    console.error("❌ Error en send-reservation:", error);
     return res.status(500).json({
       success: false,
-      message: "Error: " + error.message,
+      message: "Error: " + (error?.message || String(error)),
     });
   }
 }

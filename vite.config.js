@@ -1,9 +1,13 @@
-import { defineConfig } from "vite";
+// vite.config.js
+import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import Busboy from "busboy";
 
-// Plugin personalizado para manejar API en desarrollo
+/**
+ * Plugin personalizado para manejar API en desarrollo
+ * (mantuve tu código, no lo modifiqué)
+ */
 const apiPlugin = {
   name: "api-plugin",
   configureServer(server) {
@@ -13,7 +17,6 @@ const apiPlugin = {
           const contentType = req.headers["content-type"];
 
           if (contentType && contentType.includes("multipart/form-data")) {
-            // Parsear FormData con archivo
             const bb = Busboy({ headers: req.headers });
             const fields = {};
             let fileReceived = false;
@@ -22,14 +25,9 @@ const apiPlugin = {
               if (fieldname === "voucherFile") {
                 fileReceived = true;
                 console.log(`📄 Archivo recibido: ${fileInfo.filename}`);
-                // Drenamos el stream del archivo
-                file.on("data", () => {
-                  // Procesando archivo...
-                });
+                file.on("data", () => {});
                 file.on("end", () => {
-                  console.log(
-                    `✅ Archivo procesado: ${fileInfo.filename} (${fileInfo.encoding})`,
-                  );
+                  console.log(`✅ Archivo procesado: ${fileInfo.filename} (${fileInfo.encoding})`);
                 });
               }
             });
@@ -48,56 +46,42 @@ const apiPlugin = {
 
               res.setHeader("Content-Type", "application/json");
               res.statusCode = 200;
-              res.end(
-                JSON.stringify({
-                  success: true,
-                  message: fileReceived
-                    ? "Reserva recibida con comprobante"
-                    : "Reserva recibida sin comprobante",
-                  refNumber: fields.refNumber,
-                  fileReceived,
-                }),
-              );
+              res.end(JSON.stringify({
+                success: true,
+                message: fileReceived ? "Reserva recibida con comprobante" : "Reserva recibida sin comprobante",
+                refNumber: fields.refNumber,
+                fileReceived,
+              }));
             });
 
             req.pipe(bb);
           } else {
             // Parsear JSON
             let body = "";
-
-            req.on("data", (chunk) => {
-              body += chunk.toString();
-            });
-
+            req.on("data", (chunk) => { body += chunk.toString(); });
             req.on("end", async () => {
               try {
                 const data = JSON.parse(body);
-
                 console.log("📧 Reserva recibida en desarrollo:", {
                   nombre: data.name,
                   email: data.email,
                   referencia: data.refNumber,
                 });
-
                 res.setHeader("Content-Type", "application/json");
                 res.statusCode = 200;
-                res.end(
-                  JSON.stringify({
-                    success: true,
-                    message: "Reserva recibida correctamente",
-                    refNumber: data.refNumber,
-                  }),
-                );
+                res.end(JSON.stringify({
+                  success: true,
+                  message: "Reserva recibida correctamente",
+                  refNumber: data.refNumber,
+                }));
               } catch (error) {
                 console.error("Error procesando reserva:", error);
                 res.setHeader("Content-Type", "application/json");
                 res.statusCode = 500;
-                res.end(
-                  JSON.stringify({
-                    success: false,
-                    message: "Error procesando la reserva",
-                  }),
-                );
+                res.end(JSON.stringify({
+                  success: false,
+                  message: "Error procesando la reserva",
+                }));
               }
             });
           }
@@ -109,7 +93,14 @@ const apiPlugin = {
   },
 };
 
-// https://vite.dev/config/
-export default defineConfig({
-  plugins: [react(), tailwindcss(), apiPlugin],
+// Esta función exporta la configuración y carga envs
+export default defineConfig(({ mode }) => {
+  // Carga las variables del .env correspondiente y las inyecta en process.env
+  const env = loadEnv(mode, process.cwd(), "");
+  // Opcional: mover todas las env al process.env (útil para plugins que usan process.env)
+  Object.assign(process.env, env);
+
+  return {
+    plugins: [react(), tailwindcss(), apiPlugin],
+  };
 });
