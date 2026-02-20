@@ -91,11 +91,20 @@ export default async function handler(req, res) {
     }
 
     if (!recaptchaToken || !process.env.RECAPTCHA_SECRET) {
+      console.error("❌ Validación de reCAPTCHA fallida:", {
+        hasToken: !!recaptchaToken,
+        hasSecret: !!process.env.RECAPTCHA_SECRET,
+        tokenLength: recaptchaToken?.length || 0,
+      });
       return res
         .status(400)
         .json({
           success: false,
           message: "reCAPTCHA token faltante o no configurado.",
+          debug: {
+            hasToken: !!recaptchaToken,
+            hasSecret: !!process.env.RECAPTCHA_SECRET,
+          },
         });
     }
 

@@ -171,9 +171,11 @@ const Checkout = ({ cart = [], onBack, onComplete }) => {
       setIsVerifyingCaptcha(true);
       let recaptchaToken;
       try {
+        console.log("🔐 Generando token de reCAPTCHA...");
         recaptchaToken = await executeRecaptcha("checkout_submit");
+        console.log("✅ Token generado:", recaptchaToken?.substring(0, 20) + "...");
       } catch (captchaError) {
-        console.error("Error ejecutando reCAPTCHA:", captchaError);
+        console.error("❌ Error ejecutando reCAPTCHA:", captchaError);
         setFormErrors(["Error al verificar la seguridad. Intenta de nuevo."]);
         setIsSubmitting(false);
         setIsVerifyingCaptcha(false);
@@ -211,6 +213,8 @@ const Checkout = ({ cart = [], onBack, onComplete }) => {
         }),
       });
 
+      console.log("📤 Respuesta de API:", { status: response.status, ok: response.ok });
+
       if (response.ok) {
         // Éxito
         setSuccessNotification(true);
@@ -226,6 +230,8 @@ const Checkout = ({ cart = [], onBack, onComplete }) => {
             errorData.message ||
             "Error al procesar la reserva. Intenta de nuevo.";
 
+          console.error("❌ Error de API:", errorData);
+
           // Mensajes específicos para errores de captcha
           if (errorMessage.includes("reCAPTCHA")) {
             setFormErrors([
@@ -234,6 +240,11 @@ const Checkout = ({ cart = [], onBack, onComplete }) => {
             ]);
           } else {
             setFormErrors([errorMessage]);
+          }
+
+          // Si hay info de debug, mostrarla en consola
+          if (errorData.debug) {
+            console.log("🔍 Debug info:", errorData.debug);
           }
         } catch (e) {
           setFormErrors([
