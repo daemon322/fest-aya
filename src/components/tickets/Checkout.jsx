@@ -11,6 +11,7 @@ import {
   CheckCircle,
 } from "lucide-react";
 import ScrollToTop from "../layouts/ScrollToTop";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 // Funciones de seguridad y sanitización
 const sanitizeInput = (input) => {
@@ -83,6 +84,8 @@ const Checkout = ({ cart = [], onBack, onComplete }) => {
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successNotification, setSuccessNotification] = useState(false);
+  const [isVerifyingCaptcha, setIsVerifyingCaptcha] = useState(false);
+  const { executeRecaptcha } = useGoogleReCaptcha();
 
   // Validación de seguridad para evitar errores de 'undefined' en el reduce
   const safeCart = Array.isArray(cart) ? cart : [];
@@ -109,6 +112,7 @@ const Checkout = ({ cart = [], onBack, onComplete }) => {
   const handleConfirmAndSubmit = async (e) => {
     e?.preventDefault();
     setIsSubmitting(true);
+    setFormErrors([]);
 
     // Validación final de datos
     const validation = validateFormData(formData);
@@ -154,6 +158,33 @@ const Checkout = ({ cart = [], onBack, onComplete }) => {
         }
       }
 
+      if (!executeRecaptcha) {
+        console.error("reCAPTCHA no está disponible");
+        setFormErrors(["Error de seguridad: reCAPTCHA no disponible. Recarga la página."]);
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Verificando reCAPTCHA
+      setIsVerifyingCaptcha(true);
+      let recaptchaToken;
+      try {
+        recaptchaToken = await executeRecaptcha("checkout_submit");
+      } catch (captchaError) {
+        console.error("Error ejecutando reCAPTCHA:", captchaError);
+        setFormErrors(["Error al verificar la seguridad. Intenta de nuevo."]);
+        setIsSubmitting(false);
+        setIsVerifyingCaptcha(false);
+        return;
+      }
+
+      if (!recaptchaToken) {
+        setFormErrors(["Error: No se pudo generar el token de seguridad. Intenta de nuevo."]);
+        setIsSubmitting(false);
+        setIsVerifyingCaptcha(false);
+        return;
+      }
+
       // Enviar a través del API endpoint del servidor (JSON)
       const response = await fetch("/api/send-reservation", {
         method: "POST",
@@ -166,11 +197,13 @@ const Checkout = ({ cart = [], onBack, onComplete }) => {
           phone: sanitizedData.phone,
           document: sanitizedData.document,
           refNumber,
-          cartDetails: JSON.stringify(safeCart),
+          cartDetails: safeCart,
           timestamp: new Date().toISOString(),
           subject: `Nueva Reserva - ${sanitizedData.name}`,
-          voucherBase64: voucherBase64,
-          voucherFileName: voucherFileName,
+          voucherBase64,
+          voucherFileName,
+          hp: honeypot, // 👈 honeypot correcto
+          recaptchaToken, // 👈 recaptcha obligatorio
         }),
       });
 
@@ -180,20 +213,29 @@ const Checkout = ({ cart = [], onBack, onComplete }) => {
         setShowConfirmDialog(false);
         setFormErrors([]);
         setIsSubmitting(false);
+        setIsVerifyingCaptcha(false);
       } else {
         // Error en la respuesta
         try {
           const errorData = await response.json();
-          setFormErrors([
-            errorData.message ||
-              "Error al procesar la reserva. Intenta de nuevo.",
-          ]);
+          const errorMessage = errorData.message || "Error al procesar la reserva. Intenta de nuevo.";
+
+          // Mensajes específicos para errores de captcha
+          if (errorMessage.includes("reCAPTCHA")) {
+            setFormErrors([
+              "Verificación de seguridad fallida. Por favor, intenta de nuevo.",
+              "Si el problema persiste, recarga la página."
+            ]);
+          } else {
+            setFormErrors([errorMessage]);
+          }
         } catch (e) {
           setFormErrors([
             "Error al procesar la reserva. Verifica tu conexión e intenta de nuevo.",
           ]);
         }
         setIsSubmitting(false);
+        setIsVerifyingCaptcha(false);
       }
     } catch (error) {
       console.error("Error enviando reserva:", error);
@@ -201,6 +243,7 @@ const Checkout = ({ cart = [], onBack, onComplete }) => {
         "Error de conexión. Verifica tu internet e intenta de nuevo.",
       ]);
       setIsSubmitting(false);
+      setIsVerifyingCaptcha(false);
     }
   };
 
@@ -653,10 +696,15 @@ const Checkout = ({ cart = [], onBack, onComplete }) => {
                   disabled={isSubmitting}
                   className="flex-1 py-4 bg-amber-500 text-black rounded-2xl font-black uppercase text-[10px] tracking-widest hover:bg-white transition-all disabled:opacity-50 flex items-center justify-center gap-2"
                 >
-                  {isSubmitting ? (
+                  {isVerifyingCaptcha ? (
                     <>
                       <div className="animate-spin rounded-full h-4 w-4 border-2 border-black border-t-transparent" />
-                      Procesando...
+                      Verificando Seguridad...
+                    </>
+                  ) : isSubmitting ? (
+                    <>
+                      <div className="animate-spin rounded-full h-4 w-4 border-2 border-black border-t-transparent" />
+                      Enviando...
                     </>
                   ) : (
                     <>
