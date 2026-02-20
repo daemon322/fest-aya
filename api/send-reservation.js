@@ -95,6 +95,7 @@ export default async function handler(req, res) {
         hasToken: !!recaptchaToken,
         hasSecret: !!process.env.RECAPTCHA_SECRET,
         tokenLength: recaptchaToken?.length || 0,
+        secretLength: process.env.RECAPTCHA_SECRET?.length || 0,
       });
       return res
         .status(400)
@@ -104,6 +105,8 @@ export default async function handler(req, res) {
           debug: {
             hasToken: !!recaptchaToken,
             hasSecret: !!process.env.RECAPTCHA_SECRET,
+            tokenLength: recaptchaToken?.length || 0,
+            secretLength: process.env.RECAPTCHA_SECRET?.length || 0,
           },
         });
     }
@@ -114,6 +117,11 @@ export default async function handler(req, res) {
     params.append("response", recaptchaToken);
     // optional: params.append("remoteip", ip);
 
+    console.log("🔍 Enviando verificación a Google:", {
+      tokenPreview: recaptchaToken?.substring(0, 30) + "...",
+      secretPreview: process.env.RECAPTCHA_SECRET?.substring(0, 20) + "...",
+    });
+
     const verifyRes = await fetch(
       "https://www.google.com/recaptcha/api/siteverify",
       {
@@ -123,13 +131,25 @@ export default async function handler(req, res) {
       },
     );
     const verifyJson = await verifyRes.json().catch(() => null);
+
+    console.log("📊 Respuesta de Google:", {
+      status: verifyRes.status,
+      success: verifyJson?.success,
+      score: verifyJson?.score,
+      action: verifyJson?.action,
+      challenge_ts: verifyJson?.challenge_ts,
+      hostname: verifyJson?.hostname,
+      errorCodes: verifyJson?.["error-codes"],
+    });
+
     if (!verifyJson || !verifyJson.success) {
-      console.error("reCAPTCHA verification failed:", verifyJson);
+      console.error("❌ reCAPTCHA verification failed:", verifyJson);
       return res
         .status(400)
         .json({
           success: false,
           message: "reCAPTCHA inválido o expirado. Intenta de nuevo.",
+          debug: verifyJson,
         });
     }
 

@@ -234,10 +234,34 @@ const Checkout = ({ cart = [], onBack, onComplete }) => {
 
           // Mensajes específicos para errores de captcha
           if (errorMessage.includes("reCAPTCHA")) {
-            setFormErrors([
+            const debugInfo = errorData.debug;
+            let errorDetails = [
               "Verificación de seguridad fallida. Por favor, intenta de nuevo.",
-              "Si el problema persiste, recarga la página.",
-            ]);
+            ];
+
+            // Mostrar error codes específicos de Google si existen
+            if (debugInfo?.["error-codes"]) {
+              const codes = debugInfo["error-codes"];
+              console.error("🚫 Google reCAPTCHA error codes:", codes);
+              if (codes.includes("invalid-input-secret")) {
+                errorDetails.push(
+                  "⚠️ Error de configuración: Secret key inválida"
+                );
+              }
+              if (codes.includes("invalid-input-response")) {
+                errorDetails.push(
+                  "⚠️ El token de seguridad es inválido o expiró"
+                );
+              }
+              if (codes.includes("bad-request")) {
+                errorDetails.push(
+                  "⚠️ Solicitud inválida (dominio no autorizado?)"
+                );
+              }
+            }
+
+            errorDetails.push("Si el problema persiste, recarga la página.");
+            setFormErrors(errorDetails);
           } else {
             setFormErrors([errorMessage]);
           }
