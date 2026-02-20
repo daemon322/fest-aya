@@ -4,6 +4,7 @@
  */
 
 export default async function handler(req, res) {
+  const FORMSPREE_ID = import.meta.env.VITE_FORMSPREE_ID;
   // Solo aceptar POST
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Método no permitido" });
@@ -32,7 +33,7 @@ export default async function handler(req, res) {
     }
 
     // ID del formulario en Formspree
-    const FORMSPREE_ID = import.meta.env.VITE_FORMSPREE_ID;
+    
 
     // Preparar el cuerpo para Formspree (JSON)
     // Nota: Los archivos se validan en el cliente, aquí solo enviamos datos
