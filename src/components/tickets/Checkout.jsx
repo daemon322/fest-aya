@@ -160,7 +160,9 @@ const Checkout = ({ cart = [], onBack, onComplete }) => {
 
       if (!executeRecaptcha) {
         console.error("reCAPTCHA no está disponible");
-        setFormErrors(["Error de seguridad: reCAPTCHA no disponible. Recarga la página."]);
+        setFormErrors([
+          "Error de seguridad: reCAPTCHA no disponible. Recarga la página.",
+        ]);
         setIsSubmitting(false);
         return;
       }
@@ -179,7 +181,9 @@ const Checkout = ({ cart = [], onBack, onComplete }) => {
       }
 
       if (!recaptchaToken) {
-        setFormErrors(["Error: No se pudo generar el token de seguridad. Intenta de nuevo."]);
+        setFormErrors([
+          "Error: No se pudo generar el token de seguridad. Intenta de nuevo.",
+        ]);
         setIsSubmitting(false);
         setIsVerifyingCaptcha(false);
         return;
@@ -218,13 +222,15 @@ const Checkout = ({ cart = [], onBack, onComplete }) => {
         // Error en la respuesta
         try {
           const errorData = await response.json();
-          const errorMessage = errorData.message || "Error al procesar la reserva. Intenta de nuevo.";
+          const errorMessage =
+            errorData.message ||
+            "Error al procesar la reserva. Intenta de nuevo.";
 
           // Mensajes específicos para errores de captcha
           if (errorMessage.includes("reCAPTCHA")) {
             setFormErrors([
               "Verificación de seguridad fallida. Por favor, intenta de nuevo.",
-              "Si el problema persiste, recarga la página."
+              "Si el problema persiste, recarga la página.",
             ]);
           } else {
             setFormErrors([errorMessage]);

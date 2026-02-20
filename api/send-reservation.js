@@ -21,7 +21,9 @@ export default async function handler(req, res) {
   }
 
   if (req.method !== "POST") {
-    return res.status(405).json({ success: false, message: "Método no permitido" });
+    return res
+      .status(405)
+      .json({ success: false, message: "Método no permitido" });
   }
 
   // Rate limiting (in-memory). For production use Redis/Upstash, not in-memory.
@@ -29,7 +31,8 @@ export default async function handler(req, res) {
   const RATE_MAX = Number(process.env.RATE_LIMIT_MAX || 10);
 
   const ip =
-    (req.headers["x-forwarded-for"] && req.headers["x-forwarded-for"].split(",")[0].trim()) ||
+    (req.headers["x-forwarded-for"] &&
+      req.headers["x-forwarded-for"].split(",")[0].trim()) ||
     req.socket?.remoteAddress ||
     "unknown";
 
@@ -43,7 +46,12 @@ export default async function handler(req, res) {
   entry.count++;
   global.__rateMap.set(ip, entry);
   if (entry.count > RATE_MAX) {
-    return res.status(429).json({ success: false, message: "Demasiadas solicitudes, intenta más tarde." });
+    return res
+      .status(429)
+      .json({
+        success: false,
+        message: "Demasiadas solicitudes, intenta más tarde.",
+      });
   }
 
   try {
@@ -64,15 +72,31 @@ export default async function handler(req, res) {
       return res.status(400).json({ success: false, message: "Bad request." });
     }
 
-    const { name, email, cartDetails, timestamp, subject, voucherBase64, voucherFileName, recaptchaToken } = body;
+    const {
+      name,
+      email,
+      cartDetails,
+      timestamp,
+      subject,
+      voucherBase64,
+      voucherFileName,
+      recaptchaToken,
+    } = body;
 
     // Basic validation
     if (!name || !email) {
-      return res.status(400).json({ success: false, message: "Nombre y email requeridos." });
+      return res
+        .status(400)
+        .json({ success: false, message: "Nombre y email requeridos." });
     }
 
     if (!recaptchaToken || !process.env.RECAPTCHA_SECRET) {
-      return res.status(400).json({ success: false, message: "reCAPTCHA token faltante o no configurado." });
+      return res
+        .status(400)
+        .json({
+          success: false,
+          message: "reCAPTCHA token faltante o no configurado.",
+        });
     }
 
     // Verify reCAPTCHA with Google
@@ -81,15 +105,23 @@ export default async function handler(req, res) {
     params.append("response", recaptchaToken);
     // optional: params.append("remoteip", ip);
 
-    const verifyRes = await fetch("https://www.google.com/recaptcha/api/siteverify", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: params.toString(),
-    });
+    const verifyRes = await fetch(
+      "https://www.google.com/recaptcha/api/siteverify",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: params.toString(),
+      },
+    );
     const verifyJson = await verifyRes.json().catch(() => null);
     if (!verifyJson || !verifyJson.success) {
       console.error("reCAPTCHA verification failed:", verifyJson);
-      return res.status(400).json({ success: false, message: "reCAPTCHA inválido o expirado. Intenta de nuevo." });
+      return res
+        .status(400)
+        .json({
+          success: false,
+          message: "reCAPTCHA inválido o expirado. Intenta de nuevo.",
+        });
     }
 
     // Si usando reCAPTCHA v3, verificar score y comentar el resultado
@@ -97,9 +129,17 @@ export default async function handler(req, res) {
       console.log(`reCAPTCHA score: ${verifyJson.score} (umbral: 0.5)`);
       if (verifyJson.score < 0.5) {
         console.warn("reCAPTCHA score too low - likely bot activity");
-        return res.status(400).json({ success: false, message: "reCAPTCHA: puntuación baja (posible bot activation). Intenta de nuevo." });
+        return res
+          .status(400)
+          .json({
+            success: false,
+            message:
+              "reCAPTCHA: puntuación baja (posible bot activation). Intenta de nuevo.",
+          });
       } else {
-        console.log(`✅ reCAPTCHA verification passed with score: ${verifyJson.score}`);
+        console.log(
+          `✅ reCAPTCHA verification passed with score: ${verifyJson.score}`,
+        );
       }
     } else {
       console.log("✅ reCAPTCHA verification passed (v2)");
@@ -109,7 +149,12 @@ export default async function handler(req, res) {
     const FORMSPREE_ID = process.env.FORMSPREE_ID;
     const FORMSPREE_API_KEY = process.env.FORMSPREE_API_KEY || null;
     if (!FORMSPREE_ID) {
-      return res.status(500).json({ success: false, message: "Configuración del servidor incompleta (FORMSPREE_ID)." });
+      return res
+        .status(500)
+        .json({
+          success: false,
+          message: "Configuración del servidor incompleta (FORMSPREE_ID).",
+        });
     }
 
     // Build payload for Formspree
@@ -135,8 +180,12 @@ export default async function handler(req, res) {
     }
 
     // Send to Formspree
-    const headers = { "Content-Type": "application/json", Accept: "application/json" };
-    if (FORMSPREE_API_KEY) headers["Authorization"] = `Bearer ${FORMSPREE_API_KEY}`;
+    const headers = {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    };
+    if (FORMSPREE_API_KEY)
+      headers["Authorization"] = `Bearer ${FORMSPREE_API_KEY}`;
 
     const formspreeRes = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
       method: "POST",
@@ -146,7 +195,11 @@ export default async function handler(req, res) {
 
     const text = await formspreeRes.text();
     let json;
-    try { json = JSON.parse(text); } catch { json = null; }
+    try {
+      json = JSON.parse(text);
+    } catch {
+      json = null;
+    }
 
     if (!formspreeRes.ok) {
       console.error("Formspree error:", formspreeRes.status, text);
@@ -164,6 +217,8 @@ export default async function handler(req, res) {
     });
   } catch (err) {
     console.error("Error en send-reservation:", err);
-    return res.status(500).json({ success: false, message: "Error interno", error: String(err) });
+    return res
+      .status(500)
+      .json({ success: false, message: "Error interno", error: String(err) });
   }
 }

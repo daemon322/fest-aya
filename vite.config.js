@@ -102,8 +102,12 @@ const apiPlugin = {
                 }
 
                 // En desarrollo, simular validación de reCAPTCHA
-                console.log("🔐 Verificando token de reCAPTCHA en desarrollo...");
-                console.log(`   Token: ${data.recaptchaToken.substring(0, 20)}...`);
+                console.log(
+                  "🔐 Verificando token de reCAPTCHA en desarrollo...",
+                );
+                console.log(
+                  `   Token: ${data.recaptchaToken.substring(0, 20)}...`,
+                );
 
                 // Simular verificación exitosa (en producción se verifica con Google)
                 console.log("✅ Token de reCAPTCHA válido (desarrollo)");
