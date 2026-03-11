@@ -196,10 +196,8 @@ const TicketCard = ({
 
   return (
     <div
-      className={`relative flex flex-col h-full p-12 rounded-[3rem] hover:bg-[#00000093] transition-all duration-700 group overflow-hidden`}
+      className={`relative flex flex-col h-full p-12 rounded-[3rem] backdrop-blur-2xl bg-black/80 transition-all duration-700 group overflow-hidden`}
     >
-      {/* Resplandor de fondo interactivo (CSS sutil) */}
-      <div className="absolute -top-24 -right-24 w-48 h-48 bg-amber-500/5 blur-[80px] group-hover:bg-amber-500/10 transition-all duration-700 rounded-full" />
 
       {isPopular && (
         <div className="absolute top-5 right-10 flex items-center gap-2 px-3 py-1 rounded-full border border-amber-500/30 bg-amber-500/5">
@@ -253,7 +251,7 @@ const TicketCard = ({
           </div>
         </div>
 
-        <ul className="space-y-6 mb-14 flex-grow">
+        <ul className="mb-14 grid grid-cols-2 gap-6">
           {features.map((feature, idx) => (
             <li
               key={idx}
@@ -266,7 +264,7 @@ const TicketCard = ({
                   strokeWidth: 1.5,
                 })}
               </div>
-              <span className="text-[10px] text-white/70 font-light tracking-[0.2em] uppercase group-hover:text-white/90 transition-colors duration-500">
+              <span className="text-[10px] text-white/90 font-light tracking-[0.2em] uppercase group-hover:text-white/90 transition-colors duration-500">
                 {feature.text}
               </span>
             </li>
@@ -320,55 +318,35 @@ const App = () => {
   const [showCheckout, setShowCheckout] = useState(false);
 
   const phases = [
-    { id: 0, label: "Early Access", status: "Preventa 01", date: "Limited" },
-    {
-      id: 1,
-      label: "Main Selection",
-      status: "Preventa 02",
-      date: "Available",
-    },
-    { id: 2, label: "Last Call", status: "Regular", date: "Door" },
+    { id: 0, label: "Acceso anticipado", status: "Preventa", date: "Limitado" },
+    { id: 1, label: "Ese mismo día", status: "Regular", date: "Door" },
   ];
 
   const ticketData = [
     {
-      id: "box-leyenda",
-      title: "Box Leyenda",
-      subtitle: "Premium Experience",
-      prices: [550.0, 750.0, 950.0],
-      availability: 2,
-      maxAvailability: 10,
-      isPopular: true,
-      features: [
-        { icon: <Crown />, text: "Lounge Privado" },
-        { icon: <Wine />, text: "Barra Libre Premium" },
-        { icon: <Users />, text: "10 Invitados" },
-        { icon: <MapPin />, text: "Vista Frontal" },
-      ],
-    },
-    {
-      id: "zona-flow",
-      title: "Zona Flow",
-      subtitle: "Dynamic Access",
-      prices: [120.0, 180.0, 250.0],
-      availability: 68,
+      id: "zona-vip",
+      title: "Zona Vip",
+      subtitle: "Acceso dinámico",
+      prices: [35.0, 45.0],
+      availability: 150,
       maxAvailability: 150,
       features: [
-        { icon: <Star />, text: "Acceso Fast Pass" },
-        { icon: <Flame />, text: "Zona de Baile" },
-        { icon: <Clock />, text: "Open Bar 2h" },
+        { icon: <Star />, text: "Pase rápido de acceso" },
+        { icon: <Flame />, text: "Zona baja con buena vista" },
+        { icon: <Crown />, text: "Comida y bebida + silla" },
+        { icon: <ShieldCheck />, text: "Seguridad dedicada" },
       ],
     },
     {
       id: "general-latido",
-      title: "G. Latido",
-      subtitle: "Essential Rhythm",
-      prices: [60.0, 90.0, 120.0],
-      availability: 210,
+      title: "General",
+      subtitle: "Acceso regular",
+      prices: [20.0, 30.0],
+      availability: 500,
       maxAvailability: 500,
       features: [
-        { icon: <Music />, text: "High Fidelity" },
-        { icon: <Mic2 />, text: "Pista Central" },
+        { icon: <Music />, text: "Pase regular" },
+        { icon: <Mic2 />, text: "Gradas Norte y Occidente" },
       ],
     },
   ];
@@ -470,7 +448,7 @@ const App = () => {
             </div>
 
             {/* Grid de Entradas con espaciado amplio */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 px-5">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-10 px-5">
               {ticketData.map((ticket) => (
                 <TicketCard
                   key={ticket.id}

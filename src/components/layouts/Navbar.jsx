@@ -20,8 +20,6 @@ const GalaNavbar = () => {
 
   const navLinks = [
     { name: "Entradas",    href: "/tickets" },
-    { name: "Experiencia", href: "/"        },
-    { name: "Sedes",       href: "#"        },
     { name: "About",       href: "/about"   },
   ];
 
@@ -130,14 +128,11 @@ const GalaNavbar = () => {
         initial="closed"
         animate={isOpen ? "opened" : "closed"}
         variants={circleVariants}
-        className={`fixed inset-0 z-[1250] bg-[#0a0a0a] flex flex-col items-center justify-center lg:hidden ${
+        className={`fixed inset-0 z-[100] bg-[#0a0a0a] flex flex-col items-center justify-center lg:hidden ${
           isOpen ? "pointer-events-auto" : "pointer-events-none"
         }`}
         aria-hidden={!isOpen}
       >
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10 pointer-events-none" />
-        <div className="absolute inset-0 bg-gradient-to-tr from-black via-transparent to-amber-500/10 pointer-events-none" />
-
         <nav
           className="flex flex-col items-center gap-12 w-full z-10 px-8 text-center"
           aria-label="Menú mobile"
@@ -175,10 +170,6 @@ const GalaNavbar = () => {
             Acreditación VIP
           </motion.a>
         </nav>
-
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.03] pointer-events-none select-none">
-          <Crown size={400} strokeWidth={0.5} />
-        </div>
       </motion.div>
     </>
   );

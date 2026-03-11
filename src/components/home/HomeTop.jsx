@@ -16,16 +16,16 @@ import ceciliat from "../../assets/ceciliat1.webp";
 import angelal from "../../assets/angelal1.webp";
 const slides = [
   {
-    title: "INCA VOLLEY",
+    title: "Volley Men",
     opponent: "ANDES",
-    date: "15 MAR 2026",
-    location: "ESTADIO NACIONAL · LIMA",
+    date: "28 y 29 MAR 2026",
+    location: "LOSA DEPORTIVA DE CAPILLAPATA · AYACUCHO",
     description:
       "El poder ancestral de los Andes se encuentra con la electricidad de la costa en un duelo histórico por la supremacía.",
     colors: ["#a855f7", "#ec4899"],
     tag: "SEMIFINAL · VÓLEY MASCULINO",
     teamA: {
-      name: "Inca Volley",
+      name: "AVC",
       image: neo1,
       wins: 18,
       losses: 6,
@@ -33,7 +33,7 @@ const slides = [
       role: "Atacante Principal",
     },
     teamB: {
-      name: "Andes Club",
+      name: "Quiroz",
       image: ceciliat,
       wins: 15,
       losses: 9,
@@ -42,16 +42,16 @@ const slides = [
     },
   },
   {
-    title: "NUEVA ERA",
+    title: "Volley Women",
     opponent: "REMATADORES",
-    date: "22 MAR 2026",
-    location: "COLISEO CERRADO · AYACUCHO",
+    date: "28 y 29 MAR 2026",
+    location: "LOSA DEPORTIVA DE CAPILLAPATA · AYACUCHO",
     description:
       "La juventud y la experiencia se fusionan para dar paso a una nueva dinastía en el voley peruano.",
     colors: ["#06b6d4", "#f43f5e"],
     tag: "CUARTOS · VÓLEY FEMENINO",
     teamA: {
-      name: "Nueva Era",
+      name: "FENIX",
       image: angelal,
       wins: 22,
       losses: 2,
@@ -59,7 +59,7 @@ const slides = [
       role: "Capitana",
     },
     teamB: {
-      name: "Rematadores",
+      name: "HUANCAYO",
       image: ceciliat,
       wins: 14,
       losses: 10,
@@ -68,16 +68,16 @@ const slides = [
     },
   },
   {
-    title: "LIMA PRIDE",
+    title: "SHOW DE TRANS",
     opponent: "UNIVERSITARIO",
-    date: "05 ABR 2026",
-    location: "VILLA DEPORTIVA · LIMA",
+    date: "28 y 29 MAR 2026",
+    location: "LOSA DEPORTIVA DE CAPILLAPATA · AYACUCHO",
     description:
       "El clásico de la ciudad. Pasión, garra y tradición en un solo lugar. ¿Quién dominará la red?",
     colors: ["#fbbf24", "#f97316"],
-    tag: "CLÁSICO · VÓLEY MASCULINO",
+    tag: "CLÁSICO · VÓLEY TRANS",
     teamA: {
-      name: "Lima Pride",
+      name: "Las Perris",
       image: angelal,
       wins: 20,
       losses: 12,
@@ -85,12 +85,38 @@ const slides = [
       role: "Armador",
     },
     teamB: {
-      name: "Universitario",
+      name: "Las Diosas Del Amazonas",
       image: mariela1,
       wins: 25,
       losses: 7,
       bestPlayer: "Renato 'Garra' Torres",
       role: "Opuesto",
+    },
+  },
+  {
+    title: "SHOW DE TRANS",
+    opponent: "UNIVERSITARIO",
+    date: "28 y 29 MAR 2026",
+    location: "LOSA DEPORTIVA DE CAPILLAPATA · AYACUCHO",
+    description:
+      "El clásico de la ciudad. Pasión, garra y tradición en un solo lugar. ¿Quién dominará la red?",
+    colors: ["#fbbf24", "#f97316"],
+    tag: "CLÁSICO · VÓLEY TRANS",
+    teamA: {
+      name: "Arequipa",
+      image: angelal,
+      wins: 25,
+      losses: 7,
+      bestPlayer: "Renato 'Garra' Torres",
+      role: "Central",
+    },
+    teamB: {
+      name: "Ayacucho",
+      image: ceciliat,
+      wins: 25,
+      losses: 7,
+      bestPlayer: "Renato 'Garra' Torres",
+      role: "Líbero",
     },
   },
 ];
@@ -223,7 +249,7 @@ const App = () => {
                       {slides[current].title}
                     </span>
                   </h1>
-                  <p className="text-zinc-500 text-xs xl:text-sm leading-relaxed max-w-xs">
+                  <p className="text-white text-xs xl:text-sm leading-relaxed max-w-xs">
                     {slides[current].description}
                   </p>
                 </motion.div>
@@ -348,7 +374,10 @@ const App = () => {
                 </motion.div>
 
                 <div className="w-full max-w-[200px] pt-4 space-y-4">
-                  <a href="/tickets" className="w-full px-6 py-4 bg-white text-black font-black text-[10px] tracking-[0.2em] hover:bg-zinc-200 transition-all rounded-full flex items-center justify-center gap-2 group shadow-xl">
+                  <a
+                    href="/tickets"
+                    className="w-full px-6 py-4 bg-white text-black font-black text-[10px] tracking-[0.2em] hover:bg-zinc-200 transition-all rounded-full flex items-center justify-center gap-2 group shadow-xl"
+                  >
                     COMPRAR{" "}
                     <ChevronRight
                       size={14}

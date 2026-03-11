@@ -261,7 +261,7 @@ const App = () => {
                </div>
 
                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="bg-white/5 border border-white/5 p-8 rounded-[2.5rem] hover:bg-white/10 transition-all duration-300 group cursor-default">
+                  <div className="bg-black/5 backdrop-blur-2xl p-8 rounded-[2.5rem] hover:bg-black/10 transition-all duration-300 group cursor-default">
                     <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center mb-6 shadow-xl">
                       <QrCode className="text-purple-600" />
                     </div>
@@ -269,7 +269,7 @@ const App = () => {
                     <p className="text-3xl font-black text-white italic tracking-tighter mb-4 uppercase">Yape / Plin</p>
                   </div>
 
-                  <div className="bg-white/5 border border-white/5 p-8 rounded-[2.5rem] hover:bg-white/10 transition-all duration-300 group cursor-default">
+                  <div className="bg-black/5 backdrop-blur-2xl p-8 rounded-[2.5rem] hover:bg-black/10 transition-all duration-300 group cursor-default">
                     <div className="w-12 h-12 bg-[#ff6b00] rounded-2xl flex items-center justify-center mb-6 shadow-xl text-white">
                       <CreditCard />
                     </div>

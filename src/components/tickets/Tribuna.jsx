@@ -46,7 +46,7 @@ const Tribuna = () => {
 
       // Escena
       const scene = new THREE.Scene();
-      scene.background = new THREE.Color(0x63045f);
+      scene.background = new THREE.Color(0x0a0a0a);
       scene.fog        = new THREE.Fog(0x020202, 30, 80);
       sceneRef.current = scene;
 
@@ -249,7 +249,7 @@ const Tribuna = () => {
 
       <div className="relative z-10 h-full flex flex-col justify-between pointer-events-none pt-10 px-10">
         <div className="flex flex-col lg:flex-row justify-between items-start gap-4 pt-10 h-full">
-          <div className="pointer-events-auto bg-black/10 backdrop-blur-2xl border border-white/10 p-5 lg:p-7 rounded-[2.5rem] max-w-sm w-full shadow-2xl select-none">
+          <div className="pointer-events-auto p-5 lg:p-7 max-w-sm w-full select-none">
             <div className="flex items-center gap-2 mb-3">
               <div className="bg-blue-500/20 p-2 rounded-xl text-blue-400"><MapPin size={16} /></div>
               <span className="text-[9px] font-black tracking-[0.2em] uppercase text-gray-200">Sede Central · Mercedes</span>
@@ -258,19 +258,19 @@ const Tribuna = () => {
               Plano de <span className="text-red-500 italic">Asientos</span>
             </h1>
             <div className="grid grid-cols-2 gap-3">
-              <div className="bg-white/5 rounded-2xl p-3 border border-white/5">
+              <div className="bg-white/5 backdrop-blur-2xl rounded-2xl p-3 border border-white/5">
                 <div className="flex items-center gap-2 mb-1">
                   <div className="w-2 h-2 rounded-full bg-purple-500" />
                   <span className="text-[12px] font-bold text-gray-100 uppercase">VIP</span>
                 </div>
                 <p className="text-xs font-bold text-gray-300">Butaca Campo</p>
               </div>
-              <div className="bg-white/5 rounded-2xl p-3 border border-white/5">
+              <div className="bg-white/5 backdrop-blur-2xl rounded-2xl p-3 border border-white/5">
                 <div className="flex items-center gap-2 mb-1">
                   <div className="w-2 h-2 rounded-full bg-blue-500" />
                   <span className="text-[12px] font-bold text-gray-100 uppercase">General</span>
                 </div>
-                <p className="text-xs font-bold text-gray-300">Gradas Norte/Sur</p>
+                <p className="text-xs font-bold text-gray-300">Gradas Norte/Occidente</p>
               </div>
             </div>
           </div>
