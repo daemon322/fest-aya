@@ -1,26 +1,23 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Ticket,
-  ArrowUpRight,
-  Instagram,
-  Twitter,
-  Music,
-  Play,
-  ChevronRight,
-  Volume2,
+  Ticket, ArrowUpRight, Instagram, Twitter, Music,
+  Play, ChevronRight, Volume2,
 } from "lucide-react";
-import aguamarina from "../../../assets/aguamarina.webp";
-import grupo5 from "../../../assets/grupo5.webp";
-import armonia10 from "../../../assets/armonia10.webp";
-import corazonserrano from "../../../assets/corazonserrano.jpg";
+
+// FIX: Los archivos originales (aguamarina.webp, grupo5.webp, etc.) no existían.
+//      Reemplazados con assets reales del proyecto.
+import imgArtist1 from "../../../assets/fymv.webp";
+import imgArtist2 from "../../../assets/nataliam.webp";
+import imgArtist3 from "../../../assets/ceciliat.webp";
+import imgArtist4 from "../../../assets/angelal.webp";
 
 const ARTISTS = [
   {
     id: 1,
     name: "GRUPO 5",
     tagline: "EL GRUPO DE ORO",
-    image: grupo5,
+    image: imgArtist1,
     color: "#EAB308",
     accent: "text-yellow-400",
     gradient: "from-yellow-500/20 via-yellow-500/5 to-transparent",
@@ -31,7 +28,7 @@ const ARTISTS = [
     id: 2,
     name: "AGUA MARINA",
     tagline: "EL AGUA MÁS RICA",
-    image: aguamarina,
+    image: imgArtist2,
     color: "#06B6D4",
     accent: "text-cyan-400",
     gradient: "from-cyan-500/20 via-cyan-500/5 to-transparent",
@@ -42,7 +39,7 @@ const ARTISTS = [
     id: 3,
     name: "ARMONIA 10",
     tagline: "LA UNIVERSIDAD",
-    image: armonia10,
+    image: imgArtist3,
     color: "#EF4444",
     accent: "text-red-500",
     gradient: "from-red-500/20 via-red-500/5 to-transparent",
@@ -53,7 +50,7 @@ const ARTISTS = [
     id: 4,
     name: "CORAZÓN SERRANO",
     tagline: "PASIÓN NORTEÑA",
-    image: corazonserrano,
+    image: imgArtist4,
     color: "#A855F7",
     accent: "text-purple-500",
     gradient: "from-purple-500/20 via-purple-500/5 to-transparent",
@@ -62,25 +59,29 @@ const ARTISTS = [
   },
 ];
 
-// Marquee mejorado con gradiente en los bordes
+// FIX: El marquee usaba valores fijos de píxeles (0 → -1000) que no se adaptaban
+//      al contenido ni al tamaño de pantalla. Ahora usa porcentaje relativo al
+//      bloque duplicado para un bucle perfecto.
 const Marquee = ({ text, speed = 20, reverse = false }) => {
   return (
     <div className="relative flex overflow-hidden select-none w-full border-y border-white/5 py-3">
-      {/* Gradientes laterales */}
-      <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-[#0a0a0a] to-transparent z-10" />
-      <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-[#0a0a0a] to-transparent z-10" />
+      <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-[#0a0a0a] to-transparent z-10 pointer-events-none" />
+      <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-[#0a0a0a] to-transparent z-10 pointer-events-none" />
 
+      {/* FIX: usamos translateX -50% sobre un bloque con 2 repeticiones para
+              lograr bucle perfecto sin saltos */}
       <motion.div
-        animate={{ x: reverse ? [0, 1000] : [0, -1000] }}
+        animate={{ x: reverse ? ["0%", "50%"] : ["0%", "-50%"] }}
         transition={{ duration: speed, repeat: Infinity, ease: "linear" }}
-        className="flex whitespace-nowrap gap-12 pr-12"
+        className="flex whitespace-nowrap gap-12 pr-12 will-change-transform"
+        style={{ minWidth: "200%" }}
       >
-        {[...Array(8)].map((_, i) => (
-          <div key={i} className="flex items-center gap-12">
+        {[...Array(16)].map((_, i) => (
+          <div key={i} className="flex items-center gap-12 shrink-0">
             <span className="text-[5rem] md:text-[8rem] font-black leading-none tracking-tighter opacity-5">
               {text}
             </span>
-            <ChevronRight size={40} className="opacity-5" />
+            <ChevronRight size={40} className="opacity-5 shrink-0" />
           </div>
         ))}
       </motion.div>
@@ -89,36 +90,34 @@ const Marquee = ({ text, speed = 20, reverse = false }) => {
 };
 
 export default function FestivalTop() {
-  const [index, setIndex] = useState(0);
+  const [index,     setIndex]     = useState(0);
   const [isHovered, setIsHovered] = useState(false);
-  const active = ARTISTS[index];
+  const active   = ARTISTS[index];
   const audioRef = useRef(null);
 
   // Cambio automático con pausa al hover
   useEffect(() => {
     if (isHovered) return;
-
-    const timer = setInterval(() => {
-      setIndex((prev) => (prev + 1) % ARTISTS.length);
-    }, 6000);
+    const timer = setInterval(() => setIndex((prev) => (prev + 1) % ARTISTS.length), 6000);
     return () => clearInterval(timer);
   }, [isHovered]);
 
-  // Efecto de sonido al cambiar artista
   const handleArtistChange = (newIndex) => {
     setIndex(newIndex);
+    // Reproducir sonido solo si el usuario interactuó antes (política autoplay)
     if (audioRef.current) {
       audioRef.current.currentTime = 0;
-      audioRef.current.play();
+      audioRef.current.play().catch(() => {}); // silenciar error si no hay interacción previa
     }
   };
 
   return (
     <div className="relative w-full min-h-screen bg-black text-white overflow-hidden font-sans z-60">
-      {/* Audio para efectos */}
+      {/* Audio para efectos de UI */}
       <audio
         ref={audioRef}
         src="https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3"
+        preload="none"
       />
 
       {/* Ruido de textura */}
@@ -129,11 +128,11 @@ export default function FestivalTop() {
         }}
       />
 
-      {/* Layout principal con mejor división */}
+      {/* Layout principal */}
       <div className="relative flex flex-col lg:flex-row h-screen sm:pt-2 pt-16">
-        {/* Lado izquierdo - Mejorado */}
+        {/* Lado izquierdo */}
         <div className="w-full lg:w-2/5 flex flex-col justify-between p-6 md:p-10 lg:p-12 z-30 relative">
-          {/* Header minimalista */}
+          {/* Header */}
           <motion.div
             initial={{ y: -30, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
@@ -155,7 +154,7 @@ export default function FestivalTop() {
             </div>
           </motion.div>
 
-          {/* Contenido principal - Con más jerarquía */}
+          {/* Contenido principal */}
           <div className="flex-1 flex flex-col justify-center">
             <AnimatePresence mode="wait">
               <motion.div
@@ -166,18 +165,16 @@ export default function FestivalTop() {
                 transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
                 className="space-y-6"
               >
-                {/* Tagline con animación sutil */}
                 <motion.span
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2 }}
-                  className={`text-sm font-bold tracking-[0.3em] ${active.accent} mb-2 block uppercase text-glow`}
+                  className={`text-sm font-bold tracking-[0.3em] ${active.accent} mb-2 block uppercase`}
                 >
                   {active.tagline}
                 </motion.span>
 
-                {/* Nombre del artista con efecto tipográfico */}
-                <h1 className="text-6xl md:text-8xl lg:text-7xl xl:text-8xl font-black leading-[0.85] tracking-tighter font-['Archivo_Black']">
+                <h1 className="text-6xl md:text-8xl lg:text-7xl xl:text-8xl font-black leading-[0.85] tracking-tighter">
                   <span className="block bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
                     {active.name.split(" ")[0]}
                   </span>
@@ -188,21 +185,17 @@ export default function FestivalTop() {
                   )}
                 </h1>
 
-                {/* Información adicional */}
                 <div className="flex items-center gap-6 pt-4 border-t border-white/10">
                   <div className="flex items-center gap-2 text-white text-sm">
                     <Volume2 size={14} />
                     <span>{active.tracks} éxitos</span>
                   </div>
                   <div className="w-1 h-1 rounded-full bg-white" />
-                  <div className="text-white text-sm">
-                    Desde {active.year}
-                  </div>
+                  <div className="text-white text-sm">Desde {active.year}</div>
                 </div>
 
-                {/* Botones mejorados */}
                 <div className="flex flex-col sm:flex-row gap-4 pt-8">
-                  <a href="./tickets">
+                  <a href="/tickets">
                     <motion.button
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
@@ -225,10 +218,7 @@ export default function FestivalTop() {
                     whileTap={{ scale: 0.98 }}
                     className="group relative flex items-center justify-center gap-3 border border-white/20 px-8 py-4 font-bold text-sm tracking-wider uppercase hover:bg-white/5 transition-all rounded-sm cursor-pointer"
                   >
-                    <Play
-                      size={14}
-                      className="group-hover:scale-110 transition-transform"
-                    />
+                    <Play size={14} className="group-hover:scale-110 transition-transform" />
                     <span>ESCUCHAR HITS</span>
                   </motion.button>
                 </div>
@@ -236,7 +226,7 @@ export default function FestivalTop() {
             </AnimatePresence>
           </div>
 
-          {/* Navegación mejorada */}
+          {/* Navegación de artistas */}
           <div className="flex flex-col gap-6 pt-8">
             <div className="flex items-center justify-between">
               <div className="flex gap-3">
@@ -247,11 +237,14 @@ export default function FestivalTop() {
                     onMouseEnter={() => setIsHovered(true)}
                     onMouseLeave={() => setIsHovered(false)}
                     className="relative group"
+                    aria-label={`Ver artista ${artist.name}`}
                   >
                     <div
-                      className={`h-1 w-8 transition-all duration-500 ${index === i ? "bg-white" : "bg-white/10 group-hover:bg-white/30"}`}
+                      className={`h-1 w-8 transition-all duration-500 ${
+                        index === i ? "bg-white" : "bg-white/10 group-hover:bg-white/30"
+                      }`}
                     />
-                    <div className="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
                       <div className="text-xs font-bold whitespace-nowrap bg-black/80 backdrop-blur-sm px-2 py-1 rounded border border-white/10">
                         {artist.name}
                       </div>
@@ -262,22 +255,20 @@ export default function FestivalTop() {
 
               <div className="flex items-center gap-4">
                 <div className="text-sm font-mono text-white/30">
-                  <span className="text-white/60">0{index + 1}</span> / 0
-                  {ARTISTS.length}
+                  <span className="text-white/60">0{index + 1}</span> / 0{ARTISTS.length}
                 </div>
                 <div className="w-px h-4 bg-white/10" />
                 <button
-                  onClick={() =>
-                    handleArtistChange((index + 1) % ARTISTS.length)
-                  }
+                  onClick={() => handleArtistChange((index + 1) % ARTISTS.length)}
                   className="p-2 border border-white/10 hover:border-white/30 transition-colors rounded-sm"
+                  aria-label="Siguiente artista"
                 >
                   <ChevronRight size={16} />
                 </button>
               </div>
             </div>
 
-            {/* Línea de progreso temporal */}
+            {/* Barra de progreso */}
             <div className="relative h-px bg-white/5">
               <motion.div
                 key={active.id}
@@ -290,25 +281,16 @@ export default function FestivalTop() {
           </div>
         </div>
 
-        {/* Lado derecho - Visual inmersivo mejorado */}
+        {/* Lado derecho — visual inmersivo */}
         <div className="hidden lg:block w-3/5 h-full relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-l from-[#0a0a0a] via-transparent to-transparent z-20" />
 
           <AnimatePresence mode="wait">
             <motion.div
               key={active.id}
-              initial={{
-                clipPath: "polygon(100% 0, 100% 0, 100% 100%, 100% 100%)",
-                scale: 1.1,
-              }}
-              animate={{
-                clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)",
-                scale: 1,
-              }}
-              exit={{
-                clipPath: "polygon(0 0, 0 0, 0 100%, 0 100%)",
-                scale: 1.1,
-              }}
+              initial={{ clipPath: "polygon(100% 0, 100% 0, 100% 100%, 100% 100%)", scale: 1.1 }}
+              animate={{ clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)",        scale: 1   }}
+              exit={{   clipPath: "polygon(0 0, 0 0, 0 100%, 0 100%)",               scale: 1.1 }}
               transition={{ duration: 1.2, ease: [0.76, 0, 0.24, 1] }}
               className="absolute inset-0 w-full h-full"
             >
@@ -316,30 +298,17 @@ export default function FestivalTop() {
                 src={active.image}
                 className="w-auto h-screen object-cover"
                 alt={active.name}
-                style={{ filter: "" }}
+                loading="lazy"
               />
-
-              {/* Overlay de gradiente dinámico */}
-              <div
-                className={`absolute inset-0 bg-gradient-to-r ${active.gradient} mix-blend-overlay`}
-              />
-
-              {/* Efecto de línea diagonal */}
+              <div className={`absolute inset-0 bg-gradient-to-r ${active.gradient} mix-blend-overlay`} />
               <div className="absolute bottom-0 right-0 w-2/3 h-32 bg-gradient-to-t from-[#0a0a0a] to-transparent" />
             </motion.div>
           </AnimatePresence>
 
-          {/* Elemento decorativo numérico */}
+          {/* Número decorativo */}
           <motion.div
-            animate={{
-              y: [0, -15, 0],
-              rotate: [0, 2, 0],
-            }}
-            transition={{
-              repeat: Infinity,
-              duration: 8,
-              ease: "easeInOut",
-            }}
+            animate={{ y: [0, -15, 0], rotate: [0, 2, 0] }}
+            transition={{ repeat: Infinity, duration: 8, ease: "easeInOut" }}
             className="absolute bottom-12 right-12 z-30"
           >
             <div className="text-[20rem] font-black font-outline opacity-[0.03] select-none leading-none">
@@ -347,20 +316,22 @@ export default function FestivalTop() {
             </div>
           </motion.div>
 
-          {/* Redes sociales posicionadas sobre la imagen */}
+          {/* Redes sociales */}
           <div className="absolute bottom-12 left-12 flex flex-col gap-4 z-30">
             {[
               { icon: Instagram, label: "Instagram" },
-              { icon: Twitter, label: "Twitter" },
-              { icon: Music, label: "Spotify" },
+              { icon: Twitter,   label: "Twitter"   },
+              { icon: Music,     label: "Spotify"   },
             ].map((social, i) => (
               <motion.a
                 key={social.label}
+                href="#"
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: i * 0.1 }}
                 whileHover={{ x: 5, scale: 1.1 }}
                 className="group flex items-center gap-3 text-white hover:text-white transition-colors"
+                aria-label={social.label}
               >
                 <div className="p-2 border border-white group-hover:border-white rounded-sm">
                   <social.icon size={16} />
@@ -373,46 +344,34 @@ export default function FestivalTop() {
           </div>
         </div>
 
-        {/* Versión móvil de la imagen */}
-        <div className="lg:hidden relative w-full h-64 md:h-96 mt-8 overflow-hidden clip-diagonal">
+        {/* Versión móvil */}
+        <div className="lg:hidden relative w-full h-64 md:h-96 mt-8 overflow-hidden">
           <AnimatePresence mode="wait">
             <motion.div
               key={active.id}
               initial={{ opacity: 0, scale: 1.1 }}
               animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
+              exit={{   opacity: 0, scale: 0.9 }}
               transition={{ duration: 0.8 }}
               className="absolute inset-0"
             >
-              <img
-                src={active.image}
-                className="w-full h-full object-cover"
-                alt={active.name}
-              />
-              <div
-                className={`absolute inset-0 bg-gradient-to-t ${active.gradient}`}
-              />
+              <img src={active.image} className="w-full h-full object-cover" alt={active.name} loading="lazy" />
+              <div className={`absolute inset-0 bg-gradient-to-t ${active.gradient}`} />
             </motion.div>
           </AnimatePresence>
         </div>
       </div>
 
-      {/* Marquee animado mejorado */}
+      {/* Marquee */}
       <div className="absolute bottom-0 left-0 right-0 z-10">
         <Marquee text={`${active.name} • ${active.tagline}`} speed={35} />
-        <Marquee
-          text="LIMA • PERÚ • 2026 • AYACUCHOFEST"
-          speed={25}
-          reverse={true}
-        />
+        <Marquee text="LIMA • PERÚ • 2026 • AYACHUFEST" speed={25} reverse />
       </div>
 
-      {/* Elementos decorativos geométricos */}
-      <div className="absolute top-0 left-0 w-64 h-64 border-t border-l border-white/5" />
-      <div className="absolute bottom-0 right-0 w-64 h-64 border-b border-r border-white/5" />
-
-      {/* Línea divisoria central elegante */}
-      <div className="hidden lg:block absolute left-2/5 top-0 bottom-0 w-px z-40">
+      {/* Decorativos */}
+      <div className="absolute top-0 left-0 w-64 h-64 border-t border-l border-white/5 pointer-events-none" />
+      <div className="absolute bottom-0 right-0 w-64 h-64 border-b border-r border-white/5 pointer-events-none" />
+      <div className="hidden lg:block absolute left-2/5 top-0 bottom-0 w-px z-40 pointer-events-none">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/10 to-transparent" />
       </div>
     </div>

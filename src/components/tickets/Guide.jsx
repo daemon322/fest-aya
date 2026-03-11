@@ -122,9 +122,9 @@ const App = () => {
           </div>
           <h1 className="text-5xl md:text-8xl font-black italic uppercase tracking-tighter leading-[0.85] mb-6 animate-in fade-in slide-in-from-bottom duration-1000 w-full">
             Consigue tu <br />
-            <span className="text-white">Entrada VIP</span>
+            <span className="text-red-600 ">Entrada VIP</span>
           </h1>
-          <p className="max-w-xl text-gray-300 text-sm md:text-base font-medium leading-relaxed border-l border-zinc-800 pl-6">
+          <p className="max-w-xl text-gray-100 text-sm md:text-base font-medium leading-relaxed border-l border-red-600 pl-6">
             Guía optimizada para hinchas y espectadores. Sigue los parámetros para asegurar tu lugar en la gran final nacional.
           </p>
         </header>
@@ -137,9 +137,9 @@ const App = () => {
               <button
                 key={index}
                 onClick={() => handleTabClick(index)}
-                className={`group relative overflow-hidden p-5 rounded-2xl border transition-all duration-500 text-left cursor-pointer ${
+                className={`group relative overflow-hidden p-5 rounded-2xl border transition-all duration-500 text-left cursor-pointer backdrop-blur-2xl ${
                   activeTab === index 
-                  ? 'bg-red-600/10 border-red-600/50 shadow-[0_20px_40px_rgba(220,38,38,0.1)]' 
+                  ? 'bg-amber-300 border-red-600/50 shadow-[0_20px_40px_rgba(220,38,38,0.1)]' 
                   : 'bg-zinc-900/20 border-white/5 hover:border-white/10 opacity-70 hover:opacity-100'
                 }`}
               >
@@ -147,7 +147,7 @@ const App = () => {
                 <div className={`absolute left-0 top-0 bottom-0 w-1 bg-red-600 transition-transform duration-500 ${activeTab === index ? 'scale-y-100' : 'scale-y-0'}`} />
                 
                 <div className="flex justify-between items-center mb-1">
-                  <span className={`text-[9px] font-black uppercase tracking-widest ${activeTab === index ? 'text-gray-200' : 'text-gray-50'}`}>
+                  <span className={`text-[9px] font-black uppercase tracking-widest ${activeTab === index ? 'text-red-500' : 'text-gray-50'}`}>
                     {step.id}
                   </span>
                   <ChevronRight size={14} className={`transition-all duration-300 ${activeTab === index ? 'translate-x-0 opacity-100 text-red-600' : '-translate-x-4 opacity-0'}`} />
@@ -159,7 +159,7 @@ const App = () => {
             ))}
 
             {/* Banner Ayuda */}
-            <div className="mt-6 p-6 hidden lg:block select-none">
+            <div className="mt-6 p-6 hidden lg:block select-none backdrop-blur-lg">
               <div className="flex items-center gap-3 mb-4 text-amber-500">
                 <AlertTriangle size={18} />
                 <span className="text-[10px] font-black uppercase tracking-widest">Atención al Cliente</span>
@@ -178,7 +178,7 @@ const App = () => {
             ref={contentRef}
             className="lg:col-span-8 scroll-mt-6 select-none"
           >
-            <div className={`min-h-[500px] p-8 md:p-14  transition-all duration-700 ${isAnimate ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            <div className={`min-h-[500px] p-8 md:p-14 backdrop-blur-3xl rounded-2xl transition-all duration-700 ${isAnimate ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
               
               {/* Cabecera del Contenido */}
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 mb-12">

@@ -1,4 +1,3 @@
-import Boyde from "../../components/body/Boyde";
 import CompraEntrada from "../../components/tickets/CompraEntrada";
 import "../../styles/tickets/TicketStyle.css";
 const TicketPage = () => {
@@ -6,7 +5,6 @@ const TicketPage = () => {
   return (
     <>
       <div className="">
-        <Boyde/>
         <CompraEntrada eventoId={eventoId} />
       </div>
     </>

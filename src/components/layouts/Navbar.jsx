@@ -3,51 +3,36 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Crown, Menu, X } from "lucide-react";
 
 const GalaNavbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen,     setIsOpen]     = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
-  // Control del scroll para cambiar la apariencia del header
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener("scroll", handleScroll);
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Bloquear el scroll del cuerpo cuando el menú está abierto
+  // Bloquear scroll cuando el menú está abierto
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
+    document.body.style.overflow = isOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
   }, [isOpen]);
 
   const navLinks = [
-    { name: "Entradas", href: "/tickets" },
-    { name: "Experiencia", href: "/" },
-    { name: "Sedes", href: "#" },
-    { name: "About", href: "/about" },
+    { name: "Entradas",    href: "/tickets" },
+    { name: "Experiencia", href: "/"        },
+    { name: "Sedes",       href: "#"        },
+    { name: "About",       href: "/about"   },
   ];
 
-  // Variantes para la animación de revelación circular
   const circleVariants = {
     closed: {
       clipPath: "circle(0% at calc(100% - 40px) 40px)",
-      transition: {
-        type: "spring",
-        stiffness: 400,
-        damping: 40,
-      },
+      transition: { type: "spring", stiffness: 400, damping: 40 },
     },
     opened: {
       clipPath: "circle(150% at calc(100% - 40px) 40px)",
-      transition: {
-        type: "spring",
-        stiffness: 20,
-        restDelta: 2,
-      },
+      transition: { type: "spring", stiffness: 20, restDelta: 2 },
     },
   };
 
@@ -60,8 +45,8 @@ const GalaNavbar = () => {
             : "bg-transparent"
         }`}
       >
-        {/* Logo / Identidad */}
-        <a href="/">
+        {/* Logo */}
+        <a href="/" aria-label="Ir al inicio">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -80,7 +65,7 @@ const GalaNavbar = () => {
         </a>
 
         {/* Navegación Desktop */}
-        <nav className="hidden lg:flex gap-12 items-center">
+        <nav className="hidden lg:flex gap-12 items-center" aria-label="Menú principal">
           {navLinks.map((item) => (
             <a
               key={item.name}
@@ -95,33 +80,31 @@ const GalaNavbar = () => {
           ))}
         </nav>
 
-        {/* Acciones de la Derecha */}
+        {/* Acciones derecha */}
         <div className="flex items-center gap-4 md:gap-8 z-[120]">
-          <motion.button
-            whileHover={{
-              scale: 1.02,
-              backgroundColor: "#f59e0b",
-              color: "#000",
-            }}
+          <motion.a
+            href="/tickets"
+            whileHover={{ scale: 1.02, backgroundColor: "#f59e0b", color: "#000" }}
             whileTap={{ scale: 0.98 }}
             className="hidden sm:block border border-white/20 text-white px-6 py-2.5 text-[9px] tracking-[0.3em] uppercase font-black transition-all duration-300"
           >
             Acceso Privado
-          </motion.button>
+          </motion.a>
 
-          {/* Botón Menú Mobile / Hamburguesa - Actúa como Toggle */}
+          {/* Hamburguesa — FIX: pointer-events se manejan correctamente ahora */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="p-3 text-white hover:text-amber-500 transition-colors bg-white/5 rounded-full lg:hidden relative z-[130]"
+            className="p-3 text-white hover:text-amber-500 transition-colors bg-white/5 rounded-full lg:hidden relative z-[1300]"
             aria-label={isOpen ? "Cerrar menú" : "Abrir menú"}
+            aria-expanded={isOpen}
           >
             <AnimatePresence mode="wait">
               {isOpen ? (
                 <motion.div
                   key="close"
                   initial={{ rotate: -90, opacity: 0 }}
-                  animate={{ rotate: 0, opacity: 1 }}
-                  exit={{ rotate: 90, opacity: 0 }}
+                  animate={{ rotate: 0,   opacity: 1 }}
+                  exit={{   rotate:  90, opacity: 0 }}
                   transition={{ duration: 0.2 }}
                 >
                   <X size={24} strokeWidth={1.5} />
@@ -129,9 +112,9 @@ const GalaNavbar = () => {
               ) : (
                 <motion.div
                   key="menu"
-                  initial={{ rotate: 90, opacity: 0 }}
-                  animate={{ rotate: 0, opacity: 1 }}
-                  exit={{ rotate: -90, opacity: 0 }}
+                  initial={{ rotate:  90, opacity: 0 }}
+                  animate={{ rotate:   0, opacity: 1 }}
+                  exit={{   rotate: -90, opacity: 0 }}
                   transition={{ duration: 0.2 }}
                 >
                   <Menu size={24} strokeWidth={1.5} />
@@ -142,19 +125,23 @@ const GalaNavbar = () => {
         </div>
       </header>
 
-      {/* Menú Mobile con Revelación Circular */}
+      {/* Menú Mobile — FIX: pointer-events condicionales en lugar de data-state  */}
       <motion.div
         initial="closed"
         animate={isOpen ? "opened" : "closed"}
         variants={circleVariants}
-        className="fixed inset-0 z-[105] bg-[#0a0a0a] flex flex-col items-center justify-center lg:hidden pointer-events-none data-[state=open]:pointer-events-auto"
-        data-state={isOpen ? "open" : "closed"}
+        className={`fixed inset-0 z-[1250] bg-[#0a0a0a] flex flex-col items-center justify-center lg:hidden ${
+          isOpen ? "pointer-events-auto" : "pointer-events-none"
+        }`}
+        aria-hidden={!isOpen}
       >
-        {/* Fondo decorativo con textura sutil */}
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10 pointer-events-none" />
         <div className="absolute inset-0 bg-gradient-to-tr from-black via-transparent to-amber-500/10 pointer-events-none" />
 
-        <div className="flex flex-col items-center gap-12 w-full z-10 px-8 text-center">
+        <nav
+          className="flex flex-col items-center gap-12 w-full z-10 px-8 text-center"
+          aria-label="Menú mobile"
+        >
           {navLinks.map((item, i) => (
             <motion.a
               key={item.name}
@@ -163,10 +150,10 @@ const GalaNavbar = () => {
               animate={isOpen ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ delay: isOpen ? i * 0.1 + 0.3 : 0 }}
               onClick={() => setIsOpen(false)}
-              className="text-4xl font-light tracking-[0.3em] uppercase italic text-zinc-500 hover:text-white transition-all duration-500 relative group pointer-events-auto"
+              className="text-4xl font-light tracking-[0.3em] uppercase italic text-zinc-500 hover:text-white transition-all duration-500 relative group"
             >
               <span className="relative z-10">{item.name}</span>
-              <motion.span className="absolute -inset-x-4 h-full bg-amber-500/10 scale-x-0 group-hover:scale-x-100 transition-transform origin-left -z-10" />
+              <motion.span className="absolute -inset-x-4 h-full bg-amber-500/10 scale-x-0 group-hover:scale-x-100 transition-transform origin-left -z-10 rounded" />
             </motion.a>
           ))}
 
@@ -177,19 +164,19 @@ const GalaNavbar = () => {
             className="w-full h-[1px] bg-amber-500/20 max-w-[200px]"
           />
 
-          <motion.button
+          <motion.a
+            href="/tickets"
             initial={{ opacity: 0, y: 10 }}
             animate={isOpen ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
             transition={{ delay: 0.8 }}
             onClick={() => setIsOpen(false)}
-            className="border border-amber-500/50 text-amber-500 px-10 py-4 text-[11px] tracking-[0.5em] uppercase font-black hover:bg-amber-500 hover:text-black transition-all duration-500 pointer-events-auto"
+            className="border border-amber-500/50 text-amber-500 px-10 py-4 text-[11px] tracking-[0.5em] uppercase font-black hover:bg-amber-500 hover:text-black transition-all duration-500"
           >
             Acreditación VIP
-          </motion.button>
-        </div>
+          </motion.a>
+        </nav>
 
-        {/* Marca de agua de fondo */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.03] pointer-events-none">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.03] pointer-events-none select-none">
           <Crown size={400} strokeWidth={0.5} />
         </div>
       </motion.div>
