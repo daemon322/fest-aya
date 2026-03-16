@@ -10,10 +10,12 @@ import {
   XCircle,
   CheckCircle2,
 } from "lucide-react";
-import Perin from "../../assets/Per-in.png";
-import Logo2 from "../../assets/LogoB.png";
-import Logo3 from "../../assets/LogoC.png";
-import Logo4 from "../../assets/LogoD.png";
+import diosas from "../../assets/LogoA.png"
+import perritas from "../../assets/LogoB.png"
+import ayacucho from "../../assets/LogoC.png"
+import arequipa from "../../assets/LogoD.png"
+import interrogacion from "../../assets/Per-in.png"
+
 
 const slides = [
     {
@@ -27,7 +29,7 @@ const slides = [
     tag: "CLÁSICO · VÓLEY TRANS",
     teamA: {
       name: "Diosas de la Amazonía",
-      image: Logo2,
+      image: diosas,
       wins: 25,
       losses: 7,
       bestPlayer: "???",
@@ -35,7 +37,7 @@ const slides = [
     },
     teamB: {
       name: "Las Perritas",
-      image: Logo2,
+      image: perritas,
       wins: 25,
       losses: 7,
       bestPlayer: "???",
@@ -52,7 +54,7 @@ const slides = [
     tag: "VÓLEY MASCULINO",
     teamA: {
       name: "AYACUCHO",
-      image: Logo3,
+      image: ayacucho,
       wins: 18,
       losses: 6,
       bestPlayer: "???",
@@ -60,7 +62,7 @@ const slides = [
     },
     teamB: {
       name: "AREQUIPA",
-      image: Logo4,
+      image: arequipa,
       wins: 15,
       losses: 9,
       bestPlayer: "???",
@@ -78,7 +80,7 @@ const slides = [
     tag: "CUARTOS · VÓLEY FEMENINO",
     teamA: {
       name: "HUANCAYO",
-      image: Perin,
+      image: interrogacion,
       wins: 22,
       losses: 2,
       bestPlayer: "???",
@@ -86,7 +88,7 @@ const slides = [
     },
     teamB: {
       name: "LIMA NORTE",
-      image: Perin,
+      image: interrogacion,
       wins: 14,
       losses: 10,
       bestPlayer: "???",
