@@ -79,7 +79,7 @@ const CartSidebar = ({ isOpen, onClose, cart, onRemoveItem, onCheckout }) => {
             <div className="h-full flex flex-col items-center justify-center space-y-6 opacity-10">
               <Ticket size={80} strokeWidth={0.5} />
               <p className="text-[10px] uppercase tracking-[0.4em] font-light">
-                Sin reservas activas
+                No tiene reservas activas
               </p>
             </div>
           ) : (
