@@ -175,7 +175,7 @@ const StatCard = ({ team, side, color }) => {
   );
 };
 
-const App = () => {
+const HomeTop = () => {
   const [current, setCurrent] = useState(0);
 
   useEffect(() => {
@@ -415,4 +415,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default HomeTop;
