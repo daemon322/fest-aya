@@ -11,7 +11,6 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import Perin from "../../assets/Per-in.png";
-import Logo1 from "../../assets/LogoA.png";
 import Logo2 from "../../assets/LogoB.png";
 import Logo3 from "../../assets/LogoC.png";
 import Logo4 from "../../assets/LogoD.png";
@@ -28,7 +27,7 @@ const slides = [
     tag: "CLÁSICO · VÓLEY TRANS",
     teamA: {
       name: "Diosas de la Amazonía",
-      image: Logo1,
+      image: Logo2,
       wins: 25,
       losses: 7,
       bestPlayer: "???",
