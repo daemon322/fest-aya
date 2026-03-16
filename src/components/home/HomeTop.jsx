@@ -11,10 +11,10 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import Perin from "../../assets/Per-in.png";
-import LogoA from "../../assets/LogoA.png";
-import LogoB from "../../assets/LogoB.png";
-import LogoC from "../../assets/LogoC.png";
-import LogoD from "../../assets/LogoD.png";
+import Logo1 from "../../assets/LogoA.png";
+import Logo2 from "../../assets/LogoB.png";
+import Logo3 from "../../assets/LogoC.png";
+import Logo4 from "../../assets/LogoD.png";
 
 const slides = [
     {
@@ -28,7 +28,7 @@ const slides = [
     tag: "CLÁSICO · VÓLEY TRANS",
     teamA: {
       name: "Diosas de la Amazonía",
-      image: LogoA,
+      image: Logo1,
       wins: 25,
       losses: 7,
       bestPlayer: "???",
@@ -36,7 +36,7 @@ const slides = [
     },
     teamB: {
       name: "Las Perritas",
-      image: LogoB,
+      image: Logo2,
       wins: 25,
       losses: 7,
       bestPlayer: "???",
@@ -53,7 +53,7 @@ const slides = [
     tag: "VÓLEY MASCULINO",
     teamA: {
       name: "AYACUCHO",
-      image: LogoC,
+      image: Logo3,
       wins: 18,
       losses: 6,
       bestPlayer: "???",
@@ -61,7 +61,7 @@ const slides = [
     },
     teamB: {
       name: "AREQUIPA",
-      image: LogoD,
+      image: Logo4,
       wins: 15,
       losses: 9,
       bestPlayer: "???",
