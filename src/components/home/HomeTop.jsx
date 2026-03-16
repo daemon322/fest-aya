@@ -11,10 +11,10 @@ import {
   CheckCircle2,
 } from "lucide-react";
 
-import diosas from "../../assets/Logoa.png";
-import perritas from "../../assets/Logob.png";
-import ayacucho from "../../assets/Logoc.png";
-import arequipa from "../../assets/Logod.png";
+import diosas from "../../assets/logoa.png";
+import perritas from "../../assets/logob.png";
+import ayacucho from "../../assets/logoc.png";
+import arequipa from "../../assets/logod.png";
 import interrogacion from "../../assets/perin.png";
 
 const slides = [
