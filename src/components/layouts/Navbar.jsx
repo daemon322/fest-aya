@@ -19,7 +19,7 @@ const GalaNavbar = () => {
   }, [isOpen]);
 
   const navLinks = [
-    { name: "Entradas",    href: "/tickets" },
+    { name: "Entradas",    href: "/voley-al-limite" },
     { name: "About",       href: "/about"   },
   ];
 
@@ -70,7 +70,7 @@ const GalaNavbar = () => {
               href={item.href}
               className="group relative overflow-hidden py-1"
             >
-              <span className="text-[10px] tracking-[0.4em] uppercase font-bold text-zinc-400 group-hover:text-white transition-colors duration-300">
+              <span className="text-[10px] tracking-[0.4em] uppercase font-bold text-gray-100 group-hover:text-white transition-colors duration-300">
                 {item.name}
               </span>
               <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-amber-500 group-hover:w-full transition-all duration-500" />

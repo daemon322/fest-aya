@@ -10,40 +10,67 @@ import {
   XCircle,
   CheckCircle2,
 } from "lucide-react";
-import neo1 from "../../assets/neo1.webp";
-import mariela1 from "../../assets/mariela1.webp";
-import ceciliat from "../../assets/ceciliat1.webp";
-import angelal from "../../assets/angelal1.webp";
+import Perin from "../../assets/Per-in.png";
+import LogoA from "../../assets/LogoA.png";
+import LogoB from "../../assets/LogoB.png";
+import LogoC from "../../assets/LogoC.png";
+import LogoD from "../../assets/LogoD.png";
+
 const slides = [
-  {
-    title: "Volley Men",
-    opponent: "ANDES",
+    {
+    title: "DIOSAS DE LA AMAZONÍA",
+    opponent: "LAS PERRITAS",
     date: "28 y 29 MAR 2026",
     location: "LOSA DEPORTIVA DE CAPILLAPATA · AYACUCHO",
     description:
-      "El poder ancestral de los Andes se encuentra con la electricidad de la costa en un duelo histórico por la supremacía.",
-    colors: ["#a855f7", "#ec4899"],
-    tag: "SEMIFINAL · VÓLEY MASCULINO",
+      "El poder ancestral de los Andes se encuentra con la tormenta salvaje de la selva en un duelo histórico por la supremacía.",
+    colors: ["#fbbf24", "#f97316"],
+    tag: "CLÁSICO · VÓLEY TRANS",
     teamA: {
-      name: "AVC",
-      image: neo1,
-      wins: 18,
-      losses: 6,
-      bestPlayer: "Carlos 'El Rayo' Quispe",
-      role: "Atacante Principal",
+      name: "Diosas de la Amazonía",
+      image: LogoA,
+      wins: 25,
+      losses: 7,
+      bestPlayer: "???",
+      role: "??????",
     },
     teamB: {
-      name: "Quiroz",
-      image: ceciliat,
-      wins: 15,
-      losses: 9,
-      bestPlayer: "Miguel 'Cóndor' Huamán",
-      role: "Líbero",
+      name: "Las Perritas",
+      image: LogoB,
+      wins: 25,
+      losses: 7,
+      bestPlayer: "???",
+      role: "??????",
     },
   },
   {
-    title: "Volley Women",
-    opponent: "REMATADORES",
+    title: "AYACUCHO",
+    opponent: "AREQUIPA",
+    date: "28 y 29 MAR 2026",
+    location: "LOSA DEPORTIVA DE CAPILLAPATA · AYACUCHO",
+    description:"Este enfrentamiento forma parte de un torneo regional que busca promover el desarrollo del vóley en las regiones..",
+    colors: ["#a855f7", "#ec4899"],
+    tag: "VÓLEY MASCULINO",
+    teamA: {
+      name: "AYACUCHO",
+      image: LogoC,
+      wins: 18,
+      losses: 6,
+      bestPlayer: "???",
+      role: "??????",
+    },
+    teamB: {
+      name: "AREQUIPA",
+      image: LogoD,
+      wins: 15,
+      losses: 9,
+      bestPlayer: "???",
+      role: "??????",
+    },
+  },
+  {
+    title: "HUANCAYO",
+    opponent: "LIMA NORTE",
     date: "28 y 29 MAR 2026",
     location: "LOSA DEPORTIVA DE CAPILLAPATA · AYACUCHO",
     description:
@@ -51,72 +78,20 @@ const slides = [
     colors: ["#06b6d4", "#f43f5e"],
     tag: "CUARTOS · VÓLEY FEMENINO",
     teamA: {
-      name: "FENIX",
-      image: angelal,
+      name: "HUANCAYO",
+      image: Perin,
       wins: 22,
       losses: 2,
-      bestPlayer: "Lucía 'Saeta' Mendoza",
-      role: "Capitana",
+      bestPlayer: "???",
+      role: "??????",
     },
     teamB: {
-      name: "HUANCAYO",
-      image: ceciliat,
+      name: "LIMA NORTE",
+      image: Perin,
       wins: 14,
       losses: 10,
-      bestPlayer: "Ana 'Bloque' Salas",
-      role: "Central",
-    },
-  },
-  {
-    title: "SHOW DE TRANS",
-    opponent: "UNIVERSITARIO",
-    date: "28 y 29 MAR 2026",
-    location: "LOSA DEPORTIVA DE CAPILLAPATA · AYACUCHO",
-    description:
-      "El clásico de la ciudad. Pasión, garra y tradición en un solo lugar. ¿Quién dominará la red?",
-    colors: ["#fbbf24", "#f97316"],
-    tag: "CLÁSICO · VÓLEY TRANS",
-    teamA: {
-      name: "Las Perris",
-      image: angelal,
-      wins: 20,
-      losses: 12,
-      bestPlayer: "Jorge 'Muro' Farfán",
-      role: "Armador",
-    },
-    teamB: {
-      name: "Las Diosas Del Amazonas",
-      image: mariela1,
-      wins: 25,
-      losses: 7,
-      bestPlayer: "Renato 'Garra' Torres",
-      role: "Opuesto",
-    },
-  },
-  {
-    title: "SHOW DE TRANS",
-    opponent: "UNIVERSITARIO",
-    date: "28 y 29 MAR 2026",
-    location: "LOSA DEPORTIVA DE CAPILLAPATA · AYACUCHO",
-    description:
-      "El clásico de la ciudad. Pasión, garra y tradición en un solo lugar. ¿Quién dominará la red?",
-    colors: ["#fbbf24", "#f97316"],
-    tag: "CLÁSICO · VÓLEY TRANS",
-    teamA: {
-      name: "Arequipa",
-      image: angelal,
-      wins: 25,
-      losses: 7,
-      bestPlayer: "Renato 'Garra' Torres",
-      role: "Central",
-    },
-    teamB: {
-      name: "Ayacucho",
-      image: ceciliat,
-      wins: 25,
-      losses: 7,
-      bestPlayer: "Renato 'Garra' Torres",
-      role: "Líbero",
+      bestPlayer: "???",
+      role: "?????",
     },
   },
 ];
@@ -127,29 +102,41 @@ const StatCard = ({ team, side, color }) => {
     totalGames > 0 ? ((team.wins / totalGames) * 100).toFixed(0) : 0;
 
   return (
-    <div
-      className={`flex flex-col ${side === "right" ? "items-end text-right" : "items-start text-left"} gap-4`}
+    <motion.div
+      whileHover={{ scale: 1.02 }}
+      className={`relative p-4 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10 w-full ${
+        side === "right" ? "text-right" : "text-left"
+      }`}
     >
-      <div className="space-y-2 w-full">
-        <h4 className="text-sm font-black tracking-tight text-white uppercase">
-          {team.name}
-        </h4>
+      {/* Línea de acento superior */}
+      <div
+        className="absolute top-0 left-0 w-16 h-1 rounded-tl-2xl"
+        style={{ background: color }}
+      />
 
-        {/* Wins/Losses badges */}
+      <div className="space-y-3">
+        {/* Nombre del equipo */}
+        <h4 className="text-sm font-bold text-white truncate">{team.name}</h4>
+
+        {/* Wins/Losses y Win Rate en fila */}
         <div
-          className={`flex gap-3 ${side === "right" ? "justify-end" : "justify-start"}`}
+          className={`flex items-center gap-4 ${
+            side === "right" ? "justify-end" : "justify-start"
+          }`}
         >
-          <div className="flex items-center gap-1.5 text-emerald-400 font-mono text-base">
-            <CheckCircle2 size={16} /> {team.wins}
+          <div className="flex items-center gap-2">
+            <CheckCircle2 size={16} className="text-emerald-400" />
+            <span className="text-sm font-mono text-white">{team.wins}</span>
           </div>
-          <div className="flex items-center gap-1.5 text-rose-400 font-mono text-base">
-            <XCircle size={16} /> {team.losses}
+          <div className="flex items-center gap-2">
+            <XCircle size={16} className="text-rose-400" />
+            <span className="text-sm font-mono text-white">{team.losses}</span>
           </div>
         </div>
 
-        {/* Win rate bar */}
-        <div className="w-full max-w-[160px] mt-2">
-          <div className="flex justify-between text-[9px] font-bold text-zinc-500 mb-1">
+        {/* Barra de win rate */}
+        <div className="w-full">
+          <div className="flex justify-between text-[10px] font-bold text-zinc-400 mb-1">
             <span>WIN RATE</span>
             <span className="text-white">{winPercentage}%</span>
           </div>
@@ -159,39 +146,32 @@ const StatCard = ({ team, side, color }) => {
               animate={{ width: `${winPercentage}%` }}
               transition={{ duration: 1, delay: 0.5 }}
               className="h-full rounded-full"
-              style={{
-                background: `linear-gradient(90deg, ${color}80, ${color})`,
-              }}
+              style={{ background: `linear-gradient(90deg, ${color}80, ${color})` }}
             />
           </div>
         </div>
-      </div>
 
-      {/* MVP Card con borde de color */}
-      <motion.div
-        whileHover={{ scale: 1.02 }}
-        className={`p-4 rounded-2xl bg-white/5 border backdrop-blur-md w-full max-w-[200px]`}
-        style={{ borderColor: `${color}40`, borderWidth: "1px" }}
-      >
+        {/* MVP con diseño simplificado */}
         <div
-          className={`flex items-center gap-2 mb-2 ${side === "right" ? "flex-row-reverse" : ""}`}
+          className={`flex items-center gap-2 mt-2 ${
+            side === "right" ? "flex-row-reverse" : ""
+          }`}
         >
           <div
-            className="p-1.5 rounded-full"
-            style={{ backgroundColor: `${color}20`, color: color }}
+            className="p-1 rounded-full"
+            style={{ backgroundColor: `${color}20` }}
           >
-            <Star size={14} fill="currentColor" />
+            <Star size={12} className="text-white" fill={color} />
           </div>
-          <span className="text-[10px] tracking-tighter text-zinc-400 font-bold uppercase">
-            MVP
-          </span>
+          <div>
+            <p className="text-xs font-semibold text-white truncate">
+              {team.bestPlayer}
+            </p>
+            <p className="text-[10px] text-zinc-400">{team.role}</p>
+          </div>
         </div>
-        <p className="text-sm font-semibold text-white truncate">
-          {team.bestPlayer}
-        </p>
-        <p className="text-[11px] text-zinc-500">{team.role}</p>
-      </motion.div>
-    </div>
+      </div>
+    </motion.div>
   );
 };
 
@@ -206,136 +186,141 @@ const App = () => {
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-[#050505] text-white overflow-hidden font-sans">
-      {/* Fondo Ambient Lights */}
+    <div className="relative min-h-screen bg-[#0a0a0a] text-white font-sans antialiased overflow-hidden pt-20">
+      {/* Fondo ambiental con gradiente */}
       <AnimatePresence>
         <motion.div
           key={`bg-${current}`}
           initial={{ opacity: 0 }}
-          animate={{ opacity: 0.3 }}
+          animate={{ opacity: 0.4 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 2 }}
           className="absolute inset-0"
           style={{
-            background: `radial-gradient(circle at 50% 50%, ${slides[current].colors[0]}33 0%, transparent 90%)`,
+            background: `radial-gradient(circle at 30% 50%, ${slides[current].colors[0]}33 0%, transparent 60%), radial-gradient(circle at 70% 50%, ${slides[current].colors[1]}33 0%, transparent 60%)`,
           }}
         />
       </AnimatePresence>
 
-      <main className="relative z-10 min-h-screen flex flex-col justify-center px-6 lg:px-12 py-20">
-        <div className="max-w-[1700px] mx-auto w-full">
+      {/* Header con liga y fecha */}
+      <header className="relative z-20 flex justify-between items-center px-6 py-4 lg:px-12 border-b border-white/5">
+        <div className="flex items-center gap-3">
+          <ShieldCheck size={20} className="text-zinc-400" />
+          <span className="text-xs font-bold tracking-widest text-zinc-300 uppercase">
+            Ayacucho Vóley Club
+          </span>
+        </div>
+        <div className="flex items-center gap-4">
+          <div className="hidden sm:flex items-center gap-2 text-xs text-zinc-400">
+            <Calendar size={14} />
+            <span>{slides[current].date}</span>
+          </div>
+          <div className="px-2 py-1 bg-red-500/10 border border-red-500/20 rounded-full">
+            <span className="text-[10px] font-bold text-red-400 tracking-wider uppercase">
+              En Vivo
+            </span>
+          </div>
+        </div>
+      </header>
+
+      <main className="relative z-10 min-h-[calc(100vh-80px)] flex items-center px-4 sm:px-6 lg:px-12 py-8">
+        <div className="max-w-7xl mx-auto w-full">
           <AnimatePresence mode="wait">
             <motion.div
               key={current}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.8 }}
-              className="grid grid-cols-1 lg:grid-cols-12 gap-8 xl:gap-12 items-center"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.5 }}
+              className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8"
             >
-              {/* BLOQUE IZQUIERDO: TEXTO E INFO EQUIPO A */}
-              <div className="lg:col-span-3 order-2 lg:order-1 space-y-8 h-full flex flex-col justify-center">
-                <motion.div
-                  initial={{ opacity: 0, x: -30 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.3 }}
-                  className="space-y-4"
-                >
-                  <span className="px-3 py-1 rounded-full text-[10px] font-bold tracking-[0.2em] bg-white/5 border border-white/10 text-gray-200 uppercase">
+              {/* Columna izquierda: info equipo A + detalles */}
+              <div className="lg:col-span-4 order-2 lg:order-1 space-y-6">
+                {/* Tag y título en móvil se ven arriba del VS, pero aquí los mantenemos */}
+                <div className="space-y-2">
+                  <span className="inline-block px-3 py-1 rounded-full text-[10px] font-bold tracking-wider bg-white/5 border border-white/10 text-zinc-300 uppercase">
                     {slides[current].tag}
                   </span>
-                  <h1 className="text-4xl xl:text-6xl font-black italic tracking-tighter leading-none">
+                  <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black leading-tight">
                     <span style={{ color: slides[current].colors[0] }}>
                       {slides[current].title}
                     </span>
                   </h1>
-                  <p className="text-white text-xs xl:text-sm leading-relaxed max-w-xs">
+                  <p className="text-sm text-zinc-400 max-w-md">
                     {slides[current].description}
                   </p>
-                </motion.div>
+                </div>
 
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5 }}
-                >
-                  <StatCard
-                    team={slides[current].teamA}
-                    side="left"
-                    color={slides[current].colors[0]}
-                  />
-                </motion.div>
+                {/* Estadísticas equipo A */}
+                <StatCard
+                  team={slides[current].teamA}
+                  side="left"
+                  color={slides[current].colors[0]}
+                />
 
-                <div className="hidden lg:flex flex-col gap-4">
-                  <div className="flex items-center gap-3 text-xs text-zinc-400">
-                    <Calendar size={14} className="text-zinc-600" />
+                {/* Fecha y ubicación visibles en desktop y tablet */}
+                <div className="hidden sm:flex flex-col gap-2 text-sm text-zinc-400 border-t border-white/5 pt-4">
+                  <div className="flex items-center gap-2">
+                    <Calendar size={16} className="text-zinc-500" />
                     <span>{slides[current].date}</span>
                   </div>
-                  <div className="flex items-center gap-3 text-xs text-zinc-400">
-                    <MapPin size={14} className="text-zinc-600" />
+                  <div className="flex items-center gap-2">
+                    <MapPin size={16} className="text-zinc-500" />
                     <span>{slides[current].location}</span>
                   </div>
                 </div>
               </div>
 
-              {/* BLOQUE CENTRAL: VS VISUAL (SPLIT SCREEN) */}
-              <div className="lg:col-span-6 order-1 lg:order-2 flex justify-center relative px-4 lg:px-0 shadow-black shadow-lg hover:shadow-2xl hover:shadow-amber-200 hover:translate-y-4 ease-in-out duration-500 rounded-[2.5rem] select-none">
-                <div className="relative w-full aspect-[16/10] lg:aspect-[4/5] xl:aspect-[16/10] overflow-hidden rounded-[2.5rem] shadow-2xl">
+              {/* Columna central: VS visual */}
+              <div className="lg:col-span-4 order-1 lg:order-2 flex justify-center items-center">
+                <div className="relative w-full max-w-md aspect-square lg:aspect-[3/4] rounded-3xl overflow-hidden shadow-2xl border border-white/10">
                   <AnimatePresence mode="popLayout">
                     <motion.div
-                      key={`vs-container-${current}`}
+                      key={`vs-${current}`}
                       className="absolute inset-0 flex"
                       initial={{ opacity: 0, scale: 1.1 }}
                       animate={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0, scale: 0.95 }}
-                      transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                      transition={{ duration: 0.8 }}
                     >
-                      {/* Lado Izquierdo - Team A */}
+                      {/* Lado A */}
                       <div className="relative w-1/2 h-full overflow-hidden">
-                        <motion.img
-                          src={slides[current].teamA.image}
-                          className="absolute inset-0 w-full h-full object-cover grayscale-[0.3] contrast-[1.1]"
-                          initial={{ x: -20, scale: 1.2 }}
-                          animate={{ x: 0, scale: 1 }}
-                          transition={{ duration: 1.5 }}
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-transparent to-transparent" />
+                        {slides[current].teamA.image ? (
+                          <img
+                            src={slides[current].teamA.image}
+                            alt={slides[current].teamA.name}
+                            className="absolute inset-0 w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="absolute inset-0 bg-gradient-to-br from-purple-900/50 to-transparent" />
+                        )}
+                        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-transparent to-transparent" />
                       </div>
 
-                      {/* Lado Derecho - Team B */}
+                      {/* Lado B */}
                       <div className="relative w-1/2 h-full overflow-hidden">
-                        <motion.img
-                          src={slides[current].teamB.image}
-                          className="absolute inset-0 w-full h-full object-cover grayscale-[0.3] contrast-[1.1]"
-                          initial={{ x: 20, scale: 1.2 }}
-                          animate={{ x: 0, scale: 1 }}
-                          transition={{ duration: 1.5 }}
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-l from-black/80 via-transparent to-transparent" />
+                        {slides[current].teamB.image ? (
+                          <img
+                            src={slides[current].teamB.image}
+                            alt={slides[current].teamB.name}
+                            className="absolute inset-0 w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="absolute inset-0 bg-gradient-to-bl from-pink-900/50 to-transparent" />
+                        )}
+                        <div className="absolute inset-0 bg-gradient-to-l from-black/70 via-transparent to-transparent" />
                       </div>
 
-                      {/* Divisor Diagonal VS */}
-                      <div className="absolute inset-0 flex items-center justify-center z-20">
-                        {/* Línea Divisoria */}
+                      {/* Divisor diagonal y VS */}
+                      <div className="absolute inset-0 flex items-center justify-center">
                         <div className="absolute w-px h-[150%] bg-white/20 rotate-[25deg] blur-sm" />
-
-                        {/* Círculo Central VS */}
                         <motion.div
-                          initial={{ scale: 0, rotate: -45 }}
-                          animate={{ scale: 1, rotate: 0 }}
-                          transition={{
-                            delay: 0.5,
-                            type: "spring",
-                            stiffness: 200,
-                          }}
-                          className="relative w-20 h-20 lg:w-28 lg:h-28 bg-black/60 backdrop-blur-2xl border-2 border-white/20 rounded-full flex items-center justify-center shadow-[0_0_50px_rgba(0,0,0,0.8)]"
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          transition={{ delay: 0.3, type: "spring" }}
+                          className="relative w-16 h-16 sm:w-20 sm:h-20 bg-black/80 backdrop-blur-xl border-2 border-white/30 rounded-full flex items-center justify-center shadow-2xl"
                         >
-                          <span className="text-3xl lg:text-5xl font-black italic tracking-tighter text-white">
-                            VS
-                          </span>
-
-                          {/* Anillos decorativos */}
-                          <div className="absolute inset-0 rounded-full border border-white/90 animate-ping opacity-20" />
+                          <span className="text-2xl sm:text-3xl font-black text-white">VS</span>
                         </motion.div>
                       </div>
                     </motion.div>
@@ -343,50 +328,51 @@ const App = () => {
                 </div>
               </div>
 
-              {/* BLOQUE DERECHO: INFO EQUIPO B */}
-              <div className="lg:col-span-3 order-3 space-y-8 flex flex-col items-end justify-center h-full select-none">
-                <motion.div
-                  initial={{ opacity: 0, x: 30 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.3 }}
-                  className="text-right space-y-4"
-                >
-                  <h2 className="relative text-4xl xl:text-6xl font-black italic tracking-tighter leading-none">
+              {/* Columna derecha: info equipo B + CTA */}
+              <div className="lg:col-span-4 order-3 space-y-6">
+                {/* Título del oponente alineado a la derecha */}
+                <div className="text-right">
+                  <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black leading-tight">
                     <span style={{ color: slides[current].colors[1] }}>
                       {slides[current].opponent}
                     </span>
                   </h2>
-                  <p className="text-gray-200 text-[10px] font-bold tracking-[0.2em] uppercase italic ml-auto flex items-center justify-end gap-2">
-                    <TrendingUp size={14} /> El Rival a Vencer
+                  <p className="text-sm text-zinc-400 flex items-center justify-end gap-1 mt-1">
+                    <TrendingUp size={14} /> El rival a vencer
                   </p>
-                </motion.div>
+                </div>
 
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5 }}
-                >
-                  <StatCard
-                    team={slides[current].teamB}
-                    side="right"
-                    color={slides[current].colors[1]}
-                  />
-                </motion.div>
+                {/* Estadísticas equipo B */}
+                <StatCard
+                  team={slides[current].teamB}
+                  side="right"
+                  color={slides[current].colors[1]}
+                />
 
-                <div className="w-full max-w-[200px] pt-4 space-y-4">
+                {/* Botón de compra */}
+                <div className="pt-4">
                   <a
-                    href="/tickets"
-                    className="w-full px-6 py-4 bg-white text-black font-black text-[10px] tracking-[0.2em] hover:bg-zinc-200 transition-all rounded-full flex items-center justify-center gap-2 group shadow-xl"
+                    href="/voley-al-limite"
+                    className="w-full sm:w-auto px-8 py-4 bg-white text-black font-bold text-sm tracking-wider hover:bg-zinc-200 transition-all rounded-full flex items-center justify-center gap-2 group shadow-xl"
                   >
-                    COMPRAR{" "}
-                    <ChevronRight
-                      size={14}
-                      className="group-hover:translate-x-1 transition-transform"
-                    />
+                    COMPRAR ENTRADAS
+                    <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
                   </a>
-                  <div className="flex justify-between items-center text-[9px] font-bold text-zinc-600 uppercase tracking-widest px-2">
-                    <span>Hype Meter</span>
-                    <span className="text-white">98%</span>
+                  <div className="flex justify-between items-center text-xs text-zinc-500 mt-4">
+                    <span>HYPE METER</span>
+                    <span className="text-white font-bold">98%</span>
+                  </div>
+                </div>
+
+                {/* Fecha y ubicación solo en móvil (porque ya están en left) */}
+                <div className="sm:hidden flex flex-col gap-2 text-sm text-zinc-400 border-t border-white/5 pt-4">
+                  <div className="flex items-center gap-2">
+                    <Calendar size={16} className="text-zinc-500" />
+                    <span>{slides[current].date}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <MapPin size={16} className="text-zinc-500" />
+                    <span>{slides[current].location}</span>
                   </div>
                 </div>
               </div>
@@ -395,27 +381,35 @@ const App = () => {
         </div>
       </main>
 
-      {/* Navegación Inferior Miniaturizada */}
-      <div className="relative bottom-8 left-0 right-0 z-50 flex justify-center items-center gap-4">
-        {slides.map((_, i) => (
+      {/* Navegación inferior con colores dinámicos */}
+      <div className="relative bottom-6 flex justify-center items-center gap-3 z-20">
+        {slides.map((slide, i) => (
           <button
             key={i}
             onClick={() => setCurrent(i)}
-            className="group relative h-8 flex items-center"
+            className="group relative h-2 flex items-center"
           >
             <div
-              className={`h-0.5 transition-all duration-700 rounded-full ${current === i ? "w-16 bg-white" : "w-6 bg-white/10 group-hover:bg-white/30"}`}
+              className={`h-1 rounded-full transition-all duration-500 ${
+                current === i ? "w-12" : "w-3 bg-white/20 group-hover:bg-white/40"
+              }`}
+              style={{
+                background:
+                  current === i
+                    ? `linear-gradient(90deg, ${slide.colors[0]}, ${slide.colors[1]})`
+                    : "",
+              }}
             />
           </button>
         ))}
       </div>
 
-      {/* Marca de agua / Decoración lateral */}
-      <div className="fixed top-1/2 -left-20 -rotate-90 origin-center text-[6vh] font-black text-white/[0.02] pointer-events-none select-none uppercase tracking-tighter">
-        Inca Volley Official
+      {/* Watermarks decorativos */}
+      <div className="fixed top-1/2 -left-24 -rotate-90 text-[8vh] font-black text-white/[0.02] pointer-events-none select-none uppercase tracking-tighter">
+        Ayacucho Vóley
       </div>
-      <div className="fixed top-1/2 -right-20 rotate-90 origin-center text-[6vh] font-black text-white/[0.02] pointer-events-none select-none uppercase tracking-tighter">
-        Estadio Nacional 2026
+      <div className="fixed top-1/2 -right-24 rotate-90 text-[8vh] font-black text-white/[0.02] pointer-events-none select-none uppercase tracking-tighter">
+        2026
       </div>
     </div>
   );

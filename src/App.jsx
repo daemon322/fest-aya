@@ -23,7 +23,7 @@ function App() {
       <Introduction/>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/tickets" element={<TicketPage />} />
+        <Route path="/voley-al-limite" element={<TicketPage />} />
         <Route path="/about" element={<About/>} />
         <Route path="/paginas/TerminoCondiciones" element={<TerminoCondiciones/>} />
         <Route path="/paginas/PoliticCookies" element={<PoliticCookies/>} />

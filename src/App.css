@@ -1,6 +1,43 @@
 @import "tailwindcss";
-body {
-  background: black;
+.voley-canvas-fixed {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-color: #e968f7; /* Papel de grano fino */
+  overflow: hidden;
+  filter: url(#watercolor-real); /* Aquí ocurre la magia de la irregularidad */
+}
+
+/* Base de todas las manchas */
+.mancha {
+  position: absolute;
+  border-radius: 50%; /* El filtro las deformará tanto que no serán círculos */
+  opacity: 0.6;
+  mix-blend-mode: multiply;
+}
+
+/* Colores de Voley */
+.azul { background: #0054a6; width: 600px; height: 400px; }
+.azul-claro { background: #4a90e2; width: 400px; height: 300px; }
+.azul-oscuro { background: #002d5a; width: 500px; height: 500px; }
+.amarillo { background: #ffcc00; width: 350px; height: 350px; }
+.amarillo-oro { background: #ffaa00; width: 450px; height: 300px; }
+
+/* Posiciones asimétricas (Evitamos el centro "fuego") */
+.pos-1 { top: -5%; left: -10%; transform: rotate(15deg); }
+.pos-2 { top: 15%; right: -5%; transform: rotate(-20deg); }
+.pos-3 { bottom: 10%; left: 5%; opacity: 0.4; }
+.pos-4 { top: 40%; left: 30%; opacity: 0.3; } /* Mancha suave central, no invasiva */
+.pos-5 { bottom: -10%; right: 10%; }
+
+/* Textura de papel superpuesta */
+.voley-canvas-fixed::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.3;
+  background-image: url('https://www.transparenttextures.com');
+  pointer-events: none;
 }
 .input-field:focus {
   border-color: #a855f7;

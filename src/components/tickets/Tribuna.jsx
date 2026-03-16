@@ -46,8 +46,7 @@ const Tribuna = () => {
 
       // Escena
       const scene = new THREE.Scene();
-      scene.background = new THREE.Color(0x0a0a0a);
-      scene.fog        = new THREE.Fog(0x020202, 30, 80);
+    
       sceneRef.current = scene;
 
       // Cámara
@@ -120,24 +119,30 @@ const Tribuna = () => {
       net.position.set(0, 2.3, 0);
       sportsComplex.add(net);
 
-      // Graderías
-      const createBleachers = (side) => {
-        const group = new THREE.Group();
-        for (let i = 0; i < 7; i++) {
-          const step = new THREE.Mesh(
-            new THREE.BoxGeometry(5, 0.8, 26),
-            new THREE.MeshStandardMaterial({ color: 0x0b6a8d, roughness: 0.7, metalness: 0.3 })
-          );
-          step.position.set(i * 1.6, i * 0.9, 0);
-          step.castShadow = step.receiveShadow = true;
-          group.add(step);
-        }
-        group.position.x  = side === 'left' ? -16 : 16;
-        if (side === 'left') group.rotation.y = Math.PI;
-        return group;
-      };
-      sportsComplex.add(createBleachers('left'));
-      sportsComplex.add(createBleachers('right'));
+      // --- Tribunas ---
+      // Occidente: escalones en el lado oeste (x negativo) mirando al este
+      const westBleachers = new THREE.Group();
+      for (let i = 0; i < 8; i++) {
+        const stepMat = new THREE.MeshStandardMaterial({ color: 0x0b6a8d, roughness: 0.7 });
+        const step = new THREE.Mesh(new THREE.BoxGeometry(4, 0.8, 28), stepMat);
+        step.position.set(-18 - i * 1.8, i * 0.9, 0);
+        step.castShadow = true;
+        step.receiveShadow = true;
+        westBleachers.add(step);
+      }
+      sportsComplex.add(westBleachers);
+
+      // Norte: escalones en el lado norte (z positivo) mirando al sur
+      const northBleachers = new THREE.Group();
+      for (let i = 0; i < 8; i++) {
+        const stepMat = new THREE.MeshStandardMaterial({ color: 0x0b6a8d, roughness: 0.7 });
+        const step = new THREE.Mesh(new THREE.BoxGeometry(28, 0.8, 4), stepMat);
+        step.position.set(0, i * 0.9, 18 + i * 1.8);
+        step.castShadow = true;
+        step.receiveShadow = true;
+        northBleachers.add(step);
+      }
+      sportsComplex.add(northBleachers);
 
       // Asientos VIP
       const createVIPRow = (xPos, side) => {
@@ -207,11 +212,11 @@ const Tribuna = () => {
 
     if (activeZone === 'VIP') {
       targetCamPos.current     = { x: 1, y: 1, z: 12 };
-      targetRotation.current   = { x: 0.3, y: -0.8 };
+      targetRotation.current   = { x: 0.3, y: 1.3 };
       isRotatingRef.current    = false;
     } else if (activeZone === 'General') {
-      targetCamPos.current     = { x: 25, y: 10, z: -18 };
-      targetRotation.current   = { x: 0, y: 0 };
+      targetCamPos.current     = { x: 18, y: 12, z: 25 };
+      targetRotation.current   = { x: 0, y: 0.8 };
       isRotatingRef.current    = false;
     } else {
       targetCamPos.current     = { x: 25, y: 18, z: 25 };
@@ -234,13 +239,13 @@ const Tribuna = () => {
   }, []);
 
   const getButtonClass = (id) => {
-    const base = 'flex-1 lg:flex-none flex items-center justify-center gap-3 px-6 py-4 rounded-2xl transition-all border whitespace-nowrap cursor-pointer ';
+    const base = 'flex-1 lg:flex-none flex items-center justify-center gap-3 px-6 py-4 rounded-2xl transition-all  whitespace-nowrap cursor-pointer ';
     if (activeZone === id) {
-      if (id === 'VIP')     return base + 'bg-purple-600 border-white/40 shadow-lg shadow-purple-500/20';
-      if (id === 'General') return base + 'bg-blue-600 border-white/40 shadow-lg shadow-blue-500/20';
-      return base + 'bg-white/20 border-white/40 shadow-lg shadow-white/20';
+      if (id === 'VIP')     return base + 'bg-purple-600 shadow-lg shadow-purple-500/20';
+      if (id === 'General') return base + 'bg-blue-600 shadow-lg shadow-blue-500/20';
+      return base + 'bg-black shadow-2xl shadow-black';
     }
-    return base + 'bg-white/5 border-white/10 hover:bg-white/10';
+    return base + 'bg-black/30 backdrop-blur-2xl hover:bg-black/20';
   };
 
   return (
@@ -251,26 +256,26 @@ const Tribuna = () => {
         <div className="flex flex-col lg:flex-row justify-between items-start gap-4 pt-10 h-full">
           <div className="pointer-events-auto p-5 lg:p-7 max-w-sm w-full select-none">
             <div className="flex items-center gap-2 mb-3">
-              <div className="bg-blue-500/20 p-2 rounded-xl text-blue-400"><MapPin size={16} /></div>
-              <span className="text-[9px] font-black tracking-[0.2em] uppercase text-gray-200">Sede Central · Mercedes</span>
+              <div className="bg-white p-2 rounded-xl text-red-500"><MapPin size={16} /></div>
+              <span className="text-[9px] font-black tracking-[0.2em] uppercase text-white">Sede Central · Complejo deportivo Capillapata</span>
             </div>
             <h1 className="text-2xl lg:text-3xl font-black italic tracking-tighter leading-none mb-4 uppercase">
               Plano de <span className="text-red-500 italic">Asientos</span>
             </h1>
             <div className="grid grid-cols-2 gap-3">
-              <div className="bg-white/5 backdrop-blur-2xl rounded-2xl p-3 border border-white/5">
+              <div className="bg-black/10 backdrop-blur-2xl rounded-2xl p-3 border border-white/5">
                 <div className="flex items-center gap-2 mb-1">
                   <div className="w-2 h-2 rounded-full bg-purple-500" />
                   <span className="text-[12px] font-bold text-gray-100 uppercase">VIP</span>
                 </div>
-                <p className="text-xs font-bold text-gray-300">Butaca Campo</p>
+                <p className="text-xs font-bold text-gray-200">Butaca Campo</p>
               </div>
-              <div className="bg-white/5 backdrop-blur-2xl rounded-2xl p-3 border border-white/5">
+              <div className="bg-black/10 backdrop-blur-2xl rounded-2xl p-3 border border-white/5">
                 <div className="flex items-center gap-2 mb-1">
                   <div className="w-2 h-2 rounded-full bg-blue-500" />
                   <span className="text-[12px] font-bold text-gray-100 uppercase">General</span>
                 </div>
-                <p className="text-xs font-bold text-gray-300">Gradas Norte/Occidente</p>
+                <p className="text-xs font-bold text-gray-200">Gradas Norte/Occidente</p>
               </div>
             </div>
           </div>
@@ -290,7 +295,7 @@ const Tribuna = () => {
         </div>
 
         <div className="flex flex-col lg:flex-row justify-end items-end gap-6 pb-5">
-          <div className="hidden lg:block pointer-events-auto bg-black/10 backdrop-blur-xl border border-white/10 p-6 rounded-[2rem] max-w-xs w-full select-none">
+          <div className="pointer-events-auto bg-black/30 backdrop-blur-2xl border border-white/10 p-6 rounded-[2rem] max-w-xs w-full select-none">
             <div className="flex items-center gap-3 mb-4">
               <Info size={18} className="text-blue-400" />
               <h3 className="text-xs font-black uppercase tracking-widest">Detalles Sede</h3>
@@ -307,8 +312,8 @@ const Tribuna = () => {
                 </span>
               </div>
               <div className="pt-2 border-t border-white/5 flex gap-2">
-                <Calendar size={14} className="text-gray-400 shrink-0" />
-                <span className="text-[10px] text-gray-400 leading-tight">
+                <Calendar size={14} className="text-gray-200 shrink-0" />
+                <span className="text-[10px] text-gray-200 leading-tight">
                   Acceso habilitado 1 hora antes del evento principal.
                 </span>
               </div>

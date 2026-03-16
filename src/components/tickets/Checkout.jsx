@@ -93,8 +93,7 @@ const Checkout = ({ cart = [], onBack, onComplete }) => {
     (acc, item) => acc + item.price * item.quantity,
     0,
   );
-  const serviceCharge = subtotal * 0.05;
-  const total = subtotal + serviceCharge;
+  const total = subtotal;
 
   const nextStep = () => setStep((s) => s + 1);
   const prevStep = () => setStep((s) => s - 1);
@@ -399,12 +398,6 @@ const Checkout = ({ cart = [], onBack, onComplete }) => {
                     S/ {subtotal.toFixed(2)}
                   </span>
                 </div>
-                <div className="flex justify-between text-[14px] uppercase tracking-[0.3em] text-white/90">
-                  <span>Comisión Digital (5%)</span>
-                  <span className="font-mono text-white/80">
-                    S/ {serviceCharge.toFixed(2)}
-                  </span>
-                </div>
                 <div className="pt-8 border-t border-white/10 flex justify-between items-center">
                   <div className="space-y-1">
                     <span className="text-xs font-bold uppercase tracking-[0.5em] text-white">
@@ -544,7 +537,7 @@ const Checkout = ({ cart = [], onBack, onComplete }) => {
                   Validar Pago
                 </h2>
                 <p className="text-[10px] uppercase tracking-[0.4em] text-white/90">
-                  Adjunta el comprobante de transferencia
+                  Adjunta el comprobante de yapeo
                 </p>
               </header>
 
@@ -552,12 +545,11 @@ const Checkout = ({ cart = [], onBack, onComplete }) => {
                 <Info className="text-amber-500 mt-1" size={20} />
                 <div className="space-y-2">
                   <p className="text-[10px] font-bold uppercase tracking-widest text-amber-500">
-                    Cuentas de Transferencia
+                    Cuenta a Yapear
                   </p>
                   <p className="text-xs text-white/60 leading-relaxed font-mono">
-                    BCP Soles: 191-XXXXXXXX-0-XX <br />
-                    CCI: 002-191-XXXXXXXXXX-XX <br />
-                    Titular: EVENTOS SAC
+                    Yape: 961379018 <br />
+                    Titular: Herny Escalante
                   </p>
                 </div>
               </div>
@@ -674,7 +666,7 @@ const Checkout = ({ cart = [], onBack, onComplete }) => {
                   }}
                   className="w-full py-8 bg-amber-500 text-black font-black uppercase text-[12px] tracking-[0.6em] rounded-2xl hover:bg-white transition-all shadow-[0_20px_60px_rgba(245,158,11,0.15)] disabled:opacity-10 cursor-pointer disabled:cursor-not-allowed mt-10"
                 >
-                  Finalizar Reserva Luxury
+                  Finalizar Reserva
                 </button>
               </div>
             </div>
@@ -683,7 +675,7 @@ const Checkout = ({ cart = [], onBack, onComplete }) => {
 
         {/* MODAL DE CONFIRMACIÓN */}
         {showConfirmDialog && (
-          <div className="fixed inset-0 z-[500] flex items-center justify-center bg-black/80 backdrop-blur-sm animate-in fade-in duration-300">
+          <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/80 backdrop-blur-sm animate-in fade-in duration-300">
             <div className="bg-[#0a0a0a] border border-white/10 rounded-3xl max-w-md w-full mx-4 p-10 space-y-8 animate-in zoom-in-95 duration-300 shadow-2xl">
               <div className="flex justify-between items-start">
                 <div className="space-y-2">
@@ -696,7 +688,7 @@ const Checkout = ({ cart = [], onBack, onComplete }) => {
                 </div>
                 <button
                   onClick={() => setShowConfirmDialog(false)}
-                  className="text-white/40 hover:text-white transition-colors"
+                  className="text-white/40 hover:text-white transition-colors cursor-pointer"
                 >
                   <X size={20} />
                 </button>
@@ -728,14 +720,14 @@ const Checkout = ({ cart = [], onBack, onComplete }) => {
                 <button
                   onClick={() => setShowConfirmDialog(false)}
                   disabled={isSubmitting}
-                  className="flex-1 py-4 border border-white/20 text-white rounded-2xl font-bold uppercase text-[10px] tracking-widest hover:bg-white/5 transition-all disabled:opacity-50"
+                  className="flex-1 py-4 border border-white/20 text-white rounded-2xl font-bold uppercase text-[10px] tracking-widest hover:bg-white/5 transition-all disabled:opacity-50 cursor-pointer"
                 >
                   Cancelar
                 </button>
                 <button
                   onClick={handleConfirmAndSubmit}
                   disabled={isSubmitting}
-                  className="flex-1 py-4 bg-amber-500 text-black rounded-2xl font-black uppercase text-[10px] tracking-widest hover:bg-white transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                  className="flex-1 py-4 bg-amber-500 text-black rounded-2xl font-black uppercase text-[10px] tracking-widest hover:bg-white transition-all disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
                 >
                   {isVerifyingCaptcha ? (
                     <>

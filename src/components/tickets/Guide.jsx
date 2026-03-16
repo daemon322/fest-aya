@@ -41,6 +41,12 @@ const App = () => {
       }, 100);
     }
   };
+  const waMsg = encodeURIComponent(
+    `Hola! Necesito ayuda con el proceso de compra de entradas para el evento deportivo. Tengo algunas preguntas sobre los pasos a seguir y los métodos de pago disponibles. ¡Gracias!`
+  );
+  const waMsg2 = encodeURIComponent(
+    `Hola! Quisiera obtener información sobre el evento ¡Gracias!`
+  );
 
   const detailedSteps = [
     {
@@ -48,23 +54,24 @@ const App = () => {
       title: "Mapa Táctico 3D",
       subtitle: "Ubicación Estratégica",
       icon: <Ticket size={32} />,
-      content: "Accede al mapa interactivo de última generación. Visualiza el campo desde tu ángulo preferido y selecciona las butacas disponibles en tiempo real.",
+      content: "Accede al mapa interactivo de última generación. Visualiza el campo desde tu ángulo preferido.",
       instructions: [
-        "Selecciona zonas VIP, Oriente u Occidente.",
-        "Los asientos rojos son preventa exclusiva.",
-        "Reserva garantizada por solo 10 minutos."
+        "Visualiza tu mejor vista Oriente u Occidente.",
+        "Los asientos morados son preventa exclusiva.",
+        "Venta de entradas tienda física multiservicios Kasuri Asoc. Ciudad magisterial mz I lt 06 referencia esquina del colegio JEAN PIAGET.",
+        "Reserva garantizada por solo 10 minutos.",
+        "Selecciona tus entradas."
       ],
-      tip: "Usa el zoom para ver la cercanía exacta al campo de juego."
+      tip: "Mayores de 05 años pagan su entrada."
     },
     {
       id: "Paso 02",
       title: "Revisión de Orden",
-      subtitle: "Control de Inventario",
+      subtitle: "Control de Reserva",
       icon: <ShoppingCart size={32} />,
       content: "Verifica el resumen de tu despliegue. Asegúrate de que las cantidades y sectores elegidos coincidan con tu estrategia de asistencia.",
       instructions: [
-        "Confirma el total incluyendo costos de emisión.",
-        "Aplica cupones de preventa autorizados.",
+        "Confirma la selección de tus entradas y el total.",
         "Valida los términos de permanencia en el estadio."
       ],
       tip: "Asegúrate de no tener bloqueadores de ventanas emergentes activos."
@@ -87,11 +94,11 @@ const App = () => {
       title: "Pago y Verificación",
       subtitle: "Transacción Segura",
       icon: <CreditCard size={32} />,
-      content: "Realiza el depósito mediante nuestros canales oficiales (Yape o BCP). Es imperativo que el voucher sea legible para la validación del sistema.",
+      content: "Realiza el depósito mediante nuestros canales oficiales (Yape). Es imperativo que el voucher sea legible para la validación del sistema.",
       instructions: [
         "Utiliza el QR oficial de Yape de la empresa.",
         "Captura de pantalla nítida con N° de operación.",
-        "Solo se aceptan depósitos de cuentas nacionales."
+        "Sube una sola imagen nítida (PNG, JPG Y WEBP)."
       ],
       tip: "Guarda el voucher físico hasta finalizar el evento deportivo."
     },
@@ -122,10 +129,10 @@ const App = () => {
           </div>
           <h1 className="text-5xl md:text-8xl font-black italic uppercase tracking-tighter leading-[0.85] mb-6 animate-in fade-in slide-in-from-bottom duration-1000 w-full">
             Consigue tu <br />
-            <span className="text-red-600 ">Entrada VIP</span>
+            <span className="text-red-600 ">Entrada YA</span>
           </h1>
-          <p className="max-w-xl text-gray-100 text-sm md:text-base font-medium leading-relaxed border-l border-red-600 pl-6">
-            Guía optimizada para hinchas y espectadores. Sigue los parámetros para asegurar tu lugar en la gran final nacional.
+          <p className="max-w-xl text-white text-sm md:text-base font-medium leading-relaxed border-l border-red-600 pl-6">
+            Guía optimizada para hinchas y espectadores. Sigue los parámetros para asegurar tu lugar en este gran evento.
           </p>
         </header>
 
@@ -162,14 +169,14 @@ const App = () => {
             <div className="mt-6 p-6 hidden lg:block select-none backdrop-blur-lg">
               <div className="flex items-center gap-3 mb-4 text-amber-500">
                 <AlertTriangle size={18} />
-                <span className="text-[10px] font-black uppercase tracking-widest">Atención al Cliente</span>
+                <span className="text-[16px] font-black uppercase tracking-widest">Atención al Cliente</span>
               </div>
-              <p className="text-[11px] text-gray-300 leading-relaxed font-bold uppercase mb-4">
+              <p className="text-[11px] text-gray-100 leading-relaxed font-bold uppercase mb-4">
                 ¿Tienes dudas sobre el proceso? Nuestro equipo está listo para asistirte en tiempo real.
               </p>
-              <button className="text-[10px] font-black uppercase tracking-widest text-white hover:text-red-600 transition-colors flex items-center gap-2">
-                Abrir Soporte <ExternalLink size={12} />
-              </button>
+              <a href={`https://wa.me/51961379018?text=${waMsg}`} target="_blank" rel="noreferrer"
+                className="text-[10px] font-black uppercase tracking-widest text-white hover:text-red-600 transition-colors flex items-center gap-2 bg-black p-4 w-[150px]"> Abrir Soporte <ExternalLink size={12} />
+              </a>
             </div>
           </nav>
 
@@ -225,12 +232,12 @@ const App = () => {
                   </div>
 
                   <div className="flex flex-col justify-end">
-                    <div className="bg-amber-500/10 border border-amber-500/20 p-6 rounded-[2rem] relative group overflow-hidden">
+                    <div className="bg-black/20 p-6 rounded-[2rem] relative group overflow-hidden">
                       <div className="absolute top-[-20%] right-[-10%] opacity-10 group-hover:rotate-12 transition-transform duration-700">
                         <Info size={100} />
                       </div>
                       <div className="relative z-10">
-                        <h5 className="text-[10px] font-black uppercase tracking-widest text-amber-500 mb-2">Consejo Profesional</h5>
+                        <h5 className="text-[20px] font-black uppercase tracking-widest text-red-500 mb-2">Advertencia:</h5>
                         <p className="text-xs text-white font-black uppercase leading-relaxed italic">
                           {detailedSteps[activeTab].tip}
                         </p>
@@ -252,7 +259,7 @@ const App = () => {
                <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-6">
                   <div>
                     <h2 className="text-3xl font-black uppercase italic tracking-tighter mb-2">Liquidación Oficial</h2>
-                    <p className="text-xs font-bold text-gray-200 uppercase tracking-widest">Cuentas autorizadas por la federación</p>
+                    <p className="text-xs font-bold text-gray-200 uppercase tracking-widest">Cuentas autorizadas por el Organizador</p>
                   </div>
                   <div className="flex items-center gap-3 px-4 py-2 bg-red-600/10 border border-red-600/20 rounded-full">
                     <Lock size={14} className="text-red-600" />
@@ -266,15 +273,7 @@ const App = () => {
                       <QrCode className="text-purple-600" />
                     </div>
                     <p className="text-[14px] font-black text-gray-200 uppercase tracking-widest mb-1">App de Pago</p>
-                    <p className="text-3xl font-black text-white italic tracking-tighter mb-4 uppercase">Yape / Plin</p>
-                  </div>
-
-                  <div className="bg-black/5 backdrop-blur-2xl p-8 rounded-[2.5rem] hover:bg-black/10 transition-all duration-300 group cursor-default">
-                    <div className="w-12 h-12 bg-[#ff6b00] rounded-2xl flex items-center justify-center mb-6 shadow-xl text-white">
-                      <CreditCard />
-                    </div>
-                    <p className="text-[14px] font-black text-gray-200 uppercase tracking-widest mb-1">Banco de Crédito</p>
-                    <p className="text-3xl font-black text-white italic tracking-tighter mb-4 uppercase">BCP Soles</p>
+                    <p className="text-3xl font-black text-white italic tracking-tighter mb-4 uppercase">Yape</p>
                   </div>
                </div>
             </div>
@@ -341,20 +340,20 @@ const App = () => {
           <div className="flex flex-col items-center md:items-start">
              <div className="flex items-center gap-4 mb-2">
                 <Trophy size={20} className="text-amber-500" />
-                <span className="text-[10px] font-black uppercase tracking-[0.5em] text-white">Evento Oficial Perú 2026</span>
+                <span className="text-[10px] font-black uppercase tracking-[0.5em] text-white">Evento Oficial Perú - Ayacucho 2026</span>
              </div>
-             <p className="text-[9px] text-zinc-700 font-bold uppercase">Gestionado por Sports Events Corp. Todos los derechos reservados.</p>
+             <p className="text-[9px] text-gray-900 font-bold uppercase">Gestionado por Ayacucho Voley Club. Todos los derechos reservados.</p>
           </div>
 
           <div className="flex flex-wrap justify-center gap-4">
-             <button className="flex items-center gap-3 px-8 py-4 bg-white text-black rounded-full font-black uppercase italic text-[10px] tracking-widest hover:bg-red-600 hover:text-white transition-all shadow-2xl shadow-white/5 active:scale-95">
-               <Smartphone size={16} />
+             <a href={`https://wa.me/51961379018?text=${waMsg2}`} target="_blank" rel="noreferrer"
+                className="flex items-center gap-3 px-8 py-4 bg-white text-black rounded-full font-black uppercase italic text-[10px] tracking-widest hover:bg-red-600 hover:text-white transition-all shadow-2xl shadow-white/5 active:scale-95"><Smartphone size={16} />
                WhatsApp Oficial
-             </button>
-             <button className="flex items-center gap-3 px-8 py-4 bg-zinc-900 border border-white/10 text-white rounded-full font-black uppercase italic text-[10px] tracking-widest hover:bg-white/5 transition-all">
+             </a>
+             <a href='/paginas/TerminoCondiciones' className="flex items-center gap-3 px-8 py-4 bg-zinc-900 border border-white/10 text-white rounded-full font-black uppercase italic text-[10px] tracking-widest hover:bg-white/5 transition-all">
                <ExternalLink size={16} />
                Términos Legales
-             </button>
+             </a>
           </div>
         </footer>
       </div>

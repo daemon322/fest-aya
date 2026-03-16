@@ -24,14 +24,14 @@ import {
 import Checkout from "./Checkout";
 import Tribuna from "./Tribuna";
 import Guide from "./Guide";
+import { Flyers } from "../../views/tickets/Flyer";
 
 const CartSidebar = ({ isOpen, onClose, cart, onRemoveItem, onCheckout }) => {
   const subtotal = cart.reduce(
     (acc, item) => acc + item.price * item.quantity,
     0,
   );
-  const serviceCharge = subtotal * 0.05;
-  const total = subtotal + serviceCharge;
+  const total = subtotal ;
 
   return (
     <>
@@ -65,7 +65,7 @@ const CartSidebar = ({ isOpen, onClose, cart, onRemoveItem, onCheckout }) => {
           </div>
           <button
             onClick={onClose}
-            className="group p-3 text-white/20 hover:text-white hover:bg-white/5 rounded-full transition-all duration-500"
+            className="group p-3 text-white hover:text-black hover:bg-white cursor-pointer rounded-full transition-all duration-500"
           >
             <X
               size={20}
@@ -100,7 +100,7 @@ const CartSidebar = ({ isOpen, onClose, cart, onRemoveItem, onCheckout }) => {
                     </div>
                     <button
                       onClick={() => onRemoveItem(idx)}
-                      className="text-white/10 hover:text-red-500 transition-colors duration-300 p-1"
+                      className="text-red-500 hover:text-red-500 hover:bg-white rounded-2xl transition-colors duration-300 p-1 cursor-pointer"
                     >
                       <Trash2 size={14} />
                     </button>
@@ -144,12 +144,6 @@ const CartSidebar = ({ isOpen, onClose, cart, onRemoveItem, onCheckout }) => {
                   S/ {subtotal.toFixed(2)}
                 </span>
               </div>
-              <div className="flex justify-between text-[10px] text-white/30 uppercase tracking-[0.3em]">
-                <span>Fee de Servicio</span>
-                <span className="font-mono text-white/70">
-                  S/ {serviceCharge.toFixed(2)}
-                </span>
-              </div>
               <div className="pt-6 flex justify-between items-center border-t border-white/10">
                 <span className="text-xs font-bold text-white uppercase tracking-[0.4em]">
                   Total Final
@@ -164,7 +158,7 @@ const CartSidebar = ({ isOpen, onClose, cart, onRemoveItem, onCheckout }) => {
 
             <button
               onClick={onCheckout}
-              className="w-full py-6 rounded-none bg-amber-500 text-black font-black text-[10px] uppercase tracking-[0.4em] hover:bg-white transition-all duration-500 flex items-center justify-center gap-4 group"
+              className="w-full py-6 rounded-none bg-amber-500 text-black font-black text-[10px] uppercase tracking-[0.4em] hover:bg-white transition-all duration-500 flex items-center justify-center gap-4 group cursor-pointer"
             >
               Confirmar Ticket
               <ChevronRight
@@ -196,9 +190,8 @@ const TicketCard = ({
 
   return (
     <div
-      className={`relative flex flex-col h-full p-12 rounded-[3rem] backdrop-blur-2xl bg-black/80 transition-all duration-700 group overflow-hidden`}
+      className={`relative flex flex-col h-full p-12 rounded-[3rem] backdrop-blur-2xl transition-all duration-700 group overflow-hidden`}
     >
-
       {isPopular && (
         <div className="absolute top-5 right-10 flex items-center gap-2 px-3 py-1 rounded-full border border-amber-500/30 bg-amber-500/5">
           <Star size={10} fill="#f59e0b" className="text-amber-500" />
@@ -318,8 +311,8 @@ const App = () => {
   const [showCheckout, setShowCheckout] = useState(false);
 
   const phases = [
-    { id: 0, label: "Acceso anticipado", status: "Preventa", date: "Limitado" },
-    { id: 1, label: "Ese mismo día", status: "Regular", date: "Door" },
+    { id: 0, label: "Pre-venta", status: "del 17", date: "22 de marzo" },
+    { id: 1, label: "Venta General", status: "del 23", date: "28 de marzo" },
   ];
 
   const ticketData = [
@@ -327,32 +320,32 @@ const App = () => {
       id: "zona-vip",
       title: "Zona Vip",
       subtitle: "Acceso dinámico",
-      prices: [35.0, 45.0],
-      availability: 150,
-      maxAvailability: 150,
+      prices: [40.0, 45.0],
+      availability: 200,
+      maxAvailability: 200,
       features: [
         { icon: <Star />, text: "Pase rápido de acceso" },
         { icon: <Flame />, text: "Zona baja con buena vista" },
-        { icon: <Crown />, text: "Comida y bebida + silla" },
-        { icon: <ShieldCheck />, text: "Seguridad dedicada" },
+        { icon: <Crown />, text: "1/4 de pollo + silla" },
       ],
     },
     {
       id: "general-latido",
       title: "General",
       subtitle: "Acceso regular",
-      prices: [20.0, 30.0],
+      prices: [25.0, 30.0],
       availability: 500,
       maxAvailability: 500,
       features: [
         { icon: <Music />, text: "Pase regular" },
         { icon: <Mic2 />, text: "Gradas Norte y Occidente" },
+        { icon: <Mic2 />, text: "Lata de cervez o gaseosa personal" },
       ],
     },
   ];
 
   const handleAddTicket = (info) => {
-    const phaseName = phases[activePhase].status;
+    const phaseName = phases[activePhase].label;
 
     setCart((prevCart) => {
       const existingItemIndex = prevCart.findIndex(
@@ -406,7 +399,8 @@ const App = () => {
         />
       ) : (
         <div className="min-h-screen text-white font-sans selection:bg-amber-500/30 flex items-center justify-center flex-col">
-          <Tribuna/>
+          <Flyers />
+          <Tribuna />
           <CartSidebar
             isOpen={isCartOpen}
             onClose={() => setIsCartOpen(false)}
@@ -414,11 +408,54 @@ const App = () => {
             onRemoveItem={handleRemoveItem}
             onCheckout={handleOpenCheckout}
           />
+          <div className="voley-canvas-fixed">
+            {/* Manchas individuales distribuidas para evitar el centro único */}
+            <div className="mancha azul pos-1"></div>
+            <div className="mancha amarillo pos-2"></div>
+            <div className="mancha azul-claro pos-3"></div>
+            <div className="mancha amarillo-oro pos-4"></div>
+            <div className="mancha azul-oscuro pos-5"></div>
+          </div>
+          <svg style={{ position: "absolute", width: 0, height: 0 }}>
+            <filter id="watercolor-real">
+              {/* Capa 1: Deformación de bordes (hace la mancha irregular) */}
+              <feTurbulence
+                type="fractalNoise"
+                baseFrequency="0.05"
+                numOctaves="5"
+                result="noise"
+              />
+              <feDisplacementMap
+                in="SourceGraphic"
+                in2="noise"
+                scale="150"
+                xChannelSelector="R"
+                yChannelSelector="G"
+              />
 
-          <div className="max-w-7xl w-full space-y-24">
+              {/* Capa 2: Textura de pigmento (granulado de acuarela) */}
+              <feComponentTransfer>
+                <feFuncA type="discrete" tableValues="0 0.1 0.2 0.5 0.8 1" />
+              </feComponentTransfer>
+
+              {/* Capa 3: Suavizado final para que no sea digital */}
+              <feGaussianBlur stdDeviation="2" />
+            </filter>
+          </svg>
+
+          <div className="w-full space-y-0 sm:pt-12 relative">
+            <div className="absolute inset-0 ">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+                <path
+                  fill="#000000"
+                  fill-opacity="1"
+                  d="M0,192L30,170.7C60,149,120,107,180,96C240,85,300,107,360,106.7C420,107,480,85,540,69.3C600,53,660,43,720,37.3C780,32,840,32,900,69.3C960,107,1020,181,1080,186.7C1140,192,1200,128,1260,90.7C1320,53,1380,43,1410,37.3L1440,32L1440,320L1410,320C1380,320,1320,320,1260,320C1200,320,1140,320,1080,320C1020,320,960,320,900,320C840,320,780,320,720,320C660,320,600,320,540,320C480,320,420,320,360,320C300,320,240,320,180,320C120,320,60,320,30,320L0,320Z"
+                ></path>
+              </svg>
+            </div>
             {/* Selector de Fase con diseño de Tabulador Premium */}
-            <div className="flex flex-col items-center space-y-12 pt-20">
-              <div className="relative flex flex-col sm:flex-row bg-white/5 p-1.5 rounded-2xl border border-white/5 backdrop-blur-xl">
+            <div className="w-full flex flex-col items-center space-y-12 pt-20">
+              <div className="w-full relative justify-center flex flex-col sm:flex-row p-1.5 sm:bg-transparent bg-[#000000] ">
                 {phases.map((phase) => (
                   <button
                     key={phase.id}
@@ -440,6 +477,7 @@ const App = () => {
                         className={`text-[12px] uppercase tracking-widest mt-1 ${activePhase === phase.id ? "text-white/90" : "text-amber-500/90"}`}
                       >
                         {phase.status}
+                        {" al " + phase.date}
                       </span>
                     </div>
                   </button>
@@ -448,7 +486,7 @@ const App = () => {
             </div>
 
             {/* Grid de Entradas con espaciado amplio */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-10 px-5">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-10 px-5 bg-[#000000]">
               {ticketData.map((ticket) => (
                 <TicketCard
                   key={ticket.id}
@@ -458,16 +496,25 @@ const App = () => {
                 />
               ))}
             </div>
+            <div className="relative top-0 inset-0 ">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+                <path
+                  fill="#000000"
+                  fill-opacity="1"
+                  d="M0,288L15,272C30,256,60,224,90,218.7C120,213,150,235,180,240C210,245,240,235,270,202.7C300,171,330,117,360,90.7C390,64,420,64,450,101.3C480,139,510,213,540,245.3C570,277,600,267,630,240C660,213,690,171,720,170.7C750,171,780,213,810,240C840,267,870,277,900,272C930,267,960,245,990,197.3C1020,149,1050,75,1080,74.7C1110,75,1140,149,1170,154.7C1200,160,1230,96,1260,112C1290,128,1320,224,1350,229.3C1380,235,1410,149,1425,106.7L1440,64L1440,0L1425,0C1410,0,1380,0,1350,0C1320,0,1290,0,1260,0C1230,0,1200,0,1170,0C1140,0,1110,0,1080,0C1050,0,1020,0,990,0C960,0,930,0,900,0C870,0,840,0,810,0C780,0,750,0,720,0C690,0,660,0,630,0C600,0,570,0,540,0C510,0,480,0,450,0C420,0,390,0,360,0C330,0,300,0,270,0C240,0,210,0,180,0C150,0,120,0,90,0C60,0,30,0,15,0L0,0Z"
+                ></path>
+              </svg>
+            </div>
           </div>
 
           {/* Botón de Carrito con Efecto Pulso */}
           {cart.length > 0 && !isCartOpen && (
             <button
               onClick={() => setIsCartOpen(true)}
-              className="fixed bottom-12 right-12 z-[80] group cursor-pointer"
+              className="fixed bottom-2 right-2 z-[80] group cursor-pointer"
             >
               <div className="absolute inset-0 bg-amber-500 rounded-3xl blur-2xl opacity-20 group-hover:opacity-40 transition-opacity animate-pulse" />
-              <div className="relative bg-white text-black hover:text-white h-20 w-20 rounded-3xl shadow-2xl flex items-center justify-center hover:bg-red-600 hover:-translate-y-2 transition-all duration-500 active:scale-90">
+              <div className="relative bg-white text-black hover:text-white h-15 w-15 rounded-3xl shadow-2xl flex items-center justify-center hover:bg-red-600 hover:-translate-y-2 transition-all duration-500 active:scale-90">
                 <div className="relative">
                   <ShoppingCart size={24} strokeWidth={2.5} />
                   <span className="absolute -top-5 -right-5 bg-amber-500 text-black text-[11px] font-black h-7 w-7 flex items-center justify-center rounded-xl border-[3px] border-black group-hover:bg-white transition-colors">
@@ -477,14 +524,9 @@ const App = () => {
               </div>
             </button>
           )}
-          <Guide/>
+          <Guide />
 
           <style>{`
-        .custom-scrollbar::-webkit-scrollbar { width: 3px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(251, 191, 36, 0.1); border-radius: 10px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(251, 191, 36, 0.3); }
-        
         @keyframes pulse-soft {
           0%, 100% { opacity: 0.1; }
           50% { opacity: 0.2; }

@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform, useSpring } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Trophy, Zap, Users, Activity, Ticket, Flame, ShieldCheck, MousePointer2, Crown} from 'lucide-react';
-import fymv from '../../assets/fymv.webp';
+import dualidad from '../../assets/dualidad.png';
 import nataliam from '../../assets/nataliam.webp';
-import nataliam2 from '../../assets/nataliam2.webp';
 import ceciliat from '../../assets/ceciliat.webp';
 import angelal from '../../assets/angelal.webp';
 import HomeTop from '../../components/home/HomeTop';
@@ -85,47 +84,17 @@ const DualidadVHS = () => {
         <div className="lg:col-span-7 relative h-[600px] md:h-[800px] w-full mt-12 lg:mt-0">
           <div className="relative w-full h-full overflow-hidden rounded-sm">
             
-            {/* VHS Overlays */}
-            <div className="absolute inset-0 z-30 pointer-events-none opacity-80 mix-blend-screen overflow-hidden select-none">
-               <div className="vhs-lines" />
-               <div className="absolute top-8 left-8 text-[#00ff00] font-mono text-sm md:text-lg tracking-widest">
-                  PLAY ▶ <br /> 00:45:22:04
-               </div>
-               <div className="absolute bottom-8 right-8 text-[#2afc00] font-mono text-xs md:text-sm">
-                  SP LIMA/PERU
-               </div>
-            </div>
-
             {/* Imagen 1: Masculino (Deslizándose) */}
             <motion.div 
-              style={{ y: y1 }}
               className="absolute inset-0 z-10 select-none"
             >
               <img 
-                src={fymv} 
-                className="w-full h-full object-cover grayscale brightness-75 hover:grayscale-0 transition-all duration-700"
+                src={dualidad} 
+                className="w-full h-full object-content sm:object-cover transition-all duration-700"
                 alt="Voley Masculino"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
-            </motion.div>
-
-            {/* Imagen 2: Femenino (Entrando) */}
-            <motion.div 
-              style={{ y: y2 }}
-              className="absolute inset-0 z-20 pt-36 select-none"
-            >
-              <img 
-                src={nataliam2} 
-                className="w-full h-[500px] object-cover grayscale hover:brightness-75 hover:grayscale-0 transition-all duration-700 not-even:grayscale-0 sm:pt-20 pt-0 drop-shadow-2xl drop-shadow-black"
-                alt="Voley Femenino"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
-              <div className="absolute top-12 sm:left-8 left-18 sm:block hidden">
-                 <span className="text-4xl md:text-7xl font-bold italic uppercase text-[#D4AF37] tracking-tighter drop-shadow-xl drop-shadow-black select-none">MASCULINO</span>
-              </div>
-              <div className="absolute sm:bottom-36 bottom-18 sm:left-44 left-20 sm:block hidden">
-                 <span className="text-4xl md:text-7xl font-bold italic uppercase text-[#ff0000] tracking-tighter drop-shadow-xl drop-shadow-black select-none">FEMENINO</span>
-              </div>
+              <div className="pointer-events-none absolute inset-x-0 top-0 h-[15%] bg-gradient-to-t from-transparent via-transparent to-black" />
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[15%] bg-gradient-to-t from-black via-transparent to-transparent" />
             </motion.div>
             
             {/* Barra de Glitch entre cintas */}
@@ -188,18 +157,18 @@ const ExperienceGrid = () => (
           { label: "Potencia Saque", value: "115", unit: "km/h", icon: <Zap className="text-[#FF1E1E]" /> },
           { label: "Ranking Regional", value: "#01", unit: "Elite", icon: <Trophy className="text-[#D4AF37]" /> },
           { label: "Equipos", value: "24", unit: "Utd", icon: <Users className="text-[#FF1E1E]" /> },
-          { label: "Impacto Audiencia", value: "1M+", unit: "Live", icon: <Activity className="text-[#D4AF37]" /> }
+          { label: "Impacto Audiencia", value: "2k+", unit: "Live", icon: <Activity className="text-[#D4AF37]" /> }
         ].map((stat, i) => (
           <SectionReveal key={i} delay={i * 0.1} className="group">
             <div className="flex items-center gap-4 mb-8">
               <div className="p-3 bg-zinc-900 rounded-lg group-hover:scale-110 transition-transform">
                 {stat.icon}
               </div>
-              <div className="text-[11px] font-black text-zinc-400 uppercase tracking-[0.4em]">{stat.label}</div>
+              <div className="text-[11px] font-black text-gray-100 uppercase tracking-[0.4em]">{stat.label}</div>
             </div>
             <div className="flex items-baseline gap-3">
               <span className="text-8xl font-[1000] text-white italic tracking-tighter leading-none group-hover:text-[#D4AF37] transition-colors">{stat.value}</span>
-              <span className="text-lg font-black text-zinc-600 italic uppercase tracking-widest">{stat.unit}</span>
+              <span className="text-lg font-black text-gray-300 italic uppercase tracking-widest">{stat.unit}</span>
             </div>
           </SectionReveal>
         ))}
@@ -240,8 +209,8 @@ const App = () => {
   const { rotateX, rotateY, onMouseMove, onMouseLeave } = useTilt();
 
   const zones = {
-    vip: { price: 'S/ 40', desc: 'A pie de cancha, acceso a lounge privado, catering gourmet y meet & greet con leyendas del voley.', icon: <Crown /> },
-    general: { price: 'S/ 30', desc: 'Vive la pasión de las barras desde la tribuna norte/sur con un ambiente inigualable.', icon: <Users /> }
+    vip: { price: 'S/ 45', desc: 'Disfruta de la vista y comodidad a pie de cancha.', icon: <Crown /> },
+    general: { price: 'S/ 30', desc: 'Vive la pasión de las barras desde la tribuna norte/occidente.', icon: <Users /> }
   };
 
   return (
@@ -262,7 +231,7 @@ const App = () => {
 
         {/* MARQUESINA */}
         <div className="relative z-30 py-8 bg-[#FF1E1E] -rotate-1 scale-105 select-none">
-           <ParallaxText baseVelocity={-2.5}>PRESTIGIO • POTENCIA • TRADICIÓN • INCA VOLLEY • ELITE</ParallaxText>
+           <ParallaxText baseVelocity={-2.5}>PRESTIGIO • POTENCIA • TRADICIÓN • VÓLEY • ELITE</ParallaxText>
         </div>
 
         {/* SECCIÓN: DUALIDAD */}
@@ -279,10 +248,10 @@ const App = () => {
             </SectionReveal>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 select-none">
-              <GuestCard name="Natalia Málaga" role="Comando Técnico" img={nataliam} delay={0.1}/>
-              <GuestCard name="Cecilia Tait" role="Comité Honorario" img={ceciliat} delay={0.2}/>
-              <GuestCard name="Ángela Leyva" role="Atleta Global" img={angelal} delay={0.3}/>
-              <GuestCard name="Luren Baylón" role="Analista Pro" img="https://images.unsplash.com/photo-1589156280159-27698a70f29e?auto=format&fit=crop&q=80&w=800" delay={0.4}/>
+              <GuestCard name="???? ???" role="Comando Técnico" img={nataliam} delay={0.1}/>
+              <GuestCard name="???? ???" role="Comité Honorario" img={ceciliat} delay={0.2}/>
+              <GuestCard name="???? ???" role="Atleta Global" img={angelal} delay={0.3}/>
+              <GuestCard name="???? ???" role="Analista Pro" img="https://images.unsplash.com/photo-1589156280159-27698a70f29e?auto=format&fit=crop&q=80&w=800" delay={0.4}/>
             </div>
           </div>
         </section>
@@ -298,7 +267,7 @@ const App = () => {
                 <SectionReveal>
                   <div className="flex items-center gap-3 mb-10 select-none">
                     <ShieldCheck className="text-[#FF1E1E]" size={30} />
-                    <span className="font-black uppercase tracking-[0.4em] text-[10px] md:text-xs text-zinc-500">Official Ticketing System</span>
+                    <span className="font-black uppercase tracking-[0.4em] text-[10px] md:text-xs text-black">Official Ticketing System</span>
                   </div>
                   <h2 className="text-6xl md:text-9xl font-[1000] uppercase italic tracking-tighter leading-[0.85] mb-12 select-none">
                     RESERVA <br /> <span className="text-[#FF1E1E]">TU LUGAR.</span>
@@ -341,10 +310,10 @@ const App = () => {
                          <div className="p-3 bg-[#D4AF37] rounded-lg">
                            {React.cloneElement(zones[activeZone].icon, { size: 24, className: "text-black" })}
                          </div>
-                         <span className="text-zinc-500 font-black tracking-[0.5em] text-[10px] uppercase italic">EXPERIENCIA {activeZone}</span>
+                         <span className="text-gray-100 font-black tracking-[0.5em] text-[10px] uppercase italic">EXPERIENCIA {activeZone}</span>
                       </div>
                       <h3 className="text-6xl md:text-8xl font-[1000] uppercase italic mb-10 tracking-tighter leading-none text-shadow-amber-500 text-shadow-lg">
-                        ZONA <br /> <span className="text-[#FF1E1E] text-shadow-white text-shadow-lg">{activeZone}</span>
+                        ZONA <br /> <span className="text-[#FF1E1E] text-shadow-blue-500 text-shadow-lg">{activeZone}</span>
                       </h3>
                       <p className="text-zinc-300 text-xl md:text-2xl font-light mb-16 md:mb-20 leading-relaxed max-w-xl">
                         {zones[activeZone].desc}
@@ -367,11 +336,11 @@ const App = () => {
         </section>
 
         {/* CIERRE CON MARCA PATRIMONIAL */}
-        <section className="py-32 md:py-60 bg-[#050505] px-6 text-center border-t border-[#D4AF37]/10 relative">
+        <section className="py-32 md:py-60 bg-[#050505] text-center border-t border-[#D4AF37]/10 relative">
             <SectionReveal>
-              <div className="mb-20">
-                <span className="text-[18vw] font-[1000] text-transparent stroke-gold opacity-10 uppercase tracking-tighter leading-none select-none italic">
-                  INCA VOLLEY
+              <div className="mb-20 pr-5">
+                <span className="text-[68px] sm:text-[240px] font-bold text-transparent stroke-gold opacity-10 uppercase tracking-tighter leading-none select-none italic">
+                  AYACUCHO VÓLEY CLUB
                 </span>
               </div>
               <div className="max-w-4xl mx-auto">
@@ -381,11 +350,11 @@ const App = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-12 py-12 border-y border-[#D4AF37]/20 select-none">
                    <div className="flex flex-col">
                      <span className="text-[#FF1E1E] font-black text-xs tracking-[0.5em] mb-2 uppercase italic">Sede</span>
-                     <span className="text-zinc-400 font-bold text-lg uppercase">COLISEO NUESTRA SERÑORA DE LAS MERCEDES</span>
+                     <span className="text-zinc-400 font-bold text-lg uppercase">Complejo Deportivo Capillapata</span>
                    </div>
                    <div className="flex flex-col">
                      <span className="text-[#D4AF37] font-black text-xs tracking-[0.5em] mb-2 uppercase italic">Fecha</span>
-                     <span className="text-zinc-400 font-bold text-lg uppercase">MARZO 2026</span>
+                     <span className="text-zinc-400 font-bold text-lg uppercase">28 MARZO 2026</span>
                    </div>
                    <div className="flex flex-col">
                      <span className="text-[#FF1E1E] font-black text-xs tracking-[0.5em] mb-2 uppercase italic">Nivel</span>
@@ -394,7 +363,7 @@ const App = () => {
                 </div>
                 <div className="mt-20 flex justify-center items-center gap-4 text-zinc-700 text-[10px] font-black uppercase tracking-[0.8em] select-none">
                    <MousePointer2 size={14} className="text-[#D4AF37]" />
-                   <span className=' uppercase'>great volleyball sporting event © 2026</span>
+                   <span className=' uppercase'>Ayacucho Vóley Club © 2026</span>
                 </div>
               </div>
             </SectionReveal>
