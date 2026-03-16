@@ -10,15 +10,14 @@ import {
   XCircle,
   CheckCircle2,
 } from "lucide-react";
-import diosas from "../../assets/LogoA.png"
-import perritas from "../../assets/LogoB.png"
-import ayacucho from "../../assets/LogoC.png"
-import arequipa from "../../assets/LogoD.png"
-import interrogacion from "../../assets/Per-in.png"
-
+import diosas from "../../assets/LogoA.png";
+import perritas from "../../assets/LogoB.png";
+import ayacucho from "../../assets/LogoC.png";
+import arequipa from "../../assets/LogoD.png";
+import interrogacion from "../../assets/Per-in.png";
 
 const slides = [
-    {
+  {
     title: "DIOSAS DE LA AMAZONÍA",
     opponent: "LAS PERRITAS",
     date: "28 y 29 MAR 2026",
@@ -49,7 +48,8 @@ const slides = [
     opponent: "AREQUIPA",
     date: "28 y 29 MAR 2026",
     location: "LOSA DEPORTIVA DE CAPILLAPATA · AYACUCHO",
-    description:"Este enfrentamiento forma parte de un torneo regional que busca promover el desarrollo del vóley en las regiones..",
+    description:
+      "Este enfrentamiento forma parte de un torneo regional que busca promover el desarrollo del vóley en las regiones..",
     colors: ["#a855f7", "#ec4899"],
     tag: "VÓLEY MASCULINO",
     teamA: {
@@ -147,7 +147,9 @@ const StatCard = ({ team, side, color }) => {
               animate={{ width: `${winPercentage}%` }}
               transition={{ duration: 1, delay: 0.5 }}
               className="h-full rounded-full"
-              style={{ background: `linear-gradient(90deg, ${color}80, ${color})` }}
+              style={{
+                background: `linear-gradient(90deg, ${color}80, ${color})`,
+              }}
             />
           </div>
         </div>
@@ -321,7 +323,9 @@ const HomeTop = () => {
                           transition={{ delay: 0.3, type: "spring" }}
                           className="relative w-16 h-16 sm:w-20 sm:h-20 bg-black/80 backdrop-blur-xl border-2 border-white/30 rounded-full flex items-center justify-center shadow-2xl"
                         >
-                          <span className="text-2xl sm:text-3xl font-black text-white">VS</span>
+                          <span className="text-2xl sm:text-3xl font-black text-white">
+                            VS
+                          </span>
                         </motion.div>
                       </div>
                     </motion.div>
@@ -357,7 +361,10 @@ const HomeTop = () => {
                     className="w-full sm:w-auto px-8 py-4 bg-white text-black font-bold text-sm tracking-wider hover:bg-zinc-200 transition-all rounded-full flex items-center justify-center gap-2 group shadow-xl"
                   >
                     COMPRAR ENTRADAS
-                    <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                    <ChevronRight
+                      size={16}
+                      className="group-hover:translate-x-1 transition-transform"
+                    />
                   </a>
                   <div className="flex justify-between items-center text-xs text-zinc-500 mt-4">
                     <span>HYPE METER</span>
@@ -392,7 +399,9 @@ const HomeTop = () => {
           >
             <div
               className={`h-1 rounded-full transition-all duration-500 ${
-                current === i ? "w-12" : "w-3 bg-white/20 group-hover:bg-white/40"
+                current === i
+                  ? "w-12"
+                  : "w-3 bg-white/20 group-hover:bg-white/40"
               }`}
               style={{
                 background:
