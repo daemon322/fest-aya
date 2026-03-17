@@ -416,16 +416,17 @@ export default async function handler(req, res) {
         }),
       });
 
+      // Leer body una sola vez
+      const responseText = await clientRes.text();
       let clientJson = null;
       try {
-        clientJson = await clientRes.json();
+        clientJson = responseText ? JSON.parse(responseText) : null;
       } catch (parseErr) {
-        const text = await clientRes.text();
         console.warn(
-          "Email al cliente - respuesta no es JSON. Status:",
+          "Email al cliente - respuesta no es JSON válido. Status:",
           clientRes.status,
           "Body:",
-          text.slice(0, 200),
+          responseText.slice(0, 200),
         );
       }
 
