@@ -211,7 +211,7 @@ const CartPage = () => {
 
   return (
     <div className="min-h-screen bg-black text-white">
-      <div className="max-w-4xl mx-auto px-5 py-24 sm:py-32">
+      <div className="w-full mx-auto px-5 py-24 sm:py-32">
 
         {/* Encabezado */}
         <div className="mb-16">
@@ -271,7 +271,7 @@ const CartPage = () => {
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-16">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-16">
             {/* Lista de entradas detallada */}
             <div className="space-y-8">
               {cart.map((item, idx) => (
@@ -286,7 +286,7 @@ const CartPage = () => {
             </div>
 
             {/* Resumen y CTA */}
-            <div className="space-y-8">
+            <div className="space-y-8 sticky top-24 self-start">
               {/* Panel de totales */}
               <div className="bg-[#0a0a0a] border border-white/5 rounded-[2.5rem] p-10 space-y-6">
                 <h3 className="text-[9px] uppercase tracking-[0.5em] text-white/40 font-black">

@@ -39,7 +39,10 @@ const Footer = () => {
     };
   }, []);
   const socialLinks = [
-    { icon: Facebook, href: "https://www.facebook.com/AYACUCHOVOLEYCLUB/?locale=es_LA" },
+    {
+      icon: Facebook,
+      href: "https://www.facebook.com/AYACUCHOVOLEYCLUB/?locale=es_LA",
+    },
     { icon: Instagram, href: "https://instagram.com" },
     { icon: Twitter, href: "https://twitter.com" },
     { icon: Youtube, href: "https://youtube.com" },
@@ -152,18 +155,18 @@ const Footer = () => {
             </h4>
             <ul className="space-y-4">
               {[
-                "Calendario 2024",
-                "Mapa de Recintos",
-                "Portal de Promotores",
-                "Puntos de Venta",
+                { label: "Calendario 2024", href: "/" },
+                { label: "Mapa de Recintos", href: "/" },
+                { label: "Portal de Promotores", href: "/" },
+                { label: "Puntos de Venta", href: "/PointSale" },
               ].map((item) => (
-                <li key={item}>
+                <li key={item.label}>
                   <a
-                    href="#"
+                    href={item.href}
                     className="text-gray-500 hover:text-white text-sm transition-all flex items-center group"
                   >
                     <span className="w-0 group-hover:w-4 h-px bg-amber-500 mr-0 group-hover:mr-3 transition-all duration-300" />
-                    {item}
+                    {item.label}
                   </a>
                 </li>
               ))}
@@ -258,9 +261,12 @@ const Footer = () => {
           <div className="flex flex-wrap justify-center gap-x-10 gap-y-4">
             {[
               { label: "Privacidad", href: "/paginas/PrivacPoli" },
-              { label: "Condiciones de Venta", href: "/paginas/CondicionesVenta" },
+              {
+                label: "Condiciones de Venta",
+                href: "/paginas/CondicionesVenta",
+              },
               { label: "Cookies", href: "/paginas/PoliticCookies" },
-              { label: "Mapa del Sitio", href: "/" },
+              { label: "Mapa del Sitio", href: "/location" },
             ].map((link) => (
               <a
                 key={link.label}

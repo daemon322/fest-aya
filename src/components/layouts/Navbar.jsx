@@ -20,8 +20,11 @@ const GalaNavbar = () => {
   }, [isOpen]);
 
   const navLinks = [
-    { name: "Entradas",    href: "/voley-al-limite" },
-    { name: "About",       href: "/about"   },
+    { name: "Inicio", href: "/" },
+    { name: "Entradas", href: "/voley-al-limite" },
+    { name: "Carrito", href: "/carrito" },
+    { name: "Ubicación", href: "/location"} ,
+    { name: "About", href: "/about" },
   ];
 
   const circleVariants = {

@@ -13,6 +13,8 @@ import ClaimsBook from "./views/paginas/LibroReclamaciones/LibroReclamaciones";
 import PrivacPoli from "./views/paginas/PrivaPoly/PrivacPoli";
 import CondicionesVenta from "./views/paginas/CondicionesVenta/CondicionesVenta";
 import CartPage from "./views/tickets/CartPage";
+import Location from "./views/location/Location";
+import PointSale from "./views/location/PointSale";
 
 
 function App() {
@@ -33,6 +35,8 @@ function App() {
         <Route path="/paginas/LibroReclamaciones" element={<ClaimsBook/>} />
         <Route path="/paginas/PrivacPoli" element={<PrivacPoli/>} />
         <Route path="/paginas/CondicionesVenta" element={<CondicionesVenta/>} />
+        <Route path="/location" element={<Location/>} />
+        <Route path="/PointSale" element={<PointSale/>} />
       </Routes>
       <Footer/>
     </Router>

@@ -5,7 +5,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-white text-slate-900 font-sans selection:bg-indigo-100 selection:text-indigo-900">
       {/* Hero Section with Modern Gradient & Mesh Background */}
-      <section className="relative overflow-hidden bg-slate-900 py-24 sm:py-32">
+      <section className="relative overflow-hidden bg-slate-900 py-24 sm:py-32 select-none">
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute -top-[30%] -left-[10%] w-[70%] h-[70%] rounded-full bg-indigo-600/20 blur-[120px]" />
           <div className="absolute -bottom-[20%] -right-[10%] w-[60%] h-[60%] rounded-full bg-blue-500/10 blur-[100px]" />
@@ -26,7 +26,7 @@ export default function App() {
       </section>
 
       {/* Empresa Detrás del Evento */}
-      <section className="py-24 relative">
+      <section className="py-24 relative select-none">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div className="relative">
@@ -55,7 +55,7 @@ export default function App() {
       </section>
 
       {/* Misión y Valores - Modern Cards */}
-      <section className="py-24 bg-slate-50">
+      <section className="py-24 bg-slate-50 select-none">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Misión */}
@@ -99,7 +99,7 @@ export default function App() {
       </section>
 
       {/* Team Section */}
-      <section className="py-24 bg-white">
+      <section className="py-24 bg-white select-none">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl">Liderazgo Estratégico</h2>
@@ -109,7 +109,7 @@ export default function App() {
             {[
               { name: "Henry Escalante R.", role: "Director General" },
               { name: "Deiby Escalante P.", role: "Coordinador de Eventos" },
-              { name: "Dilmark Escalante", role: "Responsable de Logística" }
+              { name: "Dilmark Escalante R.", role: "Responsable de Logística" }
             ].map((member, idx) => (
               <div key={idx} className="group text-center">
                 <div className="relative mb-6 inline-block">
@@ -136,7 +136,7 @@ export default function App() {
               <div className="space-y-6 text-slate-300 mb-10">
                 <div className="flex items-center space-x-3">
                   <Calendar className="w-5 h-5 text-indigo-400" />
-                  <span>28 de Marzo - 9:00 AM</span>
+                  <span>28 de Marzo - 10:00 AM</span>
                 </div>
                 <div className="flex items-center space-x-3">
                   <MapPin className="w-5 h-5 text-indigo-400" />
@@ -147,13 +147,10 @@ export default function App() {
                   Un festival deportivo con shows artísticos y premios exclusivos.
                 </p>
               </div>
-              <button className="w-fit bg-indigo-500 hover:bg-indigo-400 text-white px-8 py-4 rounded-2xl font-bold transition-all transform hover:scale-105 shadow-lg shadow-indigo-500/25">
-                Comprar Entradas Ahora
-              </button>
             </div>
             <div className="bg-slate-800/50 flex items-center justify-center p-12 border-l border-white/5">
                 <div className="text-white/20 font-black text-8xl rotate-12 select-none uppercase">
-                   Voley<br/>Club
+                   Ayacucho Vóley<br/>Club
                 </div>
             </div>
           </div>
