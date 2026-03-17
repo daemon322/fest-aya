@@ -1,22 +1,16 @@
 // api/send-reservation.js
-// Usa Web3Forms (gratis, sin dominio, 250 envíos/mes) PARA CLIENTE.
-// Usa Resend (ya instalado) PARA ADMIN CON ATTACHMENTS.
-// Si se acaba el límite de Web3Forms: crea otra cuenta en web3forms.com,
-// copia la nueva WEB3FORMS_KEY en Vercel → Environment Variables → Redeploy.
-// No hay que tocar código, solo cambiar esa variable.
-//
+// Usa SendGrid para ADMIN y CLIENTE (ya instalado en package.json)
 // Variables de entorno en Vercel:
-//   WEB3FORMS_KEY    — Access key de web3forms.com
-//   RESEND_API_KEY   — API key de resend.com (para enviar email al admin con adjuntos)
-//   ADMIN_EMAIL      — Tu correo donde recibirás las reservas
-//   RECAPTCHA_SECRET — Secret key de Google reCAPTCHA v2
-//   ALLOWED_ORIGIN   — URL de tu sitio, ej: https://mi-entradas.vercel.app
+//   SENDGRID_API_KEY     — API key de sendgrid.com
+//   ADMIN_EMAIL          — Tu correo donde recibirás las reservas
+//   FROM_EMAIL           — Email verificado en SendGrid (puede ser noreply@tudominio.com)
+//   RECAPTCHA_SECRET     — Secret key de Google reCAPTCHA v2
 //
 // Opcionales:
 //   RATE_LIMIT_WINDOW_MS — ventana rate limit ms (default: 60000)
 //   RATE_LIMIT_MAX       — máx peticiones/ventana (default: 5)
 
-import { Resend } from "resend";
+import sgMail from "@sendgrid/mail";
 
 const ALLOWED_MIME_TYPES = new Set([
   "image/jpeg",
@@ -301,21 +295,18 @@ export default async function handler(req, res) {
         });
     }
 
-    const WEB3FORMS_KEY = process.env.WEB3FORMS_KEY;
-    const RESEND_API_KEY = process.env.RESEND_API_KEY;
+    const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY;
+    const FROM_EMAIL = process.env.FROM_EMAIL;
     const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
-    if (!WEB3FORMS_KEY || !ADMIN_EMAIL) {
-      console.error("Faltan WEB3FORMS_KEY o ADMIN_EMAIL");
+    if (!SENDGRID_API_KEY || !FROM_EMAIL || !ADMIN_EMAIL) {
+      console.error("Faltan SENDGRID_API_KEY, FROM_EMAIL o ADMIN_EMAIL");
       return res.status(500).json({
         success: false,
         message: "Error de configuración del servidor.",
       });
     }
-    if (!RESEND_API_KEY) {
-      console.warn(
-        "RESEND_API_KEY no configurado. Usando Web3Forms para todos los emails.",
-      );
-    }
+
+    sgMail.setApiKey(SENDGRID_API_KEY);
 
     const emailData = {
       name: cleanName,
@@ -326,98 +317,54 @@ export default async function handler(req, res) {
       cartDetails: cartDetails || [],
     };
 
-    // 1. Email al ADMIN — Intentar con Resend primero (soporta attachments),
-    //    fallback a Web3Forms si no está configurado
-    let adminSendSuccess = false;
-
-    if (RESEND_API_KEY) {
-      try {
-        const resend = new Resend(RESEND_API_KEY);
-
-        // Preparar attachments
-        const attachments = [];
-        if (voucherBase64 && voucherFileName) {
-          const b64Data = voucherBase64.split(",")[1] || voucherBase64;
-          attachments.push({
-            filename: voucherFileName,
-            content: Buffer.from(b64Data, "base64"),
-          });
-        }
-
-        await resend.emails.send({
-          from: "noreply@resend.dev",
-          to: ADMIN_EMAIL,
-          replyTo: cleanEmail,
-          subject: sanitizeHeader(
-            `Nueva Reserva — ${cleanName} | REF: ${sanitize(refNumber)}`,
-          ),
-          html: buildAdminHtml(emailData),
-          attachments,
+    // 1. Email al ADMIN (con voucher como adjunto via SendGrid)
+    try {
+      const attachments = [];
+      if (voucherBase64 && voucherFileName) {
+        const b64Data = voucherBase64.split(",")[1] || voucherBase64;
+        attachments.push({
+          content: b64Data,
+          filename: voucherFileName,
+          type: "application/octet-stream",
+          disposition: "attachment",
         });
-
-        adminSendSuccess = true;
-      } catch (resendErr) {
-        console.warn(
-          "Resend falló, intentando con Web3Forms:",
-          resendErr.message,
-        );
       }
-    }
 
-    // Fallback a Web3Forms si Resend no está disponible o falló
-    if (!adminSendSuccess) {
-      const adminRes = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({
-          access_key: WEB3FORMS_KEY,
-          subject: sanitizeHeader(
-            `Nueva Reserva — ${cleanName} | REF: ${sanitize(refNumber)}`,
-          ),
-          from_name: "Sistema de Reservas",
-          to: ADMIN_EMAIL,
-          replyto: cleanEmail,
-          html: buildAdminHtml(emailData),
-          // Nota: Web3Forms no soporta base64 inline en HTML.
-          // El archivo se referencia en el HTML como "📎 adjunto."
-        }),
+      await sgMail.send({
+        to: ADMIN_EMAIL,
+        from: FROM_EMAIL,
+        replyTo: cleanEmail,
+        subject: sanitizeHeader(
+          `Nueva Reserva — ${cleanName} | REF: ${sanitize(refNumber)}`,
+        ),
+        html: buildAdminHtml(emailData),
+        attachments,
       });
-      const adminJson = await adminRes.json().catch(() => null);
-      if (!adminRes.ok || !adminJson?.success) {
-        console.error("Web3Forms admin error:", adminJson);
-        return res.status(502).json({
-          success: false,
-          message: "Error al enviar la reserva. Intenta de nuevo.",
-        });
-      }
+
+      console.log("Email al admin enviado exitosamente");
+    } catch (adminErr) {
+      console.error("Error enviando email al admin:", adminErr.message);
+      return res.status(502).json({
+        success: false,
+        message: "Error al enviar la reserva. Intenta de nuevo.",
+      });
     }
 
-    // 2. Confirmación al CLIENTE (con Resend si disponible, sino silenciosamente ignorar)
-    // Si falla no bloqueamos — la reserva ya llegó al admin
-    if (RESEND_API_KEY) {
-      try {
-        const resend = new Resend(RESEND_API_KEY);
-        await resend.emails.send({
-          from: "noreply@resend.dev",
-          to: cleanEmail,
-          replyTo: ADMIN_EMAIL,
-          subject: sanitizeHeader(
-            `✓ Tu reserva fue recibida — REF: ${sanitize(refNumber)}`,
-          ),
-          text: buildClientMessage(emailData),
-        });
-        console.log("Email al cliente enviado exitosamente");
-      } catch (clientErr) {
-        console.warn(
-          "Email al cliente falló (no crítico) - Resend Error:",
-          clientErr.message,
-        );
-      }
-    } else {
-      console.warn("Resend no configurado. Email al cliente no será enviado.");
+    // 2. Confirmación al CLIENTE (SendGrid sin adjuntos)
+    try {
+      await sgMail.send({
+        to: cleanEmail,
+        from: FROM_EMAIL,
+        replyTo: ADMIN_EMAIL,
+        subject: sanitizeHeader(
+          `✓ Tu reserva fue recibida — REF: ${sanitize(refNumber)}`,
+        ),
+        text: buildClientMessage(emailData),
+      });
+
+      console.log("Email al cliente enviado exitosamente");
+    } catch (clientErr) {
+      console.warn("Email al cliente falló (no crítico):", clientErr.message);
     }
 
     return res
