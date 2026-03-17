@@ -209,8 +209,8 @@ export default function TerminoCondiciones() {
       </div>
 
       {/* Contenido principal */}
-      <div className="flex-1 p-6 md:p-10 max-w-5xl mx-auto">
-        <div className="mb-10 pt-10">
+      <div className="flex-1 md:p-10 max-w-5xl mx-auto">
+        <div className="mb-10 pt-20 sm:pt-10">
           <h1 className="text-4xl font-bold">Términos y Condiciones</h1>
           <p className="text-gray-300 mt-2">
             MULTISERVICIOS KASURI E.I.R.L • Evento ¡Vóley al Límite sin filtros en la cancha! • 2026
@@ -219,7 +219,7 @@ export default function TerminoCondiciones() {
           <input
             type="text"
             placeholder="Buscar dentro de los términos..."
-            className="mt-6 w-full border rounded-lg p-3"
+            className="mt-6 w-full sm:w-[400px] border rounded-lg p-3"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
