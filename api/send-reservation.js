@@ -35,8 +35,23 @@ const sanitizeHeader = (val) =>
         .trim()
         .slice(0, 200)
     : "";
-const isValidEmail = (e) =>
-  /^[a-z0-9._%+\-]+@gmail\.com$/.test(e.toLowerCase()); // Solo Gmail
+const isValidEmail = (e) => {
+  const email = e.toLowerCase();
+  const allowedDomains = [
+    "gmail.com",
+    "hotmail.com",
+    "outlook.com",
+    "yahoo.com",
+    "edu.pe",
+    "unmsm.edu.pe",
+    "unh.edu.pe",
+  ];
+  const domain = email.split("@")[1];
+  return (
+    /^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$/.test(email) &&
+    allowedDomains.some((d) => domain === d || domain?.endsWith("." + d))
+  );
+};
 const isValidPhone = (p) => /^[\d\s+()-]{7,20}$/.test(p);
 const isValidDoc = (d) => d.length >= 6 && d.length <= 20;
 
@@ -236,7 +251,7 @@ export default async function handler(req, res) {
     if (!cleanEmail || !isValidEmail(cleanEmail))
       return res.status(400).json({
         success: false,
-        message: "Solo se aceptan correos Gmail (@gmail.com).",
+        message: "El correo no es válido o el dominio no es permitido.",
       });
     if (!cleanPhone || !isValidPhone(cleanPhone))
       return res
