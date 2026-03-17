@@ -12,6 +12,7 @@ import PoliticCookies from "./views/paginas/Politic_Cookies/PoliticCookies";
 import ClaimsBook from "./views/paginas/LibroReclamaciones/LibroReclamaciones";
 import PrivacPoli from "./views/paginas/PrivaPoly/PrivacPoli";
 import CondicionesVenta from "./views/paginas/CondicionesVenta/CondicionesVenta";
+import CartPage from "./views/tickets/CartPage";
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/voley-al-limite" element={<TicketPage />} />
         <Route path="/about" element={<About/>} />
+        <Route path="/carrito" element={<CartPage/>} />
         <Route path="/paginas/TerminoCondiciones" element={<TerminoCondiciones/>} />
         <Route path="/paginas/PoliticCookies" element={<PoliticCookies/>} />
         <Route path="/paginas/LibroReclamaciones" element={<ClaimsBook/>} />
