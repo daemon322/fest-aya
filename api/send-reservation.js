@@ -398,7 +398,7 @@ export default async function handler(req, res) {
     // 2. Confirmación al CLIENTE (con Web3Forms)
     // Si falla no bloqueamos — la reserva ya llegó al admin
     try {
-      await fetch("https://api.web3forms.com/submit", {
+      const clientRes = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -415,6 +415,10 @@ export default async function handler(req, res) {
           message: buildClientMessage(emailData),
         }),
       });
+      const clientJson = await clientRes.json().catch(() => null);
+      if (!clientRes.ok || !clientJson?.success) {
+        console.warn("Email al cliente falló (no crítico):", clientJson);
+      }
     } catch (clientErr) {
       console.warn("Email al cliente falló (no crítico):", clientErr.message);
     }
