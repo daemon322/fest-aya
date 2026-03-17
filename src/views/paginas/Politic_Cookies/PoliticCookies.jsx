@@ -56,8 +56,8 @@ export default function CookiePolicy() {
             Política de <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 to-amber-200 italic">Cookies.</span>
           </h1>
-          <p className="text-base md:text-xl text-gray-500 max-w-2xl mx-auto font-light leading-relaxed px-4">
-            En AyacuchoFest valoramos tu privacidad. Esta política explica cómo y por qué utilizamos cookies para mejorar tu experiencia en nuestra plataforma.
+          <p className="text-base md:text-xl text-gray-300 max-w-2xl mx-auto font-light leading-relaxed px-4">
+            En Ayacucho Vóley Club valoramos tu privacidad. Esta política explica cómo y por qué utilizamos cookies para mejorar tu experiencia en nuestra plataforma.
           </p>
         </div>
       </header>
@@ -72,7 +72,7 @@ export default function CookiePolicy() {
           </div>
           <h2 className="text-xl md:text-2xl font-black uppercase tracking-tight text-white mb-4 md:mb-6 italic">¿Qué son las cookies?</h2>
           <p className="text-gray-400 text-base md:text-lg leading-relaxed relative z-10 max-w-3xl">
-            Las cookies son pequeños archivos de texto que se almacenan en tu dispositivo cuando visitas un sitio web. Nos ayudan a recordar tus preferencias, procesar tus compras de manera segura y entender cómo interactúas con AyacuchoFest.
+            Las cookies son pequeños archivos de texto que se almacenan en tu dispositivo cuando visitas un sitio web. Nos ayudan a recordar tus preferencias, procesar tus compras de manera segura y entender cómo interactúas con Ayacucho Vóley Club.
           </p>
         </section>
 
@@ -135,7 +135,7 @@ export default function CookiePolicy() {
                  <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10" />
                  <Cookie size={60} className="text-amber-500 mb-6 md:mb-8 animate-bounce md:w-20 md:h-20" />
                  <h4 className="text-xl md:text-2xl font-black uppercase mb-4 tracking-tighter leading-none">Tu privacidad es <br/>nuestro compromiso</h4>
-                 <p className="text-[10px] md:text-sm text-amber-500/60 font-medium uppercase tracking-[0.2em]">AyacuchoFest Secure Cloud</p>
+                 <p className="text-[10px] md:text-sm text-amber-500/60 font-medium uppercase tracking-[0.2em]">Ayacucho Vóley Club Secure Cloud</p>
                </div>
                {/* Decorative floating elements - Hidden on very small screens */}
                <div className="absolute -top-4 -right-4 w-12 h-12 md:w-20 md:h-20 bg-amber-500 rounded-2xl md:rounded-3xl rotate-12 flex items-center justify-center text-black shadow-xl hidden sm:flex">
@@ -147,10 +147,10 @@ export default function CookiePolicy() {
 
         {/* Footer Note */}
         <footer className="mt-24 md:mt-40 text-center px-4">
-          <p className="text-gray-700 text-[9px] md:text-[10px] font-black uppercase tracking-[0.6em] md:tracking-[0.8em] mb-4">
-            Última actualización: Enero 2024
+          <p className="text-gray-300 text-[9px] md:text-[10px] font-black uppercase tracking-[0.6em] md:tracking-[0.8em] mb-4">
+            Última actualización: Mazo 2026
           </p>
-          <div className="flex justify-center gap-3 md:gap-4 text-[10px] md:text-xs font-bold text-amber-500/40 uppercase tracking-widest italic">
+          <div className="flex justify-center gap-3 md:gap-4 text-[10px] md:text-xs font-bold text-amber-500/80 uppercase tracking-widest italic">
             <span>Privacidad</span>
             <span>•</span>
             <span>Seguridad</span>

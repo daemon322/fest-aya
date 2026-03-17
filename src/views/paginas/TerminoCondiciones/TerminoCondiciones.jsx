@@ -1,280 +1,265 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { 
-  ShieldCheck, Info, Users, AlertTriangle, Activity, Ticket, 
-  ShoppingCart, Lock, UserMinus, Copyright, MessageSquare, 
-  Edit3, Gavel, Car, ArrowUp, Menu, X 
-} from 'lucide-react';
+import React, { useMemo, useState } from "react";
 
-const SECTIONS = [
-  { id: 'about', title: '1. Sobre AyacuchoFest', icon: Info },
-  { id: 'organizers', title: '2. Rol de los organizadores', icon: Users },
-  { id: 'conduct', title: '3. Reglas de conducta', icon: Activity },
-  { id: 'liability', title: '4. Límites de responsabilidad', icon: AlertTriangle },
-  { id: 'processes', title: '5. Procesos en la plataforma', icon: ShieldCheck },
-  { id: 'tickets-rules', title: '6. Reglas de tickets', icon: Ticket },
-  { id: 'purchase', title: '7. Procedimiento de compra', icon: ShoppingCart },
-  { id: 'safe-ticket', title: '8. Ticket Seguro', icon: Lock },
-  { id: 'disaffiliation', title: '9. Desafiliación', icon: UserMinus },
-  { id: 'intellectual-property', title: '10. Propiedad intelectual', icon: Copyright },
-  { id: 'claims', title: '11. Reclamos y Libro', icon: MessageSquare },
-  { id: 'modifications', title: '12. Modificaciones', icon: Edit3 },
-  { id: 'law', title: '13. Ley aplicable', icon: Gavel },
-  { id: 'parking', title: '14. Estacionamientos', icon: Car },
+// TÉRMINOS Y CONDICIONES PARA EMPRESA ORGANIZADORA DE EVENTO PUNTUAL
+// La empresa (multiservicios) organiza directamente el evento "¡Vóley al Límite sin filtros en la cancha!"
+
+const sections = [
+  {
+    id: "intro",
+    title: "TÉRMINOS Y CONDICIONES DE USO",
+    content: `Los presentes Términos y Condiciones de Uso (en adelante “Términos y Condiciones”) regulan el acceso y la utilización de los servicios brindados por MULTISERVICIOS KASURI E.I.R.L (en adelante, “la Empresa” o “el Organizador”) a través de su página web https://fest-aya.vercel.app/ (en adelante, la “Página Web”), específicamente para la venta de entradas del evento deportivo "¡Vóley al Límite sin filtros en la cancha!". Los usuarios del mencionado sitio web se encontrarán sujetos a los presentes Términos y Condiciones, junto con todas las demás políticas y principios que rigen la Página Web y que son incorporados al presente por referencia.
+
+Los Términos y Condiciones indicados en este documento serán aplicables a cualquier acto celebrado entre cualquier Usuario de la Página Web y la Empresa. El usuario declara haber leído los presentes Términos y Condiciones, y manifiesta su conformidad y aceptación al momento de hacer uso de la Página Web (en adelante, los “Usuarios”). Cualquier usuario que no acepte o se encuentre en desacuerdo con estos Términos y Condiciones, los cuales tienen un carácter obligatorio y vinculante, deberá abstenerse de utilizar la Página Web.`,
+  },
+  {
+    id: "about",
+    title: "1. Sobre la Empresa Organizadora",
+    content: `MULTISERVICIOS KASURI E.I.R.L es una empresa constituida bajo las leyes peruanas, identificada con Registro Único de Contribuyentes N° 20574793379, domiciliada en JR. JIRON SAN LUIS - CIUDAD MAGISTERIAL MZA. I LOTE. 06 URB. ASOCIACION CIUDAD MAGISTERIAL (A MEDIA CUADRA DE LA I.E JEANPEAJET),distrito de Ayacucho, provincia de Huamanga y departamento de Ayacucho.
+
+Si bien MULTISERVICIOS KASURI E.I.R.L tiene por objeto desarrollar diversas actividades empresariales (multiservicios), en el presente caso actúa como **organizadora directa** del evento deportivo denominado "¡Vóley al Límite sin filtros en la cancha!". En consecuencia, asume todas las responsabilidades propias de la organización, incluyendo la venta de entradas, la logística del evento, la seguridad, y las eventuales devoluciones o reembolsos, de ser el caso.`,
+  },
+  {
+    id: "organizerresponsibility",
+    title: "2. Responsabilidad de la Empresa como Organizadora",
+    content: `Al ser MULTISERVICIOS KASURI E.I.R.L la organizadora directa del evento, es la única y exclusiva responsable de todos los aspectos relacionados con el mismo, incluyendo pero no limitándose a:
+
+- La planificación, producción y ejecución del evento.
+- La determinación de precios, zonas, aforo y condiciones de ingreso.
+- La seguridad dentro del recinto.
+- La postergación, suspensión o cancelación del evento.
+- La devolución del dinero a los asistentes en los casos previstos en estos Términos y Condiciones.
+
+Cualquier reclamo, queja, denuncia o acción legal relacionada con el evento deberá ser dirigida directamente a MULTISERVICIOS KASURI E.I.R.L, en su calidad de organizadora.`,
+  },
+  {
+    id: "conduct",
+    title: "3. Reglas de conducta para los usuarios",
+    content: `Los usuarios de la página web se comprometen a brindar información veraz, correcta, actual y completa durante el proceso de registro, proceso de compra, interposición de reclamos y demás procesos que se puedan ejecutar en la página web. De igual modo, se comprometen a mantener sus datos actualizados, los cuales serán tratados conforme a la Política de Privacidad de la Empresa.
+
+En caso la Empresa detecte información falsa, inexacta, desactualizada o incompleta suministrada por los Usuarios, o en caso tenga sospechas razonables, la Empresa estará facultada para suspender o cerrar la cuenta del Usuario y negarle el uso presente o futuro de los servicios provistos a través de la página web.
+
+El usuario se compromete a utilizar la Página Web con honestidad, responsabilidad y respeto a la Empresa y otros usuarios. En tal sentido:
+- El usuario no podrá utilizar la Página Web para transmitir, almacenar, promover o divulgar datos o contenidos que afecten la reputación o imagen de la Empresa y demás usuarios. También queda expresamente prohibido recopilar información de la Página Web, de forma manual o automatizada, para cualquier uso distinto a los previstos por la Empresa.
+- No intentará acceder, utilizar y/o manipular los datos de la Empresa.
+- No introducirá ni difundirá virus informáticos o cualesquiera otros sistemas físicos o lógicos que sean susceptibles de provocar daños en la Página Web.
+- Solo utilizará los Servicios de la Página Web de manera personal.
+- No tratará de dañar los Servicios de la Página Web o esta última de ningún modo, ni accederá a recursos restringidos en la Página Web.
+
+Ante un incumplimiento a las Reglas de conducta anteriormente descritas, la Empresa podrá bloquear la cuenta del usuario para futuras adquisiciones.`,
+  },
+  {
+    id: "liability",
+    title: "4. Límites de responsabilidad de la Empresa",
+    content: `**Sobre la organización y ejecución del evento**  
+La Empresa, como organizadora, desplegará todos los medios razonables para la correcta realización del evento. Sin embargo, no será responsable por daños o perjuicios derivados de caso fortuito o fuerza mayor, tales como fenómenos naturales, disturbios sociales, órdenes de autoridad competente, o cualquier otro hecho ajeno a su control que impida la realización total o parcial del evento.
+
+**Sobre el proceso de adquisición de entradas**  
+La Empresa pondrá a disposición de los usuarios los métodos de pago que considere adecuados. No será responsable por inconvenientes derivados de sistemas externos de pago (bancos, procesadoras), tales como demoras en la aprobación, rechazos, fraudes, etc.
+
+La Empresa no será responsable por errores técnicos, defectos en los equipos de los usuarios, o fallas de internet que impidan el acceso a la Página Web o la compra de entradas.
+
+**Sobre el funcionamiento de la Página Web**  
+La Página Web podría presentar limitaciones de disponibilidad por mantenimiento, caso fortuito o fuerza mayor. En tales situaciones, la Empresa realizará las acciones a su alcance para restablecer el servicio.
+
+La Empresa adopta medidas de seguridad razonables, pero no garantiza la ausencia de virus o elementos dañinos introducidos por terceros. Por tanto, no será responsable por daños derivados de la presencia de virus u otros elementos ajenos a su control.`,
+  },
+  {
+    id: "processes",
+    title: "5. Procesos disponibles en la plataforma",
+    content: `Los Usuarios de la plataforma podrán realizar los siguientes procesos:
+
+- **Proceso de registro:** Los Usuarios podrán registrarse en la plataforma, a través del llenado del Formulario de Registro, a fin de obtener una cuenta en Athreus, como paso previo para la adquisición de entradas. El usuario será el único responsable del correcto registro de la información consignada.
+
+- **Proceso de compra:** Los Usuarios podrán adquirir las entradas, ingresando a la sección del evento "¡Vóley al Límite sin filtros en la cancha!", escogiendo una zona determinada y realizando el pago correspondiente a través de los mecanismos brindados por la página web.
+
+- **Proceso de consultas y/o reclamos:** Los usuarios podrán efectuar sus consultas y/o reclamos a través del link de SOPORTE, disponible en nuestra página web.`,
+  },
+  {
+    id: "ticketrules",
+    title: "6. Reglas para la adquisición de entradas",
+    content: `Las entradas para el evento "¡Vóley al Límite sin filtros en la cancha!" se rigen por las siguientes reglas:
+
+- Al efectuar la compra, el usuario se compromete a comprobar que el evento, fecha, horario, zona y precio sean los correctos.
+- **No se aceptarán cambios, devoluciones o reintegros** una vez confirmada la compra, salvo en los casos de cancelación o modificación sustancial del evento previstos en la cláusula siguiente.
+- El usuario podrá pagar con los medios de pago habilitados en la plataforma. La Empresa no se hace responsable por inconvenientes con tarjetas, sistemas bancarios o procesadoras de pago.
+- Las entradas adquiridas no podrán ser revendidas ni utilizadas con fines comerciales o promocionales sin autorización expresa de la Empresa. El incumplimiento de esta prohibición facultará a la Empresa a anular las entradas sin derecho a reembolso.
+- La Empresa podrá anular entradas obtenidas mediante manipulación del sistema de compra.
+- La Empresa no se responsabiliza por entradas adquiridas en puntos no oficiales. En caso de falsificación, no se permitirá el ingreso.
+- En caso de pérdida, robo o deterioro de la entrada (física o digital), la Empresa no expedirá duplicados ni realizará devoluciones.
+- Para ingresar al evento, los asistentes deberán presentar su entrada (impresa o digital, según lo indicado) y su documento de identidad. Para eventos deportivos, rige la Ley N°30037, que exige entrada impresa y DNI.
+- La Empresa y las autoridades podrán realizar controles de seguridad en el ingreso. La negativa a someterse a ellos impedirá el acceso.
+- El ingreso después de la hora señalada estará sujeto a las políticas de la Empresa y del recinto.
+- La Empresa podrá restringir el ingreso de objetos peligrosos, cámaras profesionales, etc., de acuerdo con las normas de seguridad.
+- La entrada constituye el comprobante de pago. La Empresa emitirá los comprobantes fiscales correspondientes de acuerdo a la normativa tributaria.
+
+**Condiciones especiales para entradas electrónicas (E-ticket) con código QR**  
+- El E-ticket es una entrada válida y no será canjeado por una entrada física.
+- Para ingresar, el asistente deberá presentar el E-ticket impreso o en su dispositivo móvil, según lo indicado para el evento.
+- Para eventos deportivos, el E-ticket **deberá imprimirse** y presentarse junto con el DNI (Ley N°30037).
+- El E-ticket puede descargarse desde la sección "MI CUENTA" en la página web.
+- El usuario es responsable de no divulgar ni compartir su E-ticket, ya que podría ser utilizado por terceros. El primer escaneo válido permitirá el ingreso; duplicados posteriores serán rechazados.
+- El sistema de control impedirá el ingreso de más de una persona con el mismo código QR.`,
+  },
+  {
+    id: "purchaseprocedure",
+    title: "7. Procedimiento de compra",
+    content: `**Para compras con tarjetas de crédito y/o débito:**  
+Las transacciones se realizan a través de procesadoras de pago oficiales, quienes junto con la entidad bancaria son los únicos responsables de la validación, autenticación y aprobación de la compra. La Empresa no tiene acceso a los datos bancarios del usuario.
+
+**Para compras a través de otros medios digitales:**  
+La validación, autenticación y aprobación serán de entera responsabilidad de la empresa contratada para dicho fin.
+
+**En caso de incidentes con el procesamiento de pago:**  
+El cobro de las entradas será automático en la mayoría de los casos; sin embargo, puede tomar hasta cuarenta y ocho (48) horas para completarse. En caso de retención, el usuario deberá verificar el estado de su compra en su cuenta de usuario.`,
+  },
+  {
+    id: "cancellation",
+    title: "8. Cancelación, modificación y devoluciones",
+    content: `**Cancelación del evento:**  
+En caso de cancelación definitiva del evento, la Empresa comunicará el procedimiento para la devolución del importe de las entradas, descontando los gastos de gestión incurridos, si los hubiera. La devolución se realizará al mismo medio de pago utilizado en la compra, o mediante transferencia bancaria si ello no fuera posible.
+
+**Modificación sustancial del evento:**  
+Se considera modificación sustancial el cambio de fecha, cambio de lugar o cancelación de la participación del equipo principal. En estos casos, el usuario tendrá derecho a solicitar la devolución del importe en un plazo de siete (7) días desde la comunicación oficial. Si no solicita la devolución en dicho plazo, se entenderá que acepta las nuevas condiciones.
+
+**Fuerza mayor o caso fortuito:**  
+Si la cancelación o modificación obedece a causas de fuerza mayor o caso fortuito (fenómenos naturales, disposiciones gubernamentales, etc.), la Empresa actuará conforme a la ley y, de ser posible, acordará un nuevo procedimiento con los asistentes.
+
+**Exclusión del derecho de desistimiento:**  
+Conforme al artículo 52.2 del Código de Protección y Defensa del Consumidor (Ley N°29571), las entradas para espectáculos públicos se encuentran excluidas del derecho de desistimiento, por lo que no procederá la devolución del importe una vez confirmada la compra, salvo en los supuestos de cancelación o modificación sustancial previstos en esta cláusula.`,
+  },
+  {
+    id: "accountcancellation",
+    title: "9. Desafiliación (baja de cuenta)",
+    content: `Los Usuarios podrán solicitar la baja de su cuenta en Athreus siguiendo este procedimiento:
+
+1. Ingresar a SOPORTE en la página web y registrar la solicitud de baja, indicando "Ejercicio de Derechos ARCO".
+2. La Empresa validará la titularidad de la cuenta y procederá a desactivarla.
+3. El usuario recibirá un correo de confirmación de baja.`,
+  },
+  {
+    id: "intellectualproperty",
+    title: "10. Propiedad intelectual",
+    content: `El Usuario no adquiere ningún derecho de propiedad intelectual sobre la Página Web o sus contenidos por el mero uso de la misma. Todos los elementos de la Página Web (textos, gráficos, logotipos, software, etc.) son propiedad de la Empresa o de sus licenciantes y están protegidos por las leyes peruanas e internacionales de propiedad intelectual.
+
+Queda prohibido copiar, modificar, distribuir, reproducir o realizar ingeniería inversa del software de la Página Web sin autorización expresa de la Empresa.
+
+En caso de infracción, la Empresa se reserva el derecho de suspender la cuenta del usuario infractor y ejercer las acciones legales correspondientes.`,
+  },
+  {
+    id: "complaints",
+    title: "11. Reclamos, consultas y libro de reclamaciones",
+    content: `Conforme al Código de Protección y Defensa del Consumidor (Ley N°29571), la Empresa pone a disposición de los usuarios su **Libro de Reclamaciones Virtual**, accesible en: https://fest-aya.vercel.app/paginas/LibroReclamaciones.
+
+Para consultas o solicitudes de información, los usuarios pueden contactar a través del link de SOPORTE en la página web.`,
+  },
+  {
+    id: "modifications",
+    title: "12. Modificación de los Términos y Condiciones",
+    content: `La Empresa podrá modificar los presentes Términos y Condiciones en cualquier momento, por cambios en la normativa aplicable o por mejoras en la Página Web. Las modificaciones serán publicadas en este mismo documento y, si afectan derechos de los usuarios, se notificará al momento de ingresar a la Página Web.
+
+Las modificaciones no afectarán las compras ya realizadas antes de su publicación.`,
+  },
+  {
+    id: "law",
+    title: "13. Ley aplicable y jurisdicción",
+    content: `Los presentes Términos y Condiciones se rigen por las leyes vigentes en la República del Perú. Para cualquier controversia derivada de su interpretación o ejecución, las partes se someten a la competencia y jurisdicción de los Jueces y Tribunales del distrito judicial de Lima, Perú.`,
+  },
+  {
+    id: "dataprotection",
+    title: "14. Protección de Datos Personales",
+    content: `Los datos personales proporcionados por los usuarios serán tratados de conformidad con la Ley N°29733, Ley de Protección de Datos Personales, y su reglamento. La finalidad del tratamiento es la gestión de la compra de entradas, la comunicación de incidencias relacionadas con el evento y el envío de información relevante sobre el mismo.
+
+El usuario podrá ejercer sus derechos de acceso, rectificación, cancelación y oposición enviando un correo a privacidad@athreus.com, indicando el procedimiento establecido en nuestra Política de Privacidad, disponible en el sitio web.
+
+Al aceptar estos términos, el usuario otorga su consentimiento para el tratamiento de sus datos en los términos descritos.`,
+  },
+  {
+    id: "lastupdate",
+    title: "Última actualización",
+    content: `Marzo 2026`,
+  },
 ];
 
-const Section = ({ title, id, children, icon: Icon }) => (
-  <div id={id} className="section-block mb-24 md:mb-32 pt-10">
-    <div className="flex items-center gap-4 mb-8">
-      <div className="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-500 border border-amber-500/20 shrink-0">
-        <Icon size={24} />
-      </div>
-      <h2 className="text-2xl md:text-4xl font-black text-white uppercase tracking-tighter">
-        {title}
-      </h2>
-    </div>
-    <div className="text-gray-400 text-base md:text-xl leading-relaxed space-y-6 max-w-4xl">
-      {children}
-    </div>
-  </div>
-);
-
 export default function TerminoCondiciones() {
-  const [activeId, setActiveId] = useState(SECTIONS[0].id);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [accepted, setAccepted] = useState(false);
+  const [search, setSearch] = useState("");
 
-  // Lógica de detección de sección activa por posición
-  const handleScroll = useCallback(() => {
-    const scrollPosition = window.scrollY + 200;
-    setScrolled(window.scrollY > 300);
-
-    for (const section of SECTIONS) {
-      const element = document.getElementById(section.id);
-      if (element) {
-        const offsetTop = element.offsetTop;
-        const height = element.offsetHeight;
-        if (scrollPosition >= offsetTop && scrollPosition < offsetTop + height) {
-          setActiveId(section.id);
-        }
-      }
-    }
-  }, []);
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [handleScroll]);
-
-  const scrollTo = (id) => {
-    const element = document.getElementById(id);
-    if (element) {
-      const yOffset = -100; 
-      const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-      window.scrollTo({ top: y, behavior: 'smooth' });
-      setIsMenuOpen(false);
-    }
-  };
+  const filtered = useMemo(() => {
+    return sections.filter(
+      (s) =>
+        s.title.toLowerCase().includes(search.toLowerCase()) ||
+        s.content.toLowerCase().includes(search.toLowerCase()),
+    );
+  }, [search]);
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white selection:bg-amber-500 selection:text-black">
-      
-      {/* --- NAVEGACIÓN MÓVIL (BOTÓN FLOTANTE) --- */}
-      <div className="fixed bottom-6 left-0 right-0 z-[100] flex justify-center lg:hidden pointer-events-none">
-        <button 
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="pointer-events-auto flex items-center gap-3 px-8 py-4 bg-amber-500 text-black font-black rounded-full shadow-[0_20px_40px_rgba(0,0,0,0.5)] active:scale-95 transition-all border-t border-white/40"
-        >
-          {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
-          <span className="text-xs uppercase tracking-[0.2em]">Índice Legal</span>
-        </button>
+    <div className="min-h-screen bg-black flex text-white">
+      {/* Sidebar navegación */}
+      <div className="hidden lg:block w-72 border-r bg-black p-6 sticky top-0 h-screen overflow-y-auto pt-20">
+        <h2 className="font-bold text-lg mb-4">Términos</h2>
+        <ul className="space-y-2 text-sm">
+          {sections.map((s) => (
+            <li key={s.id}>
+              <a href={`#${s.id}`} className="text-gray-300 hover:text-white">
+                {s.title}
+              </a>
+            </li>
+          ))}
+        </ul>
       </div>
 
-      {/* --- OVERLAY MENÚ MÓVIL --- */}
-      <div className={`
-        fixed inset-0 z-[90] lg:hidden transition-all duration-500
-        ${isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}
-      `}>
-        <div className="absolute inset-0 bg-black/95 backdrop-blur-xl" onClick={() => setIsMenuOpen(false)} />
-        <div className={`
-          absolute bottom-0 left-0 right-0 bg-[#0a0a0a] rounded-t-[40px] p-8 max-h-[85vh] overflow-y-auto border-t border-amber-500/30 transition-transform duration-500
-          ${isMenuOpen ? 'translate-y-0' : 'translate-y-full'}
-        `}>
-          <div className="w-12 h-1 bg-white/20 rounded-full mx-auto mb-8" />
-          <div className="grid grid-cols-1 gap-2">
-            {SECTIONS.map((s) => (
-              <button
-                key={s.id}
-                onClick={() => scrollTo(s.id)}
-                className={`flex items-center gap-4 p-5 rounded-2xl text-left transition-all ${
-                  activeId === s.id ? 'bg-amber-500 text-black font-black' : 'bg-white/5 text-gray-400'
-                }`}
-              >
-                <s.icon size={18} />
-                <span className="text-sm uppercase tracking-tight font-bold">{s.title}</span>
-              </button>
-            ))}
+      {/* Contenido principal */}
+      <div className="flex-1 p-6 md:p-10 max-w-5xl mx-auto">
+        <div className="mb-10 pt-10">
+          <h1 className="text-4xl font-bold">Términos y Condiciones</h1>
+          <p className="text-gray-300 mt-2">
+            MULTISERVICIOS KASURI E.I.R.L • Evento ¡Vóley al Límite sin filtros en la cancha! • 2026
+          </p>
+
+          <input
+            type="text"
+            placeholder="Buscar dentro de los términos..."
+            className="mt-6 w-full border rounded-lg p-3"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
+
+        <div className="bg-white shadow-xl rounded-2xl p-8 space-y-8 leading-relaxed text-gray-700">
+          {filtered.length > 0 ? (
+            filtered.map((section) => (
+              <section id={section.id} key={section.id}>
+                <h2 className="text-xl font-semibold mb-2">{section.title}</h2>
+                <p className="whitespace-pre-line">{section.content}</p>
+              </section>
+            ))
+          ) : (
+            <p className="text-gray-500">No se encontraron términos que coincidan con la búsqueda.</p>
+          )}
+
+          <div className="border-t pt-6">
+            <label className="flex items-center gap-3">
+              <input
+                type="checkbox"
+                checked={accepted}
+                onChange={(e) => setAccepted(e.target.checked)}
+              />
+              <span>He leído y acepto los términos y condiciones.</span>
+            </label>
+
+            <button
+              className={`mt-4 px-6 py-2 rounded-lg text-white hidden ${
+                accepted
+                  ? "bg-blue-600 hover:bg-blue-700"
+                  : "bg-gray-400 cursor-not-allowed"
+              }`}
+              disabled={!accepted}
+            >
+              Continuar con la compra
+            </button>
           </div>
         </div>
       </div>
-
-      <div className="max-w-[1440px] mx-auto flex">
-        
-        {/* --- SIDEBAR DESKTOP (STICKY) --- */}
-        <aside className="hidden lg:block w-[400px] h-screen sticky top-0 border-r border-white/5 p-12 overflow-hidden">
-          <div className="h-full flex flex-col">
-            <div className="flex items-center gap-3 mb-12 pt-10">
-              <div className="w-3 h-3 rounded-full bg-amber-500 shadow-[0_0_15px_rgba(245,158,11,0.5)]" />
-              <h4 className="text-[10px] font-black uppercase tracking-[0.5em] text-amber-500">Documentación</h4>
-            </div>
-
-            <nav className="flex-1 space-y-1 overflow-y-auto pr-4 custom-scrollbar">
-              {SECTIONS.map((s) => (
-                <button
-                  key={s.id}
-                  onClick={() => scrollTo(s.id)}
-                  className={`cursor-pointer w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all duration-300 text-left
-                    ${activeId === s.id 
-                      ? 'bg-amber-500 text-black font-black translate-x-2 shadow-lg shadow-amber-500/10' 
-                      : 'text-gray-500 hover:text-white hover:bg-white/5'}
-                  `}
-                >
-                  <s.icon size={16} className={activeId === s.id ? 'text-black' : 'text-inherit'} />
-                  <span className="text-[11px] uppercase tracking-wider">{s.title}</span>
-                </button>
-              ))}
-            </nav>
-          </div>
-        </aside>
-
-        {/* --- CONTENIDO PRINCIPAL --- */}
-        <div className="px-6  pt-24 md:pt-24 pb-40 overflow-hidden">
-          
-          {/* Header Hero */}
-          <header className="mb-32 relative">
-            <div className="absolute -top-20 -right-20 w-[400px] h-[400px] bg-amber-500/10 rounded-full blur-[120px] pointer-events-none" />
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-amber-500/10 border border-amber-500/20 rounded-full text-amber-500 text-[10px] font-black uppercase tracking-[0.3em] mb-8">
-              <ShieldCheck size={14} /> Legal Center
-            </div>
-            <h1 className="text-7xl md:text-[120px] font-black tracking-tighter leading-[0.8] mb-12">
-              Términos <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 to-amber-200 italic">Globales.</span>
-            </h1>
-            <p className="text-xl md:text-3xl text-gray-500 max-w-2xl font-light leading-relaxed">
-              El presente documento constituye el acuerdo legal entre el usuario y la plataforma <span className="text-white">AyacuchoFest</span>.
-            </p>
-          </header>
-
-          <div className="space-y-10">
-            <Section title="Sobre AyacuchoFest" id="about" icon={Info}>
-              <p>AyacuchoFest es un sistema centralizado de gestión de eventos. Actuamos como intermediarios entre el organizador y el cliente final, proporcionando tecnología de punta para la validación de accesos.</p>
-            </Section>
-
-            <Section title="Rol de los organizadores" id="organizers" icon={Users}>
-              <p>El Organizador es el único responsable de la realización del evento. AyacuchoFest no tiene injerencia en la programación, calidad del show o seguridad del recinto físico.</p>
-              <div className="p-8 bg-amber-500/5 border border-amber-500/20 rounded-3xl mt-8">
-                <p className="text-amber-500 font-black text-sm uppercase tracking-widest mb-4">Aviso de responsabilidad</p>
-                <p className="text-sm leading-relaxed">Cualquier cambio de fecha o cancelación es responsabilidad del promotor, quien deberá gestionar las devoluciones según su propia política.</p>
-              </div>
-            </Section>
-
-            <Section title="Reglas de conducta" id="conduct" icon={Activity}>
-              <p>Se prohíbe terminantemente el uso de scripts, bots o cualquier método automatizado para la compra de entradas. El incumplimiento resultará en el baneo inmediato de la dirección IP y la cuenta.</p>
-            </Section>
-
-            <Section title="Límites de responsabilidad" id="liability" icon={AlertTriangle}>
-              <div className="bg-red-500/5 border border-red-500/20 p-10 rounded-[40px]">
-                <h4 className="text-red-400 font-black text-xl mb-6 flex items-center gap-3 italic">
-                  <AlertTriangle /> EXCLUSIÓN DE DAÑOS
-                </h4>
-                <p className="text-lg italic leading-relaxed">"AyacuchoFest no se hace responsable por pérdidas personales, accidentes o inconvenientes derivados de la asistencia al evento."</p>
-              </div>
-            </Section>
-
-            <Section title="Procesos en la plataforma" id="processes" icon={ShieldCheck}>
-              <p>Cada compra genera un token único. Este token debe ser presentado en la puerta del evento para su escaneo y validación en tiempo real.</p>
-            </Section>
-
-            <Section title="Reglas de tickets" id="tickets-rules" icon={Ticket}>
-              <p>Los tickets son propiedad de AyacuchoFest hasta que la transacción es confirmada. No se permite la reventa a precios superiores al valor nominal.</p>
-            </Section>
-
-            <Section title="Procedimiento de compra" id="purchase" icon={ShoppingCart}>
-              <p>El usuario tiene un tiempo máximo de 10 minutos para completar su pago una vez seleccionada la entrada.</p>
-            </Section>
-
-            <Section title="Ticket Seguro" id="safe-ticket" icon={Lock}>
-              <div className="p-10 bg-amber-500 text-black rounded-[40px]">
-                <h4 className="text-3xl font-black mb-4 uppercase italic">Blindaje de Compra</h4>
-                <p className="font-bold text-lg opacity-80">Si activaste el Ticket Seguro, podrás solicitar reembolso parcial por emergencias médicas documentadas.</p>
-              </div>
-            </Section>
-
-            <Section title="Desafiliación" id="disaffiliation" icon={UserMinus}>
-              <p>El usuario puede cerrar su cuenta en cualquier momento enviando un correo a soporte@ayacuchofest.com.</p>
-            </Section>
-
-            <Section title="Propiedad intelectual" id="intellectual-property" icon={Copyright}>
-              <p>Todo el contenido visual, logotipos y software son propiedad intelectual exclusiva de AyacuchoFest.</p>
-            </Section>
-
-            <Section title="Reclamos y Libro" id="claims" icon={MessageSquare}>
-              <p>Ponemos a disposición el Libro de Reclamaciones Virtual para cualquier discrepancia en el servicio de venta.</p>
-            </Section>
-
-            <Section title="Modificaciones" id="modifications" icon={Edit3}>
-              <p>AyacuchoFest se reserva el derecho de modificar estos términos sin previo aviso.</p>
-            </Section>
-
-            <Section title="Ley aplicable" id="law" icon={Gavel}>
-              <p>Este contrato se rige bajo las leyes de la República del Perú.</p>
-            </Section>
-
-            <Section title="Estacionamientos" id="parking" icon={Car}>
-              <p>El servicio de parqueo es independiente. AyacuchoFest no custodia vehículos ni se responsabiliza por robos o daños.</p>
-            </Section>
-          </div>
-        </div>
-      </div>
-
-      {/* Back to Top */}
-      <button 
-        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-        className={`fixed bottom-6 sm:bottom-10 sm:right-10 right-5 z-[80] w-14 h-14 bg-white/5 border border-white/10 backdrop-blur-xl text-white rounded-2xl cursor-pointer flex items-center justify-center transition-all duration-500
-          ${scrolled ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}
-          hover:bg-amber-500 hover:text-black
-        `}
-      >
-        <ArrowUp size={24} />
-      </button>
-
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
-        
-        body { font-family: 'Inter', sans-serif; overflow-x: hidden; }
-        
-        .custom-scrollbar::-webkit-scrollbar {
-          width: 4px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-          background: transparent;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: rgba(245, 158, 11, 0.2);
-          border-radius: 10px;
-        }
-        
-        .section-block {
-          transition: transform 0.3s ease;
-        }
-
-        /* Corregir saltos en pantallas pequeñas */
-        @media (max-width: 1024px) {
-          .section-block {
-            padding-top: 60px;
-            margin-bottom: 60px;
-          }
-        }
-      `}</style>
     </div>
   );
 }

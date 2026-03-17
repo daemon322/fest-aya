@@ -1,6 +1,21 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Facebook, Instagram, Twitter, Youtube, Mail, MapPin, Phone, ArrowRight, Globe, ChevronRight, ShieldCheck, CreditCard, Zap, Award, } from "lucide-react";
-import libroreclamaciones from "../../assets/libroreclamaciones.webp"
+import {
+  Facebook,
+  Instagram,
+  Twitter,
+  Youtube,
+  Mail,
+  MapPin,
+  Phone,
+  ArrowRight,
+  Globe,
+  ChevronRight,
+  ShieldCheck,
+  CreditCard,
+  Zap,
+  Award,
+} from "lucide-react";
+import libroreclamaciones from "../../assets/libroreclamaciones.webp";
 
 const Footer = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -23,6 +38,12 @@ const Footer = () => {
       if (footerRef.current) observer.unobserve(footerRef.current);
     };
   }, []);
+  const socialLinks = [
+    { icon: Facebook, href: "https://www.facebook.com/AYACUCHOVOLEYCLUB/?locale=es_LA" },
+    { icon: Instagram, href: "https://instagram.com" },
+    { icon: Twitter, href: "https://twitter.com" },
+    { icon: Youtube, href: "https://youtube.com" },
+  ];
 
   // Helper para las clases de animación tipo "rompecabezas"
   const getAnimClass = (direction, delay) => {
@@ -49,21 +70,22 @@ const Footer = () => {
   return (
     <footer
       ref={footerRef}
-      className="relative w-full bg-[#050505] text-white pt-24 pb-12 overflow-hidden border-t border-white/5 z-50">
+      className="relative w-full bg-[#050505] text-white pt-24 pb-12 overflow-hidden border-t border-white/5 z-50"
+    >
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         {/* Sección Superior: Logo y Stats rápidos */}
         <div
           className={`flex flex-col md:flex-row justify-between items-center mb-20 gap-8 ${getAnimClass("down", "delay-75")}`}
         >
-          <div className="flex items-center gap-4 group cursor-pointer">
+          <div className="flex items-center gap-4 group select-none">
             <div className="w-14 h-14 bg-amber-500 rounded-2xl flex items-center justify-center text-black font-black text-2xl shadow-[0_0_30px_rgba(245,158,11,0.3)] group-hover:rotate-12 transition-transform duration-500">
               A
             </div>
             <div>
               <h2 className="text-3xl font-black tracking-tighter uppercase italic leading-none">
-                Ayacucho<span className="text-amber-500">Fest</span>
+                Ayacucho<span className="text-amber-500">Vóley Club</span>
               </h2>
-              <p className="text-[10px] text-gray-500 uppercase tracking-[0.4em] mt-1">
+              <p className="text-[10px] text-gray-300 uppercase tracking-[0.4em] mt-1">
                 Plataforma Oficial
               </p>
             </div>
@@ -71,17 +93,13 @@ const Footer = () => {
 
           <div className="flex gap-12">
             <div className="text-center">
-              <p className="text-2xl font-black text-white leading-none">
-                500+
-              </p>
+              <p className="text-2xl font-black text-white leading-none">?+</p>
               <p className="text-[9px] text-gray-600 uppercase tracking-widest mt-1">
                 Eventos
               </p>
             </div>
             <div className="text-center border-x border-white/10 px-12">
-              <p className="text-2xl font-black text-white leading-none">
-                100k
-              </p>
+              <p className="text-2xl font-black text-white leading-none">???</p>
               <p className="text-[9px] text-gray-600 uppercase tracking-widest mt-1">
                 Usuarios
               </p>
@@ -109,15 +127,21 @@ const Footer = () => {
               de vanguardia y seguridad absoluta en cada ticket.
             </p>
             <div className="flex gap-4">
-              {[Facebook, Instagram, Twitter, Youtube].map((Icon, i) => (
-                <a
-                  key={i}
-                  href="#"
-                  className="w-11 h-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:bg-amber-500 hover:text-black hover:border-amber-500 hover:-translate-y-1 transition-all duration-300"
-                >
-                  <Icon size={20} />
-                </a>
-              ))}
+              {socialLinks.map((item, i) => {
+                const Icon = item.icon;
+
+                return (
+                  <a
+                    key={i}
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-11 h-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:bg-amber-500 hover:text-black hover:border-amber-500 hover:-translate-y-1 transition-all duration-300"
+                  >
+                    <Icon size={20} />
+                  </a>
+                );
+              })}
             </div>
           </div>
 
@@ -153,7 +177,11 @@ const Footer = () => {
             </h4>
             <ul className="space-y-4">
               {[
-                {label: "Términos de Uso", icon: Zap, href: "/paginas/TerminoCondiciones",},
+                {
+                  label: "Términos de Uso",
+                  icon: Zap,
+                  href: "/paginas/TerminoCondiciones",
+                },
                 { label: "Centro de Ayuda", icon: Mail },
                 { label: "Preguntas Frecuentes", icon: Globe },
               ].map((item) => (
@@ -182,9 +210,16 @@ const Footer = () => {
               Entérate antes que todos sobre la venta de entradas para la{" "}
               <span className="text-white font-bold">Semana Santa</span>.
             </p>
-            <a href="/paginas/LibroReclamaciones" className="text-gray-500 hover:text-white text-sm">
-            <span className="text-sm mb-6">Libro de reclamaciones</span>
-              <img src={libroreclamaciones} alt="Libro de reclamaciones" className="h-[73px] w-[100px]" />
+            <a
+              href="/paginas/LibroReclamaciones"
+              className="text-gray-500 hover:text-white text-sm"
+            >
+              <span className="text-sm mb-6">Libro de reclamaciones</span>
+              <img
+                src={libroreclamaciones}
+                alt="Libro de reclamaciones"
+                className="h-[73px] w-[100px]"
+              />
             </a>
           </div>
         </div>
@@ -193,9 +228,10 @@ const Footer = () => {
         <div
           className={`py-12 sm:py-10 border-t border-white/5 flex flex-col lg:flex-row justify-between items-center gap-10 ${getAnimClass("scale", "delay-700")}`}
         >
-          <div className="flex flex-col items-center lg:items-start">
+          <div className="flex flex-col items-center lg:items-start select-none">
             <p className="text-gray-600 text-[10px] font-black uppercase tracking-[0.6em] mb-4">
-              AyacuchoFest &copy; 2024 — Tecnología para la Cultura
+              Ayacucho Vóley Club &copy; 2026 — Tecnología moderna al servicio
+              del cliente
             </p>
             <div className="flex gap-6 items-center grayscale opacity-30 hover:grayscale-0 hover:opacity-100 transition-all duration-700">
               <div className="flex items-center gap-2 border border-white/10 px-3 py-1 rounded-md">
@@ -222,7 +258,7 @@ const Footer = () => {
           <div className="flex flex-wrap justify-center gap-x-10 gap-y-4">
             {[
               { label: "Privacidad", href: "/paginas/PrivacPoli" },
-              { label: "Condiciones de Venta", href: "/" },
+              { label: "Condiciones de Venta", href: "/paginas/CondicionesVenta" },
               { label: "Cookies", href: "/paginas/PoliticCookies" },
               { label: "Mapa del Sitio", href: "/" },
             ].map((link) => (

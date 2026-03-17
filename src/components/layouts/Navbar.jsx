@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Crown, Menu, X } from "lucide-react";
+import ayacucho from "../../assets/logoc.png";
 
 const GalaNavbar = () => {
   const [isOpen,     setIsOpen]     = useState(false);
@@ -50,13 +51,13 @@ const GalaNavbar = () => {
             animate={{ opacity: 1, x: 0 }}
             className="flex items-center gap-3 md:gap-4 z-[120]"
           >
-            <Crown size={24} className="text-amber-500" strokeWidth={1.5} />
+            <img src={ayacucho} alt="" className="w-10 h-10" />
             <div className="flex flex-col">
               <span className="text-[11px] md:text-[12px] tracking-[0.6em] uppercase font-black text-white leading-none">
-                AYAFEST
+                AVC
               </span>
-              <span className="text-[7px] tracking-[0.3em] uppercase text-amber-500/60 font-bold mt-1">
-                Patrimonio del Perú
+              <span className="text-[7px] tracking-[0.3em] uppercase text-cyan-500/90 font-bold mt-1">
+                Ayacucho Vóley Club
               </span>
             </div>
           </motion.div>
@@ -79,15 +80,7 @@ const GalaNavbar = () => {
         </nav>
 
         {/* Acciones derecha */}
-        <div className="flex items-center gap-4 md:gap-8 z-[120]">
-          <motion.a
-            href="/tickets"
-            whileHover={{ scale: 1.02, backgroundColor: "#f59e0b", color: "#000" }}
-            whileTap={{ scale: 0.98 }}
-            className="hidden sm:block border border-white/20 text-white px-6 py-2.5 text-[9px] tracking-[0.3em] uppercase font-black transition-all duration-300"
-          >
-            Acceso Privado
-          </motion.a>
+        <div className="flex sm:hidden items-center gap-4 md:gap-8 z-[120]">
 
           {/* Hamburguesa — FIX: pointer-events se manejan correctamente ahora */}
           <button
@@ -158,17 +151,6 @@ const GalaNavbar = () => {
             transition={{ delay: 0.7 }}
             className="w-full h-[1px] bg-amber-500/20 max-w-[200px]"
           />
-
-          <motion.a
-            href="/tickets"
-            initial={{ opacity: 0, y: 10 }}
-            animate={isOpen ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
-            transition={{ delay: 0.8 }}
-            onClick={() => setIsOpen(false)}
-            className="border border-amber-500/50 text-amber-500 px-10 py-4 text-[11px] tracking-[0.5em] uppercase font-black hover:bg-amber-500 hover:text-black transition-all duration-500"
-          >
-            Acreditación VIP
-          </motion.a>
         </nav>
       </motion.div>
     </>

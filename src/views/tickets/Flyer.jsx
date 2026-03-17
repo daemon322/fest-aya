@@ -5,7 +5,7 @@ export const Flyers = () => {
     <div className="relative inset-0 select-none w-full h-full z-10">
       <img
         src={FondoV}
-        className="relative w-full h-screen sm:h-full object-cover transition-all duration-700 select-none pointer-events-none"
+        className="relative w-full h-[700px] sm:h-full object-content transition-all duration-700 select-none pointer-events-none"
         alt="Voley Masculino"
       />
       {/* Gradient that fades only in the bottom ~5% */}

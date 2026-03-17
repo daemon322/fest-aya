@@ -214,8 +214,8 @@ export default function ClaimsBook() {
               <Send size={16} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
             </button>
             
-            <p className="text-center text-[10px] text-gray-700 font-bold uppercase tracking-[0.4em]">
-              AyacuchoFest S.A.C. — RUC: 20601234567
+            <p className="text-center text-[10px] text-gray-300 font-bold uppercase tracking-[0.4em]">
+              MULTISERVICIOS KASURI E.I.R.L — RUC: 20574793379
             </p>
           </div>
         </form>
@@ -228,7 +228,7 @@ export default function ClaimsBook() {
           Si prefieres una atención directa, puedes comunicarte con nuestra central de ayuda.
         </p>
         <a href="tel:+5166123456" className="flex items-center gap-2 text-white font-bold text-[10px] uppercase hover:text-amber-500 transition-colors">
-          <Phone size={12} /> +51 66 123456
+          <Phone size={12} /> +51 961 379 018
         </a>
       </div>
     </div>

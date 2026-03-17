@@ -50,7 +50,7 @@ const Tribuna = () => {
       sceneRef.current = scene;
 
       // Cámara
-      const camera = new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 3.1, 2000);
+      const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 3.1, 2000);
       camera.position.set(25, 18, 25);
       cameraRef.current = camera;
 
@@ -219,7 +219,7 @@ const Tribuna = () => {
       targetRotation.current   = { x: 0, y: 0.8 };
       isRotatingRef.current    = false;
     } else {
-      targetCamPos.current     = { x: 25, y: 18, z: 25 };
+      targetCamPos.current     = { x: 25, y: 25, z: 35 };
       targetRotation.current   = { x: 0, y: 0 };
       isRotatingRef.current    = true;
     }

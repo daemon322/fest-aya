@@ -43,8 +43,8 @@ export default function PrivacPoli() {
             Privacidad <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 to-amber-200 italic">Absoluta.</span>
           </h1>
-          <p className="text-gray-500 max-w-2xl mx-auto font-light text-base md:text-lg leading-relaxed">
-            Tu confianza es nuestro activo más valioso. En AyacuchoFest, protegemos tus datos con los más altos estándares de cifrado y transparencia.
+          <p className="text-gray-300 max-w-2xl mx-auto font-light text-base md:text-lg leading-relaxed">
+            Tu confianza es nuestro activo más valioso. En Ayacucho Vóley Club, protegemos tus datos con los más altos estándares de cifrado y transparencia.
           </p>
         </div>
       </header>
@@ -57,7 +57,7 @@ export default function PrivacPoli() {
             <Shield size={150} />
           </div>
           <p className="text-lg md:text-xl text-gray-300 leading-relaxed relative z-10 font-light">
-            AyacuchoFest S.A.C. respeta la legislación vigente sobre <span className="text-white font-bold italic underline decoration-amber-500/50">Protección de Datos Personales (Ley N° 29733)</span>. Esta política detalla cómo recolectamos, usamos y resguardamos tu información.
+            MULTISERVICIOS KASURI E.I.R.L respeta la legislación vigente sobre <span className="text-white font-bold italic underline decoration-amber-500/50">Protección de Datos Personales (Ley N° 29733)</span>. Esta política detalla cómo recolectamos, usamos y resguardamos tu información.
           </p>
         </div>
 
@@ -81,7 +81,7 @@ export default function PrivacPoli() {
           </PrivacySection>
 
           <PrivacySection icon={Eye} title="Uso de la Información">
-            <p>Tus datos nos permiten personalizar tu experiencia en AyacuchoFest:</p>
+            <p>Tus datos nos permiten personalizar tu experiencia en Ayacucho Vóley Club:</p>
             <div className="space-y-4">
               <p>• Procesar y enviar tus entradas digitales de forma segura.</p>
               <p>• Enviarte alertas sobre cambios de horario o reprogramación de eventos.</p>
@@ -96,13 +96,13 @@ export default function PrivacPoli() {
                 <h4 className="font-black uppercase text-sm mb-2 tracking-tighter">Vía Digital</h4>
                 <p className="text-xs font-bold opacity-80 mb-4 tracking-tight">Atención inmediata para solicitudes de datos.</p>
                 <div className="flex items-center gap-2 font-black text-xs uppercase underline">
-                  <Mail size={14} /> privacidad@ayacuchofest.com
+                  <Mail size={14} /> antreus28d@gmail.com
                 </div>
               </div>
               <div className="flex-1 p-6 bg-white/5 border border-white/10 rounded-3xl">
                 <h4 className="font-black uppercase text-sm mb-2 tracking-tighter text-white">Vía Presencial</h4>
-                <p className="text-xs text-gray-500 mb-4 tracking-tight">Visítanos en nuestras oficinas centrales en Ayacucho.</p>
-                <span className="text-[10px] text-amber-500 font-black uppercase tracking-widest">Jr. Asamblea 123, Huamanga</span>
+                <p className="text-xs text-gray-300 mb-4 tracking-tight">Visítanos en nuestras oficinas centrales en Ayacucho.</p>
+                <span className="text-[10px] text-amber-500 font-black uppercase tracking-widest">Jr. JR. JIRON SAN LUIS - CIUDAD MAGISTERIAL MZA. I LOTE. 06 URB. ASOCIACION CIUDAD MAGISTERIAL (A MEDIA CUADRA DE LA I.E JEANPEAJET) AYACUCHO - HUAMANGA - SAN JUAN BAUTISTA</span>
               </div>
             </div>
           </PrivacySection>
@@ -120,11 +120,11 @@ export default function PrivacPoli() {
             <Shield size={32} />
           </div>
           <div className="space-y-2">
-            <p className="text-[10px] text-gray-600 font-black uppercase tracking-[0.8em]">
-              Vigencia desde Enero 2024
+            <p className="text-[10px] text-gray-400 font-black uppercase tracking-[0.8em]">
+              Vigencia desde Enero 2026
             </p>
-            <p className="text-[9px] text-amber-500/40 font-bold uppercase tracking-[0.4em]">
-              AyacuchoFest — Elevando la cultura con seguridad
+            <p className="text-[9px] text-amber-500/80 font-bold uppercase tracking-[0.4em]">
+              Ayacucho Vóley Club — Fomentando el Deporte con Pasión y Seguridad
             </p>
           </div>
         </footer>
