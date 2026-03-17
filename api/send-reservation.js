@@ -1,11 +1,13 @@
 // api/send-reservation.js
-// Usa Web3Forms (gratis, sin dominio, 250 envíos/mes).
-// Si se acaba el límite: crea otra cuenta en web3forms.com,
+// Usa Web3Forms (gratis, sin dominio, 250 envíos/mes) PARA CLIENTE.
+// Usa Resend (ya instalado) PARA ADMIN CON ATTACHMENTS.
+// Si se acaba el límite de Web3Forms: crea otra cuenta en web3forms.com,
 // copia la nueva WEB3FORMS_KEY en Vercel → Environment Variables → Redeploy.
 // No hay que tocar código, solo cambiar esa variable.
 //
 // Variables de entorno en Vercel:
 //   WEB3FORMS_KEY    — Access key de web3forms.com
+//   RESEND_API_KEY   — API key de resend.com (para enviar email al admin con adjuntos)
 //   ADMIN_EMAIL      — Tu correo donde recibirás las reservas
 //   RECAPTCHA_SECRET — Secret key de Google reCAPTCHA v2
 //   ALLOWED_ORIGIN   — URL de tu sitio, ej: https://mi-entradas.vercel.app
@@ -14,28 +16,61 @@
 //   RATE_LIMIT_WINDOW_MS — ventana rate limit ms (default: 60000)
 //   RATE_LIMIT_MAX       — máx peticiones/ventana (default: 5)
 
+import { Resend } from "resend";
+
 const ALLOWED_MIME_TYPES = new Set([
-  "image/jpeg", "image/jpg", "image/png", "image/webp", "application/pdf",
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "image/webp",
+  "application/pdf",
 ]);
 const MAX_VOUCHER_B64_CHARS = 4_000_000;
 
-const sanitize       = (val) => typeof val === "string" ? val.trim().replace(/[<>"'`]/g, "").slice(0, 255) : "";
-const sanitizeHeader = (val) => typeof val === "string" ? val.replace(/[\r\n\t]/g, " ").trim().slice(0, 200) : "";
-const isValidEmail   = (e)   => /^[a-z0-9._%+\-]+@gmail\.com$/.test(e.toLowerCase()); // Solo Gmail
-const isValidPhone   = (p)   => /^[\d\s+()-]{7,20}$/.test(p);
-const isValidDoc     = (d)   => d.length >= 6 && d.length <= 20;
+const sanitize = (val) =>
+  typeof val === "string"
+    ? val
+        .trim()
+        .replace(/[<>"'`]/g, "")
+        .slice(0, 255)
+    : "";
+const sanitizeHeader = (val) =>
+  typeof val === "string"
+    ? val
+        .replace(/[\r\n\t]/g, " ")
+        .trim()
+        .slice(0, 200)
+    : "";
+const isValidEmail = (e) =>
+  /^[a-z0-9._%+\-]+@gmail\.com$/.test(e.toLowerCase()); // Solo Gmail
+const isValidPhone = (p) => /^[\d\s+()-]{7,20}$/.test(p);
+const isValidDoc = (d) => d.length >= 6 && d.length <= 20;
 
 // ── Email al ADMIN ────────────────────────────────────────────────────────────
-function buildAdminHtml({ name, email, phone, document, refNumber, cartDetails, voucherBase64 }) {
-  const rows = (cartDetails || []).map((item) =>
-    `<tr>
+function buildAdminHtml({
+  name,
+  email,
+  phone,
+  document,
+  refNumber,
+  cartDetails,
+  voucherBase64,
+}) {
+  const rows = (cartDetails || [])
+    .map(
+      (item) =>
+        `<tr>
       <td style="padding:6px 12px;border-bottom:1px solid #eee;">${item.phaseName}</td>
       <td style="padding:6px 12px;border-bottom:1px solid #eee;">${item.title}</td>
       <td style="padding:6px 12px;border-bottom:1px solid #eee;text-align:center;">${item.quantity}</td>
       <td style="padding:6px 12px;border-bottom:1px solid #eee;text-align:right;">S/ ${(item.price * item.quantity).toFixed(2)}</td>
-    </tr>`
-  ).join("");
-  const total = (cartDetails || []).reduce((a, i) => a + i.price * i.quantity, 0);
+    </tr>`,
+    )
+    .join("");
+  const total = (cartDetails || []).reduce(
+    (a, i) => a + i.price * i.quantity,
+    0,
+  );
   return `
     <h2 style="font-family:sans-serif;color:#111">Nueva Reserva — REF: ${sanitize(refNumber)}</h2>
     <table style="font-family:sans-serif;font-size:14px;border-collapse:collapse;margin-bottom:20px">
@@ -62,19 +97,21 @@ function buildAdminHtml({ name, email, phone, document, refNumber, cartDetails, 
         </tr>
       </tfoot>
     </table>
-    ${voucherBase64
-      ? `<h3 style="font-family:sans-serif;margin-top:24px">Comprobante de pago</h3>
-         <img src="${voucherBase64}" style="max-width:480px;border:1px solid #ddd;border-radius:8px" alt="voucher"/>`
-      : `<p style="font-family:sans-serif;color:#888;margin-top:16px">Sin comprobante adjunto.</p>`
-    }
+    <p style="font-family:sans-serif;color:#888;margin-top:16px">📎 El comprobante de pago se envía como archivo adjunto.</p>
   `;
 }
 
 // ── Confirmación al CLIENTE ───────────────────────────────────────────────────
 function buildClientMessage({ name, email, refNumber, cartDetails }) {
-  const total = (cartDetails || []).reduce((a, i) => a + i.price * i.quantity, 0);
+  const total = (cartDetails || []).reduce(
+    (a, i) => a + i.price * i.quantity,
+    0,
+  );
   const lines = (cartDetails || [])
-    .map((i) => `  • ${i.title} (${i.phaseName}) x${i.quantity}  →  S/ ${(i.price * i.quantity).toFixed(2)}`)
+    .map(
+      (i) =>
+        `  • ${i.title} (${i.phaseName}) x${i.quantity}  →  S/ ${(i.price * i.quantity).toFixed(2)}`,
+    )
     .join("\n");
 
   return `
@@ -127,29 +164,40 @@ export default async function handler(req, res) {
   // No se necesita restricción de Origin aquí; la seguridad real la proveen
   // reCAPTCHA v2, honeypot y rate limiting más abajo.
   // Solo bloqueamos métodos que no sean POST/OPTIONS.
-  res.setHeader("Access-Control-Allow-Origin",  "*");
+  res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-  res.setHeader("X-Content-Type-Options",       "nosniff");
-  res.setHeader("Cache-Control",                "no-store");
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("Cache-Control", "no-store");
 
   if (req.method === "OPTIONS") return res.status(204).end();
   if (req.method !== "POST")
-    return res.status(405).json({ success: false, message: "Método no permitido." });
+    return res
+      .status(405)
+      .json({ success: false, message: "Método no permitido." });
 
   // Rate limiting
   const RATE_WINDOW = Number(process.env.RATE_LIMIT_WINDOW_MS || 60_000);
-  const RATE_MAX    = Number(process.env.RATE_LIMIT_MAX       || 5);
-  const ip = req.headers["x-forwarded-for"]?.split(",")[0]?.trim() || req.socket?.remoteAddress || "unknown";
+  const RATE_MAX = Number(process.env.RATE_LIMIT_MAX || 5);
+  const ip =
+    req.headers["x-forwarded-for"]?.split(",")[0]?.trim() ||
+    req.socket?.remoteAddress ||
+    "unknown";
   if (!global.__rateMap) global.__rateMap = new Map();
-  const now   = Date.now();
+  const now = Date.now();
   const entry = global.__rateMap.get(ip) || { ts: now, count: 0 };
-  if (now - entry.ts > RATE_WINDOW) { entry.ts = now; entry.count = 0; }
+  if (now - entry.ts > RATE_WINDOW) {
+    entry.ts = now;
+    entry.count = 0;
+  }
   entry.count++;
   global.__rateMap.set(ip, entry);
   if (entry.count > RATE_MAX) {
     res.setHeader("Retry-After", String(Math.ceil(RATE_WINDOW / 1000)));
-    return res.status(429).json({ success: false, message: "Demasiadas solicitudes. Intenta más tarde." });
+    return res.status(429).json({
+      success: false,
+      message: "Demasiadas solicitudes. Intenta más tarde.",
+    });
   }
 
   try {
@@ -157,114 +205,228 @@ export default async function handler(req, res) {
     if (!body) {
       let raw = "";
       for await (const chunk of req) raw += chunk;
-      try { body = raw ? JSON.parse(raw) : {}; } catch { body = {}; }
+      try {
+        body = raw ? JSON.parse(raw) : {};
+      } catch {
+        body = {};
+      }
     }
     if (JSON.stringify(body).length > 6_000_000)
-      return res.status(413).json({ success: false, message: "Solicitud demasiado grande." });
+      return res
+        .status(413)
+        .json({ success: false, message: "Solicitud demasiado grande." });
 
     if (body.hp) return res.status(200).json({ success: true });
 
-    const { name, email, phone, document, refNumber, cartDetails, voucherBase64, voucherFileName, recaptchaToken } = body;
+    const {
+      name,
+      email,
+      phone,
+      document,
+      refNumber,
+      cartDetails,
+      voucherBase64,
+      voucherFileName,
+      recaptchaToken,
+    } = body;
 
-    const cleanName     = sanitize(name);
-    const cleanEmail    = sanitize(email);
-    const cleanPhone    = sanitize(phone);
+    const cleanName = sanitize(name);
+    const cleanEmail = sanitize(email);
+    const cleanPhone = sanitize(phone);
     const cleanDocument = sanitize(document);
 
     if (!cleanName || cleanName.length < 3)
-      return res.status(400).json({ success: false, message: "Nombre inválido." });
+      return res
+        .status(400)
+        .json({ success: false, message: "Nombre inválido." });
     if (!cleanEmail || !isValidEmail(cleanEmail))
-      return res.status(400).json({ success: false, message: "Solo se aceptan correos Gmail (@gmail.com)." });
+      return res.status(400).json({
+        success: false,
+        message: "Solo se aceptan correos Gmail (@gmail.com).",
+      });
     if (!cleanPhone || !isValidPhone(cleanPhone))
-      return res.status(400).json({ success: false, message: "Teléfono inválido." });
+      return res
+        .status(400)
+        .json({ success: false, message: "Teléfono inválido." });
     if (!cleanDocument || !isValidDoc(cleanDocument))
-      return res.status(400).json({ success: false, message: "Documento inválido." });
+      return res
+        .status(400)
+        .json({ success: false, message: "Documento inválido." });
 
     // reCAPTCHA v2
     if (!recaptchaToken)
-      return res.status(400).json({ success: false, message: "Completa la verificación de seguridad." });
+      return res.status(400).json({
+        success: false,
+        message: "Completa la verificación de seguridad.",
+      });
     if (!process.env.RECAPTCHA_SECRET)
-      return res.status(500).json({ success: false, message: "Error de configuración." });
+      return res
+        .status(500)
+        .json({ success: false, message: "Error de configuración." });
 
-    const captchaRes  = await fetch("https://www.google.com/recaptcha/api/siteverify", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({ secret: process.env.RECAPTCHA_SECRET, response: recaptchaToken, remoteip: ip }).toString(),
-    });
+    const captchaRes = await fetch(
+      "https://www.google.com/recaptcha/api/siteverify",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({
+          secret: process.env.RECAPTCHA_SECRET,
+          response: recaptchaToken,
+          remoteip: ip,
+        }).toString(),
+      },
+    );
     const captchaJson = await captchaRes.json().catch(() => null);
     if (!captchaJson?.success) {
       console.error("reCAPTCHA v2 falló:", captchaJson?.["error-codes"]);
-      return res.status(400).json({ success: false, message: "Verificación de seguridad fallida. Recarga la página e intenta de nuevo." });
+      return res.status(400).json({
+        success: false,
+        message:
+          "Verificación de seguridad fallida. Recarga la página e intenta de nuevo.",
+      });
     }
 
     // Validar voucher
     if (voucherBase64 && voucherFileName) {
       if (voucherBase64.length > MAX_VOUCHER_B64_CHARS)
-        return res.status(400).json({ success: false, message: "El comprobante es demasiado grande. Máximo 3 MB." });
+        return res.status(400).json({
+          success: false,
+          message: "El comprobante es demasiado grande. Máximo 3 MB.",
+        });
       const mimeMatch = voucherBase64.match(/^data:([^;]+);base64,/);
       if (!mimeMatch || !ALLOWED_MIME_TYPES.has(mimeMatch[1]))
-        return res.status(400).json({ success: false, message: "Tipo de archivo no permitido. Solo JPG, PNG, WEBP o PDF." });
+        return res.status(400).json({
+          success: false,
+          message: "Tipo de archivo no permitido. Solo JPG, PNG, WEBP o PDF.",
+        });
     }
 
     const WEB3FORMS_KEY = process.env.WEB3FORMS_KEY;
-    const ADMIN_EMAIL   = process.env.ADMIN_EMAIL;
+    const RESEND_API_KEY = process.env.RESEND_API_KEY;
+    const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
     if (!WEB3FORMS_KEY || !ADMIN_EMAIL) {
       console.error("Faltan WEB3FORMS_KEY o ADMIN_EMAIL");
-      return res.status(500).json({ success: false, message: "Error de configuración del servidor." });
+      return res.status(500).json({
+        success: false,
+        message: "Error de configuración del servidor.",
+      });
+    }
+    if (!RESEND_API_KEY) {
+      console.warn(
+        "RESEND_API_KEY no configurado. Usando Web3Forms para todos los emails.",
+      );
     }
 
     const emailData = {
-      name:        cleanName,
-      email:       cleanEmail,
-      phone:       cleanPhone,
-      document:    cleanDocument,
-      refNumber:   sanitize(refNumber),
+      name: cleanName,
+      email: cleanEmail,
+      phone: cleanPhone,
+      document: cleanDocument,
+      refNumber: sanitize(refNumber),
       cartDetails: cartDetails || [],
-      voucherBase64,
     };
 
-    // 1. Email al ADMIN (con todos los detalles + voucher)
-    const adminRes = await fetch("https://api.web3forms.com/submit", {
-      method:  "POST",
-      headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body:    JSON.stringify({
-        access_key: WEB3FORMS_KEY,
-        subject:    sanitizeHeader(`Nueva Reserva — ${cleanName} | REF: ${sanitize(refNumber)}`),
-        from_name:  "Sistema de Reservas",
-        to:         ADMIN_EMAIL,
-        replyto:    cleanEmail,
-        html:       buildAdminHtml(emailData),
-      }),
-    });
-    const adminJson = await adminRes.json().catch(() => null);
-    if (!adminRes.ok || !adminJson?.success) {
-      console.error("Web3Forms admin error:", adminJson);
-      return res.status(502).json({ success: false, message: "Error al enviar la reserva. Intenta de nuevo." });
+    // 1. Email al ADMIN — Intentar con Resend primero (soporta attachments),
+    //    fallback a Web3Forms si no está configurado
+    let adminSendSuccess = false;
+
+    if (RESEND_API_KEY) {
+      try {
+        const resend = new Resend(RESEND_API_KEY);
+
+        // Preparar attachments
+        const attachments = [];
+        if (voucherBase64 && voucherFileName) {
+          const b64Data = voucherBase64.split(",")[1] || voucherBase64;
+          attachments.push({
+            filename: voucherFileName,
+            content: Buffer.from(b64Data, "base64"),
+          });
+        }
+
+        await resend.emails.send({
+          from: "noreply@resend.dev",
+          to: ADMIN_EMAIL,
+          replyTo: cleanEmail,
+          subject: sanitizeHeader(
+            `Nueva Reserva — ${cleanName} | REF: ${sanitize(refNumber)}`,
+          ),
+          html: buildAdminHtml(emailData),
+          attachments,
+        });
+
+        adminSendSuccess = true;
+      } catch (resendErr) {
+        console.warn(
+          "Resend falló, intentando con Web3Forms:",
+          resendErr.message,
+        );
+      }
     }
 
-    // 2. Confirmación al CLIENTE
+    // Fallback a Web3Forms si Resend no está disponible o falló
+    if (!adminSendSuccess) {
+      const adminRes = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_KEY,
+          subject: sanitizeHeader(
+            `Nueva Reserva — ${cleanName} | REF: ${sanitize(refNumber)}`,
+          ),
+          from_name: "Sistema de Reservas",
+          to: ADMIN_EMAIL,
+          replyto: cleanEmail,
+          html: buildAdminHtml(emailData),
+          // Nota: Web3Forms no soporta base64 inline en HTML.
+          // El archivo se referencia en el HTML como "📎 adjunto."
+        }),
+      });
+      const adminJson = await adminRes.json().catch(() => null);
+      if (!adminRes.ok || !adminJson?.success) {
+        console.error("Web3Forms admin error:", adminJson);
+        return res.status(502).json({
+          success: false,
+          message: "Error al enviar la reserva. Intenta de nuevo.",
+        });
+      }
+    }
+
+    // 2. Confirmación al CLIENTE (con Web3Forms)
     // Si falla no bloqueamos — la reserva ya llegó al admin
     try {
       await fetch("https://api.web3forms.com/submit", {
-        method:  "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body:    JSON.stringify({
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
           access_key: WEB3FORMS_KEY,
-          subject:    sanitizeHeader(`✓ Tu reserva fue recibida — REF: ${sanitize(refNumber)}`),
-          from_name:  "Voley al Límite 2026",
-          to:         cleanEmail,
-          replyto:    ADMIN_EMAIL,
-          message:    buildClientMessage(emailData),
+          subject: sanitizeHeader(
+            `✓ Tu reserva fue recibida — REF: ${sanitize(refNumber)}`,
+          ),
+          from_name: "Voley al Límite 2026",
+          to: cleanEmail,
+          replyto: ADMIN_EMAIL,
+          message: buildClientMessage(emailData),
         }),
       });
     } catch (clientErr) {
       console.warn("Email al cliente falló (no crítico):", clientErr.message);
     }
 
-    return res.status(200).json({ success: true, message: "Reserva enviada correctamente." });
-
+    return res
+      .status(200)
+      .json({ success: true, message: "Reserva enviada correctamente." });
   } catch (err) {
     console.error("Error interno:", err);
-    return res.status(500).json({ success: false, message: "Error interno del servidor. Intenta de nuevo." });
+    return res.status(500).json({
+      success: false,
+      message: "Error interno del servidor. Intenta de nuevo.",
+    });
   }
 }
