@@ -36,7 +36,7 @@ export default function PointSale() {
       email: "antreus28d@gmail.com",
     },
     notes:
-      "⚠️ Único punto de venta físico autorizado. No comprar entradas fuera de este local ni de la plataforma Athreus.",
+      "⚠️ Único punto de venta físico autorizado. No comprar entradas fuera de este local.",
   };
 
   // Iframe proporcionado por el cliente (vista inmersiva del local)
