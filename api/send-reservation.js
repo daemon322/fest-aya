@@ -13,18 +13,18 @@
 // Opcionales:
 //   RATE_LIMIT_WINDOW_MS — ventana rate limit ms (default: 60000)
 //   RATE_LIMIT_MAX       — máx peticiones/ventana (default: 5)
- 
+
 const ALLOWED_MIME_TYPES = new Set([
   "image/jpeg", "image/jpg", "image/png", "image/webp", "application/pdf",
 ]);
 const MAX_VOUCHER_B64_CHARS = 4_000_000;
- 
+
 const sanitize       = (val) => typeof val === "string" ? val.trim().replace(/[<>"'`]/g, "").slice(0, 255) : "";
 const sanitizeHeader = (val) => typeof val === "string" ? val.replace(/[\r\n\t]/g, " ").trim().slice(0, 200) : "";
 const isValidEmail   = (e)   => /^[a-z0-9._%+\-]+@gmail\.com$/.test(e.toLowerCase()); // Solo Gmail
 const isValidPhone   = (p)   => /^[\d\s+()-]{7,20}$/.test(p);
 const isValidDoc     = (d)   => d.length >= 6 && d.length <= 20;
- 
+
 // ── Email al ADMIN ────────────────────────────────────────────────────────────
 function buildAdminHtml({ name, email, phone, document, refNumber, cartDetails, voucherBase64 }) {
   const rows = (cartDetails || []).map((item) =>
@@ -69,75 +69,74 @@ function buildAdminHtml({ name, email, phone, document, refNumber, cartDetails, 
     }
   `;
 }
- 
+
 // ── Confirmación al CLIENTE ───────────────────────────────────────────────────
 function buildClientMessage({ name, email, refNumber, cartDetails }) {
   const total = (cartDetails || []).reduce((a, i) => a + i.price * i.quantity, 0);
   const lines = (cartDetails || [])
     .map((i) => `  • ${i.title} (${i.phaseName}) x${i.quantity}  →  S/ ${(i.price * i.quantity).toFixed(2)}`)
     .join("\n");
- 
+
   return `
 Hola ${name},
- 
+
 ¡Tu reserva fue recibida exitosamente! Aquí están los detalles:
- 
+
 ══════════════════════════════════
 Número de referencia: ${sanitize(refNumber)}
 ══════════════════════════════════
- 
+
 TUS ENTRADAS:
 ${lines}
- 
+
 TOTAL: S/ ${total.toFixed(2)}
- 
+
 ══════════════════════════════════
 ¿QUÉ SIGUE AHORA?
- 
+
 PASO 1 — Revisión de tu comprobante
 Nuestro equipo verificará el voucher que adjuntaste. Una vez
 validado, recibirás un correo de confirmación de pago.
- 
+
 PASO 2 — Entrega de tu código QR
 Tu E-Ticket con código QR será enviado a este correo (${email})
 entre 30 minutos y 1 hora después de recibir la
 confirmación de pago.
- 
+
 ⚠ IMPORTANTE: Si hay alta demanda de reservas simultáneas,
 el tiempo máximo de espera para el envío del QR es de 24 horas.
 Te pedimos paciencia y comprensión en ese caso.
- 
+
 PASO 3 — Día del evento
 Presenta tu QR desde el celular con el brillo al máximo.
 Lleva tu DNI — las entradas son nominativas e intransferibles.
- 
+
 ══════════════════════════════════
 ¿Tienes alguna duda?
 Escríbenos por WhatsApp: +51 961 379 018
- 
+
 Guarda este correo como comprobante de tu reserva.
- 
+
 — Equipo Voley al Límite 2026 · Ayacucho, Perú
   `.trim();
 }
- 
+
 // ── Handler ───────────────────────────────────────────────────────────────────
 export default async function handler(req, res) {
-const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN || '';
-  if (ALLOWED_ORIGIN) {
-    res.setHeader('Access-Control-Allow-Origin', ALLOWED_ORIGIN);
-  } else {
-    // FIX: en producción SIEMPRE configura ALLOWED_ORIGIN.
-    //      '*' solo se usa como último recurso en desarrollo.
-    res.setHeader('Access-Control-Allow-Origin', process.env.NODE_ENV === 'production' ? '' : '*');
-  }
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  // La API y el frontend viven en el mismo dominio Vercel → same-origin.
+  // No se necesita restricción de Origin aquí; la seguridad real la proveen
+  // reCAPTCHA v2, honeypot y rate limiting más abajo.
+  // Solo bloqueamos métodos que no sean POST/OPTIONS.
+  res.setHeader("Access-Control-Allow-Origin",  "*");
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  res.setHeader("X-Content-Type-Options",       "nosniff");
+  res.setHeader("Cache-Control",                "no-store");
 
-  if (req.method === 'OPTIONS') return res.status(204).end();
-  if (req.method !== 'POST')
-    return res.status(405).json({ success: false, message: 'Método no permitido.' });
- 
+  if (req.method === "OPTIONS") return res.status(204).end();
+  if (req.method !== "POST")
+    return res.status(405).json({ success: false, message: "Método no permitido." });
+
   // Rate limiting
   const RATE_WINDOW = Number(process.env.RATE_LIMIT_WINDOW_MS || 60_000);
   const RATE_MAX    = Number(process.env.RATE_LIMIT_MAX       || 5);
@@ -152,7 +151,7 @@ const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN || '';
     res.setHeader("Retry-After", String(Math.ceil(RATE_WINDOW / 1000)));
     return res.status(429).json({ success: false, message: "Demasiadas solicitudes. Intenta más tarde." });
   }
- 
+
   try {
     let body = req.body && Object.keys(req.body).length ? req.body : null;
     if (!body) {
@@ -162,16 +161,16 @@ const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN || '';
     }
     if (JSON.stringify(body).length > 6_000_000)
       return res.status(413).json({ success: false, message: "Solicitud demasiado grande." });
- 
+
     if (body.hp) return res.status(200).json({ success: true });
- 
+
     const { name, email, phone, document, refNumber, cartDetails, voucherBase64, voucherFileName, recaptchaToken } = body;
- 
+
     const cleanName     = sanitize(name);
     const cleanEmail    = sanitize(email);
     const cleanPhone    = sanitize(phone);
     const cleanDocument = sanitize(document);
- 
+
     if (!cleanName || cleanName.length < 3)
       return res.status(400).json({ success: false, message: "Nombre inválido." });
     if (!cleanEmail || !isValidEmail(cleanEmail))
@@ -180,13 +179,13 @@ const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN || '';
       return res.status(400).json({ success: false, message: "Teléfono inválido." });
     if (!cleanDocument || !isValidDoc(cleanDocument))
       return res.status(400).json({ success: false, message: "Documento inválido." });
- 
+
     // reCAPTCHA v2
     if (!recaptchaToken)
       return res.status(400).json({ success: false, message: "Completa la verificación de seguridad." });
     if (!process.env.RECAPTCHA_SECRET)
       return res.status(500).json({ success: false, message: "Error de configuración." });
- 
+
     const captchaRes  = await fetch("https://www.google.com/recaptcha/api/siteverify", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -197,7 +196,7 @@ const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN || '';
       console.error("reCAPTCHA v2 falló:", captchaJson?.["error-codes"]);
       return res.status(400).json({ success: false, message: "Verificación de seguridad fallida. Recarga la página e intenta de nuevo." });
     }
- 
+
     // Validar voucher
     if (voucherBase64 && voucherFileName) {
       if (voucherBase64.length > MAX_VOUCHER_B64_CHARS)
@@ -206,14 +205,14 @@ const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN || '';
       if (!mimeMatch || !ALLOWED_MIME_TYPES.has(mimeMatch[1]))
         return res.status(400).json({ success: false, message: "Tipo de archivo no permitido. Solo JPG, PNG, WEBP o PDF." });
     }
- 
+
     const WEB3FORMS_KEY = process.env.WEB3FORMS_KEY;
     const ADMIN_EMAIL   = process.env.ADMIN_EMAIL;
     if (!WEB3FORMS_KEY || !ADMIN_EMAIL) {
       console.error("Faltan WEB3FORMS_KEY o ADMIN_EMAIL");
       return res.status(500).json({ success: false, message: "Error de configuración del servidor." });
     }
- 
+
     const emailData = {
       name:        cleanName,
       email:       cleanEmail,
@@ -223,7 +222,7 @@ const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN || '';
       cartDetails: cartDetails || [],
       voucherBase64,
     };
- 
+
     // 1. Email al ADMIN (con todos los detalles + voucher)
     const adminRes = await fetch("https://api.web3forms.com/submit", {
       method:  "POST",
@@ -242,7 +241,7 @@ const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN || '';
       console.error("Web3Forms admin error:", adminJson);
       return res.status(502).json({ success: false, message: "Error al enviar la reserva. Intenta de nuevo." });
     }
- 
+
     // 2. Confirmación al CLIENTE
     // Si falla no bloqueamos — la reserva ya llegó al admin
     try {
@@ -261,9 +260,9 @@ const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN || '';
     } catch (clientErr) {
       console.warn("Email al cliente falló (no crítico):", clientErr.message);
     }
- 
+
     return res.status(200).json({ success: true, message: "Reserva enviada correctamente." });
- 
+
   } catch (err) {
     console.error("Error interno:", err);
     return res.status(500).json({ success: false, message: "Error interno del servidor. Intenta de nuevo." });
