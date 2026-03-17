@@ -123,35 +123,20 @@ Guarda este correo como comprobante de tu reserva.
  
 // ── Handler ───────────────────────────────────────────────────────────────────
 export default async function handler(req, res) {
-  const origin = req.headers["origin"] || "";
- 
-  // En Vercel, la API y el frontend están en el mismo dominio.
-  // Las peticiones same-origin llegan sin cabecera Origin (o con la misma URL).
-  // Permitimos: mismo dominio Vercel, previews de Vercel y localhost en dev.
-  const PRODUCTION_ORIGIN = process.env.ALLOWED_ORIGIN || "";
- 
-  const isAllowed =
-    !origin ||                                          // same-origin: sin cabecera Origin
-    origin === PRODUCTION_ORIGIN ||                     // dominio de producción configurado
-    /^https:\/\/[a-z0-9-]+-[a-z0-9]+-[a-z0-9]+\.vercel\.app$/.test(origin) || // previews Vercel
-    origin === "http://localhost:5173" ||               // dev local Vite
-    origin === "http://localhost:3000";                 // dev local alternativo
- 
-  if (!isAllowed) {
-    return res.status(403).json({ success: false, message: "Origen no autorizado." });
+const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN || '';
+  if (ALLOWED_ORIGIN) {
+    res.setHeader('Access-Control-Allow-Origin', ALLOWED_ORIGIN);
+  } else {
+    // FIX: en producción SIEMPRE configura ALLOWED_ORIGIN.
+    //      '*' solo se usa como último recurso en desarrollo.
+    res.setHeader('Access-Control-Allow-Origin', process.env.NODE_ENV === 'production' ? '' : '*');
   }
- 
-  // Cabecera CORS: reflejar el origin permitido (o * si no hay origin)
-  res.setHeader("Access-Control-Allow-Origin",  origin || "*");
-  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-  res.setHeader("Vary",                         "Origin");
-  res.setHeader("X-Content-Type-Options",       "nosniff");
-  res.setHeader("Cache-Control",                "no-store");
- 
-  if (req.method === "OPTIONS") return res.status(204).end();
-  if (req.method !== "POST")
-    return res.status(405).json({ success: false, message: "Método no permitido." });
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  if (req.method === 'OPTIONS') return res.status(204).end();
+  if (req.method !== 'POST')
+    return res.status(405).json({ success: false, message: 'Método no permitido.' });
  
   // Rate limiting
   const RATE_WINDOW = Number(process.env.RATE_LIMIT_WINDOW_MS || 60_000);
