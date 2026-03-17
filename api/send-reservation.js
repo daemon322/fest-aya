@@ -395,56 +395,29 @@ export default async function handler(req, res) {
       }
     }
 
-    // 2. Confirmación al CLIENTE (con Web3Forms)
+    // 2. Confirmación al CLIENTE (con Resend si disponible, sino silenciosamente ignorar)
     // Si falla no bloqueamos — la reserva ya llegó al admin
-    try {
-      const clientRes = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({
-          access_key: WEB3FORMS_KEY,
+    if (RESEND_API_KEY) {
+      try {
+        const resend = new Resend(RESEND_API_KEY);
+        await resend.emails.send({
+          from: "noreply@resend.dev",
+          to: cleanEmail,
+          replyTo: ADMIN_EMAIL,
           subject: sanitizeHeader(
             `✓ Tu reserva fue recibida — REF: ${sanitize(refNumber)}`,
           ),
-          from_name: "Voley al Límite 2026",
-          to: cleanEmail,
-          replyto: ADMIN_EMAIL,
-          message: buildClientMessage(emailData),
-        }),
-      });
-
-      // Leer body una sola vez
-      const responseText = await clientRes.text();
-      let clientJson = null;
-      try {
-        clientJson = responseText ? JSON.parse(responseText) : null;
-      } catch (parseErr) {
-        console.warn(
-          "Email al cliente - respuesta no es JSON válido. Status:",
-          clientRes.status,
-          "Body:",
-          responseText.slice(0, 200),
-        );
-      }
-
-      if (!clientRes.ok || !clientJson?.success) {
-        console.warn(
-          "Email al cliente falló (no crítico) - Status:",
-          clientRes.status,
-          "Response:",
-          clientJson,
-        );
-      } else {
+          text: buildClientMessage(emailData),
+        });
         console.log("Email al cliente enviado exitosamente");
+      } catch (clientErr) {
+        console.warn(
+          "Email al cliente falló (no crítico) - Resend Error:",
+          clientErr.message,
+        );
       }
-    } catch (clientErr) {
-      console.warn(
-        "Email al cliente falló (no crítico) - Error:",
-        clientErr.message,
-      );
+    } else {
+      console.warn("Resend no configurado. Email al cliente no será enviado.");
     }
 
     return res
