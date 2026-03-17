@@ -415,12 +415,35 @@ export default async function handler(req, res) {
           message: buildClientMessage(emailData),
         }),
       });
-      const clientJson = await clientRes.json().catch(() => null);
+
+      let clientJson = null;
+      try {
+        clientJson = await clientRes.json();
+      } catch (parseErr) {
+        const text = await clientRes.text();
+        console.warn(
+          "Email al cliente - respuesta no es JSON. Status:",
+          clientRes.status,
+          "Body:",
+          text.slice(0, 200),
+        );
+      }
+
       if (!clientRes.ok || !clientJson?.success) {
-        console.warn("Email al cliente falló (no crítico):", clientJson);
+        console.warn(
+          "Email al cliente falló (no crítico) - Status:",
+          clientRes.status,
+          "Response:",
+          clientJson,
+        );
+      } else {
+        console.log("Email al cliente enviado exitosamente");
       }
     } catch (clientErr) {
-      console.warn("Email al cliente falló (no crítico):", clientErr.message);
+      console.warn(
+        "Email al cliente falló (no crítico) - Error:",
+        clientErr.message,
+      );
     }
 
     return res
