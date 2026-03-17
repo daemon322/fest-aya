@@ -50,8 +50,8 @@ const Tribuna = () => {
       sceneRef.current = scene;
 
       // Cámara
-      const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 3.1, 2000);
-      camera.position.set(25, 18, 25);
+      const camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 0.1, 2000);
+      camera.position.set(0, 0, 0);
       cameraRef.current = camera;
 
       // Renderizador
@@ -211,7 +211,7 @@ const Tribuna = () => {
     if (!threeInitialized.current) return;
 
     if (activeZone === 'VIP') {
-      targetCamPos.current     = { x: 1, y: 1, z: 12 };
+      targetCamPos.current     = { x: 0, y: 0, z: 10 };
       targetRotation.current   = { x: 0.3, y: 1.3 };
       isRotatingRef.current    = false;
     } else if (activeZone === 'General') {
@@ -250,7 +250,7 @@ const Tribuna = () => {
 
   return (
     <div className="relative w-full h-screen overflow-hidden font-sans text-white">
-      <div ref={mountRef} className="fixed inset-0 z-0" />
+      <div ref={mountRef} className="absolute sm:fixed inset-0 z-0" />
 
       <div className="relative z-10 h-full flex flex-col justify-between pointer-events-none pt-10 px-10">
         <div className="flex flex-col lg:flex-row justify-between items-start gap-4 pt-10 h-full">
