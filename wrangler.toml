@@ -1,16 +1,5 @@
-# 🚀 Cloudflare Pages Configuration
-# Este archivo configura Cloudflare Pages con soporte a Node.js
-
 name = "mi-entradas"
+type = "javascript"
 compatibility_date = "2024-01-01"
 compatibility_flags = ["nodejs_compat"]
 
-[build]
-command = "npm run build"
-cwd = "."
-watch_paths = [
-  "src/**/*.jsx",
-  "src/**/*.css",
-  "index.html",
-  "public/**/*"
-]
