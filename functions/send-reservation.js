@@ -282,8 +282,11 @@ export async function onRequest(context) {
     let body = {};
     try {
       const text = await request.text();
+      console.log("📨 Body crudo recibido:", text ? text.substring(0, 200) : "(vacío)");
       body = text ? JSON.parse(text) : {};
-    } catch {
+      console.log("✓ Body parseado exitosamente");
+    } catch (parseErr) {
+      console.error("❌ Error parseando JSON:", parseErr.message);
       body = {};
     }
 
@@ -316,10 +319,20 @@ export async function onRequest(context) {
     const cleanPhone = sanitize(phone);
     const cleanDocument = sanitize(document);
 
+    console.log("🔍 Datos sanitizados:", {
+      name: cleanName ? "✓" : "✗ vacío",
+      email: cleanEmail ? "✓" : "✗ vacío",
+      phone: cleanPhone ? "✓" : "✗ vacío",
+      document: cleanDocument ? "✓" : "✗ vacío",
+      recaptchaToken: recaptchaToken ? "✓" : "✗ sin token",
+    });
+
     if (!cleanName || cleanName.length < 3) {
+      console.warn("❌ Validación falla: nombre inválido");
       return jsonResponse({ success: false, message: "Nombre inválido." }, 400);
     }
     if (!cleanEmail || !isValidEmail(cleanEmail)) {
+      console.warn("❌ Validación falla: email inválido", cleanEmail);
       return jsonResponse(
         {
           success: false,
@@ -495,7 +508,11 @@ export async function onRequest(context) {
       message: "Reserva enviada correctamente.",
     });
   } catch (err) {
-    console.error("Error interno:", err);
+    console.error("💥 ERROR CRÍTICO en manejador:", {
+      message: err.message,
+      stack: err.stack,
+      type: err.constructor.name,
+    });
     return jsonResponse(
       {
         success: false,
