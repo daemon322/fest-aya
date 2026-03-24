@@ -9,7 +9,7 @@ const apiPlugin = {
   configureServer(server) {
     return () => {
       server.middlewares.use(async (req, res, next) => {
-        if (req.url === "/api/send-reservation" && req.method === "POST") {
+        if (req.url === "/functions/send-reservation" && req.method === "POST") {
           const contentType = req.headers["content-type"];
 
           if (contentType && contentType.includes("multipart/form-data")) {
