@@ -1,0 +1,22 @@
+name = "mi-entradas"
+type = "javascript"
+account_id = ""
+workers_dev = true
+route = ""
+zone_id = ""
+
+# Configuración para Cloudflare Pages
+[env.production]
+name = "mi-entradas-prod"
+
+[env.development]
+name = "mi-entradas-dev"
+
+# Variables de entorno (comentadas — configura en Dashboard de Cloudflare)
+# [env.production.vars]
+# SENDGRID_API_KEY = "SG.xxxxxxxxxxxxxxxxxxxxx"
+# ADMIN_EMAIL = "admin@tudominio.com"
+# FROM_EMAIL = "noreply@tudominio.com"
+# RECAPTCHA_SECRET = "6Lxxxxxx_xxxxxxxxxxxxxxxx"
+# RATE_LIMIT_WINDOW_MS = "60000"
+# RATE_LIMIT_MAX = "5"
