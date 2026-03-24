@@ -186,278 +186,270 @@ function jsonResponse(data, status = 200) {
 }
 
 // ── Handler ───────────────────────────────────────────────────────────────────
-export default {
-  onRequest: async (context) => {
-    const { request, env } = context;
+// Estructura estándar para Cloudflare Pages Functions
+export default async function handler(request, context) {
+  const env = context.env;
 
-    // CORS preflight
-    if (request.method === "OPTIONS") {
-      return new Response(null, {
-        status: 204,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "POST, OPTIONS",
-          "Access-Control-Allow-Headers": "Content-Type",
-        },
-      });
-    }
+  // CORS preflight
+  if (request.method === "OPTIONS") {
+    return new Response(null, {
+      status: 204,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "POST, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type",
+      },
+    });
+  }
 
-    if (request.method !== "POST") {
-      return jsonResponse(
-        { success: false, message: "Método no permitido." },
-        405,
-      );
-    }
+  if (request.method !== "POST") {
+    return jsonResponse(
+      { success: false, message: "Método no permitido." },
+      405,
+    );
+  }
 
-    // Rate limiting (por IP)
-    const RATE_WINDOW = Number(env.RATE_LIMIT_WINDOW_MS || 60_000);
-    const RATE_MAX = Number(env.RATE_LIMIT_MAX || 5);
-    const ip =
-      request.headers.get("cf-connecting-ip") ||
-      request.headers.get("x-forwarded-for")?.split(",")[0] ||
-      "unknown";
+  // Rate limiting (por IP)
+  const RATE_WINDOW = Number(env.RATE_LIMIT_WINDOW_MS || 60_000);
+  const RATE_MAX = Number(env.RATE_LIMIT_MAX || 5);
+  const ip =
+    request.headers.get("cf-connecting-ip") ||
+    request.headers.get("x-forwarded-for")?.split(",")[0] ||
+    "unknown";
 
-    const now = Date.now();
-    const entry = rateLimitMap.get(ip) || { ts: now, count: 0 };
-    if (now - entry.ts > RATE_WINDOW) {
-      entry.ts = now;
-      entry.count = 0;
-    }
-    entry.count++;
-    rateLimitMap.set(ip, entry);
+  const now = Date.now();
+  const entry = rateLimitMap.get(ip) || { ts: now, count: 0 };
+  if (now - entry.ts > RATE_WINDOW) {
+    entry.ts = now;
+    entry.count = 0;
+  }
+  entry.count++;
+  rateLimitMap.set(ip, entry);
 
-    if (entry.count > RATE_MAX) {
-      const response = jsonResponse(
-        {
-          success: false,
-          message: "Demasiadas solicitudes. Intenta más tarde.",
-        },
-        429,
-      );
-      response.headers.set(
-        "Retry-After",
-        String(Math.ceil(RATE_WINDOW / 1000)),
-      );
-      return response;
-    }
+  if (entry.count > RATE_MAX) {
+    const response = jsonResponse(
+      {
+        success: false,
+        message: "Demasiadas solicitudes. Intenta más tarde.",
+      },
+      429,
+    );
+    response.headers.set("Retry-After", String(Math.ceil(RATE_WINDOW / 1000)));
+    return response;
+  }
 
+  try {
+    let body = {};
     try {
-      let body = {};
-      try {
-        const text = await request.text();
-        body = text ? JSON.parse(text) : {};
-      } catch {
-        body = {};
-      }
+      const text = await request.text();
+      body = text ? JSON.parse(text) : {};
+    } catch {
+      body = {};
+    }
 
-      if (JSON.stringify(body).length > 6_000_000) {
-        return jsonResponse(
-          { success: false, message: "Solicitud demasiado grande." },
-          413,
-        );
-      }
-
-      // Honeypot
-      if (body.hp) {
-        return jsonResponse({ success: true });
-      }
-
-      const {
-        name,
-        email,
-        phone,
-        document,
-        refNumber,
-        cartDetails,
-        voucherBase64,
-        voucherFileName,
-        recaptchaToken,
-      } = body;
-
-      const cleanName = sanitize(name);
-      const cleanEmail = sanitize(email);
-      const cleanPhone = sanitize(phone);
-      const cleanDocument = sanitize(document);
-
-      if (!cleanName || cleanName.length < 3) {
-        return jsonResponse(
-          { success: false, message: "Nombre inválido." },
-          400,
-        );
-      }
-      if (!cleanEmail || !isValidEmail(cleanEmail)) {
-        return jsonResponse(
-          {
-            success: false,
-            message: "El correo no es válido o el dominio no es permitido.",
-          },
-          400,
-        );
-      }
-      if (!cleanPhone || !isValidPhone(cleanPhone)) {
-        return jsonResponse(
-          { success: false, message: "Teléfono inválido." },
-          400,
-        );
-      }
-      if (!cleanDocument || !isValidDoc(cleanDocument)) {
-        return jsonResponse(
-          { success: false, message: "Documento inválido." },
-          400,
-        );
-      }
-
-      // reCAPTCHA v2
-      if (!recaptchaToken) {
-        return jsonResponse(
-          { success: false, message: "Completa la verificación de seguridad." },
-          400,
-        );
-      }
-      if (!env.RECAPTCHA_SECRET) {
-        return jsonResponse(
-          { success: false, message: "Error de configuración." },
-          500,
-        );
-      }
-
-      const captchaRes = await fetch(
-        "https://www.google.com/recaptcha/api/siteverify",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          body: new URLSearchParams({
-            secret: env.RECAPTCHA_SECRET,
-            response: recaptchaToken,
-            remoteip: ip,
-          }).toString(),
-        },
+    if (JSON.stringify(body).length > 6_000_000) {
+      return jsonResponse(
+        { success: false, message: "Solicitud demasiado grande." },
+        413,
       );
-      const captchaJson = await captchaRes.json().catch(() => null);
-      if (!captchaJson?.success) {
-        console.error("reCAPTCHA v2 falló:", captchaJson?.["error-codes"]);
-        return jsonResponse(
-          {
-            success: false,
-            message:
-              "Verificación de seguridad fallida. Recarga la página e intenta de nuevo.",
-          },
-          400,
-        );
-      }
+    }
 
-      // Validar voucher
-      if (voucherBase64 && voucherFileName) {
-        if (voucherBase64.length > MAX_VOUCHER_B64_CHARS) {
-          return jsonResponse(
-            {
-              success: false,
-              message: "El comprobante es demasiado grande. Máximo 3 MB.",
-            },
-            400,
-          );
-        }
-        const mimeMatch = voucherBase64.match(/^data:([^;]+);base64,/);
-        if (!mimeMatch || !ALLOWED_MIME_TYPES.has(mimeMatch[1])) {
-          return jsonResponse(
-            {
-              success: false,
-              message:
-                "Tipo de archivo no permitido. Solo JPG, PNG, WEBP o PDF.",
-            },
-            400,
-          );
-        }
-      }
+    // Honeypot
+    if (body.hp) {
+      return jsonResponse({ success: true });
+    }
 
-      const SENDGRID_API_KEY = env.SENDGRID_API_KEY;
-      const FROM_EMAIL = env.FROM_EMAIL;
-      const ADMIN_EMAIL = env.ADMIN_EMAIL;
-      if (!SENDGRID_API_KEY || !FROM_EMAIL || !ADMIN_EMAIL) {
-        console.error("Faltan SENDGRID_API_KEY, FROM_EMAIL o ADMIN_EMAIL");
-        return jsonResponse(
-          { success: false, message: "Error de configuración del servidor." },
-          500,
-        );
-      }
+    const {
+      name,
+      email,
+      phone,
+      document,
+      refNumber,
+      cartDetails,
+      voucherBase64,
+      voucherFileName,
+      recaptchaToken,
+    } = body;
 
-      sgMail.setApiKey(SENDGRID_API_KEY);
+    const cleanName = sanitize(name);
+    const cleanEmail = sanitize(email);
+    const cleanPhone = sanitize(phone);
+    const cleanDocument = sanitize(document);
 
-      const emailData = {
-        name: cleanName,
-        email: cleanEmail,
-        phone: cleanPhone,
-        document: cleanDocument,
-        refNumber: sanitize(refNumber),
-        cartDetails: cartDetails || [],
-      };
-
-      // 1. Email al ADMIN (con voucher como adjunto)
-      try {
-        const attachments = [];
-        if (voucherBase64 && voucherFileName) {
-          const b64Data = voucherBase64.split(",")[1] || voucherBase64;
-          attachments.push({
-            content: b64Data,
-            filename: voucherFileName,
-            type: "application/octet-stream",
-            disposition: "attachment",
-          });
-        }
-
-        await sgMail.send({
-          to: ADMIN_EMAIL,
-          from: FROM_EMAIL,
-          replyTo: cleanEmail,
-          subject: sanitizeHeader(
-            `Nueva Reserva — ${cleanName} | REF: ${sanitize(refNumber)}`,
-          ),
-          html: buildAdminHtml(emailData),
-          attachments,
-        });
-
-        console.log("Email al admin enviado exitosamente");
-      } catch (adminErr) {
-        console.error("Error enviando email al admin:", adminErr.message);
-        return jsonResponse(
-          {
-            success: false,
-            message: "Error al enviar la reserva. Intenta de nuevo.",
-          },
-          502,
-        );
-      }
-
-      // 2. Confirmación al CLIENTE
-      try {
-        await sgMail.send({
-          to: cleanEmail,
-          from: FROM_EMAIL,
-          replyTo: ADMIN_EMAIL,
-          subject: sanitizeHeader(
-            `✓ Tu reserva fue recibida — REF: ${sanitize(refNumber)}`,
-          ),
-          text: buildClientMessage(emailData),
-        });
-
-        console.log("Email al cliente enviado exitosamente");
-      } catch (clientErr) {
-        console.warn("Email al cliente falló (no crítico):", clientErr.message);
-      }
-
-      return jsonResponse({
-        success: true,
-        message: "Reserva enviada correctamente.",
-      });
-    } catch (err) {
-      console.error("Error interno:", err);
+    if (!cleanName || cleanName.length < 3) {
+      return jsonResponse({ success: false, message: "Nombre inválido." }, 400);
+    }
+    if (!cleanEmail || !isValidEmail(cleanEmail)) {
       return jsonResponse(
         {
           success: false,
-          message: "Error interno del servidor. Intenta de nuevo.",
+          message: "El correo no es válido o el dominio no es permitido.",
         },
+        400,
+      );
+    }
+    if (!cleanPhone || !isValidPhone(cleanPhone)) {
+      return jsonResponse(
+        { success: false, message: "Teléfono inválido." },
+        400,
+      );
+    }
+    if (!cleanDocument || !isValidDoc(cleanDocument)) {
+      return jsonResponse(
+        { success: false, message: "Documento inválido." },
+        400,
+      );
+    }
+
+    // reCAPTCHA v2
+    if (!recaptchaToken) {
+      return jsonResponse(
+        { success: false, message: "Completa la verificación de seguridad." },
+        400,
+      );
+    }
+    if (!env.RECAPTCHA_SECRET) {
+      return jsonResponse(
+        { success: false, message: "Error de configuración." },
         500,
       );
     }
-  },
-};
+
+    const captchaRes = await fetch(
+      "https://www.google.com/recaptcha/api/siteverify",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({
+          secret: env.RECAPTCHA_SECRET,
+          response: recaptchaToken,
+          remoteip: ip,
+        }).toString(),
+      },
+    );
+    const captchaJson = await captchaRes.json().catch(() => null);
+    if (!captchaJson?.success) {
+      console.error("reCAPTCHA v2 falló:", captchaJson?.["error-codes"]);
+      return jsonResponse(
+        {
+          success: false,
+          message:
+            "Verificación de seguridad fallida. Recarga la página e intenta de nuevo.",
+        },
+        400,
+      );
+    }
+
+    // Validar voucher
+    if (voucherBase64 && voucherFileName) {
+      if (voucherBase64.length > MAX_VOUCHER_B64_CHARS) {
+        return jsonResponse(
+          {
+            success: false,
+            message: "El comprobante es demasiado grande. Máximo 3 MB.",
+          },
+          400,
+        );
+      }
+      const mimeMatch = voucherBase64.match(/^data:([^;]+);base64,/);
+      if (!mimeMatch || !ALLOWED_MIME_TYPES.has(mimeMatch[1])) {
+        return jsonResponse(
+          {
+            success: false,
+            message: "Tipo de archivo no permitido. Solo JPG, PNG, WEBP o PDF.",
+          },
+          400,
+        );
+      }
+    }
+
+    const SENDGRID_API_KEY = env.SENDGRID_API_KEY;
+    const FROM_EMAIL = env.FROM_EMAIL;
+    const ADMIN_EMAIL = env.ADMIN_EMAIL;
+    if (!SENDGRID_API_KEY || !FROM_EMAIL || !ADMIN_EMAIL) {
+      console.error("Faltan SENDGRID_API_KEY, FROM_EMAIL o ADMIN_EMAIL");
+      return jsonResponse(
+        { success: false, message: "Error de configuración del servidor." },
+        500,
+      );
+    }
+
+    sgMail.setApiKey(SENDGRID_API_KEY);
+
+    const emailData = {
+      name: cleanName,
+      email: cleanEmail,
+      phone: cleanPhone,
+      document: cleanDocument,
+      refNumber: sanitize(refNumber),
+      cartDetails: cartDetails || [],
+    };
+
+    // 1. Email al ADMIN (con voucher como adjunto)
+    try {
+      const attachments = [];
+      if (voucherBase64 && voucherFileName) {
+        const b64Data = voucherBase64.split(",")[1] || voucherBase64;
+        attachments.push({
+          content: b64Data,
+          filename: voucherFileName,
+          type: "application/octet-stream",
+          disposition: "attachment",
+        });
+      }
+
+      await sgMail.send({
+        to: ADMIN_EMAIL,
+        from: FROM_EMAIL,
+        replyTo: cleanEmail,
+        subject: sanitizeHeader(
+          `Nueva Reserva — ${cleanName} | REF: ${sanitize(refNumber)}`,
+        ),
+        html: buildAdminHtml(emailData),
+        attachments,
+      });
+
+      console.log("Email al admin enviado exitosamente");
+    } catch (adminErr) {
+      console.error("Error enviando email al admin:", adminErr.message);
+      return jsonResponse(
+        {
+          success: false,
+          message: "Error al enviar la reserva. Intenta de nuevo.",
+        },
+        502,
+      );
+    }
+
+    // 2. Confirmación al CLIENTE
+    try {
+      await sgMail.send({
+        to: cleanEmail,
+        from: FROM_EMAIL,
+        replyTo: ADMIN_EMAIL,
+        subject: sanitizeHeader(
+          `✓ Tu reserva fue recibida — REF: ${sanitize(refNumber)}`,
+        ),
+        text: buildClientMessage(emailData),
+      });
+
+      console.log("Email al cliente enviado exitosamente");
+    } catch (clientErr) {
+      console.warn("Email al cliente falló (no crítico):", clientErr.message);
+    }
+
+    return jsonResponse({
+      success: true,
+      message: "Reserva enviada correctamente.",
+    });
+  } catch (err) {
+    console.error("Error interno:", err);
+    return jsonResponse(
+      {
+        success: false,
+        message: "Error interno del servidor. Intenta de nuevo.",
+      },
+      500,
+    );
+  }
+}
