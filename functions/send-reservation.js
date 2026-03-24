@@ -454,12 +454,33 @@ export async function onRequest(context) {
       cartDetails: cartDetails || [],
     };
 
-    // 1. Email al ADMIN (SIN archivo adjunto)
+    // 1. Email al ADMIN (CON archivo adjunto si fue proporcionado)
     try {
       // Información del voucher (si fue proporcionado)
       let voucherInfo = "";
-      if (voucherFileName) {
-        voucherInfo = `\n📎 Archivo fornecido por el usuario: ${voucherFileName}\n   (El usuario debe compartir el comprobante a través del formulario de carga)`;
+      let attachments = [];
+
+      if (voucherBase64 && voucherFileName) {
+        // Extraer MIME type y content del base64
+        const mimeMatch = voucherBase64.match(/^data:([^;]+);base64,/);
+        if (mimeMatch) {
+          const mimeType = mimeMatch[1];
+          const base64Content = voucherBase64.replace(
+            /^data:[^;]+;base64,/,
+            "",
+          );
+
+          attachments.push({
+            content: base64Content,
+            type: mimeType,
+            filename: voucherFileName,
+          });
+
+          voucherInfo = `\n📎 Comprobante de pago adjunto: ${voucherFileName}`;
+          console.log(
+            `✓ Archivo adjunto preparado: ${voucherFileName} (${mimeType})`,
+          );
+        }
       }
 
       const adminEmailPayload = {
@@ -480,6 +501,11 @@ export async function onRequest(context) {
           },
         ],
       };
+
+      // Agregar attachments si existen
+      if (attachments.length > 0) {
+        adminEmailPayload.attachments = attachments;
+      }
 
       await sendEmailViaSendGrid(SENDGRID_API_KEY, adminEmailPayload);
       console.log("✓ Email al admin enviado exitosamente");
