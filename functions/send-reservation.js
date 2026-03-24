@@ -187,8 +187,9 @@ function jsonResponse(data, status = 200) {
 
 // ── Handler ───────────────────────────────────────────────────────────────────
 // Estructura estándar para Cloudflare Pages Functions
-export default async function handler(request, context) {
-  const env = context.env;
+export async function onRequest(context) {
+  const { request } = context;
+  const env = context.env || {};
 
   // CORS preflight
   if (request.method === "OPTIONS") {

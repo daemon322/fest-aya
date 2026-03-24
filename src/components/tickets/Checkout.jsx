@@ -161,7 +161,7 @@ const Checkout = ({ cart = [], onBack, onComplete }) => {
         if (!voucherBase64) return;
       }
 
-      const response = await fetch("/functions/send-reservation", {
+      const response = await fetch("/send-reservation", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
