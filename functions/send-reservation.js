@@ -208,13 +208,29 @@ export async function onRequest(context) {
   const { request } = context;
   const env = context.env || {};
 
+  // Debug: Log detallado de la solicitud
+  console.log(`[${new Date().toISOString()}] Solicitud recibida:`, {
+    method: request.method,
+    url: request.url,
+    headers: {
+      "content-type": request.headers.get("content-type"),
+      "purpose": request.headers.get("purpose"),
+      "origin": request.headers.get("origin"),
+    },
+  });
+
   // Rechazar prefetch de navegadores
   if (request.headers.get("purpose") === "prefetch") {
-    return jsonResponse({ success: false, message: "Prefetch no soportado." }, 403);
+    console.warn("⚠️  Prefetch detectado, rechazando");
+    return jsonResponse(
+      { success: false, message: "Prefetch no soportado." },
+      403,
+    );
   }
 
   // CORS preflight
   if (request.method === "OPTIONS") {
+    console.log("✓ OPTIONS preflight aceptado");
     return new Response(null, {
       status: 204,
       headers: {
@@ -226,6 +242,7 @@ export async function onRequest(context) {
   }
 
   if (request.method !== "POST") {
+    console.error("❌ Método recibido NO es POST:", request.method);
     return jsonResponse(
       { success: false, message: "Método no permitido (solo POST)." },
       405,
