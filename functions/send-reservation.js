@@ -376,7 +376,10 @@ export async function onRequest(context) {
         Object.keys(env).sort(),
       );
       return jsonResponse(
-        { success: false, message: "Error de configuración del servidor (recaptcha)." },
+        {
+          success: false,
+          message: "Error de configuración del servidor (recaptcha).",
+        },
         500,
       );
     }
