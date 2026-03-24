@@ -205,7 +205,7 @@ export default {
     if (request.method !== "POST") {
       return jsonResponse(
         { success: false, message: "Método no permitido." },
-        405
+        405,
       );
     }
 
@@ -228,10 +228,16 @@ export default {
 
     if (entry.count > RATE_MAX) {
       const response = jsonResponse(
-        { success: false, message: "Demasiadas solicitudes. Intenta más tarde." },
-        429
+        {
+          success: false,
+          message: "Demasiadas solicitudes. Intenta más tarde.",
+        },
+        429,
       );
-      response.headers.set("Retry-After", String(Math.ceil(RATE_WINDOW / 1000)));
+      response.headers.set(
+        "Retry-After",
+        String(Math.ceil(RATE_WINDOW / 1000)),
+      );
       return response;
     }
 
@@ -247,7 +253,7 @@ export default {
       if (JSON.stringify(body).length > 6_000_000) {
         return jsonResponse(
           { success: false, message: "Solicitud demasiado grande." },
-          413
+          413,
         );
       }
 
@@ -276,7 +282,7 @@ export default {
       if (!cleanName || cleanName.length < 3) {
         return jsonResponse(
           { success: false, message: "Nombre inválido." },
-          400
+          400,
         );
       }
       if (!cleanEmail || !isValidEmail(cleanEmail)) {
@@ -285,19 +291,19 @@ export default {
             success: false,
             message: "El correo no es válido o el dominio no es permitido.",
           },
-          400
+          400,
         );
       }
       if (!cleanPhone || !isValidPhone(cleanPhone)) {
         return jsonResponse(
           { success: false, message: "Teléfono inválido." },
-          400
+          400,
         );
       }
       if (!cleanDocument || !isValidDoc(cleanDocument)) {
         return jsonResponse(
           { success: false, message: "Documento inválido." },
-          400
+          400,
         );
       }
 
@@ -305,13 +311,13 @@ export default {
       if (!recaptchaToken) {
         return jsonResponse(
           { success: false, message: "Completa la verificación de seguridad." },
-          400
+          400,
         );
       }
       if (!env.RECAPTCHA_SECRET) {
         return jsonResponse(
           { success: false, message: "Error de configuración." },
-          500
+          500,
         );
       }
 
@@ -325,7 +331,7 @@ export default {
             response: recaptchaToken,
             remoteip: ip,
           }).toString(),
-        }
+        },
       );
       const captchaJson = await captchaRes.json().catch(() => null);
       if (!captchaJson?.success) {
@@ -336,7 +342,7 @@ export default {
             message:
               "Verificación de seguridad fallida. Recarga la página e intenta de nuevo.",
           },
-          400
+          400,
         );
       }
 
@@ -348,7 +354,7 @@ export default {
               success: false,
               message: "El comprobante es demasiado grande. Máximo 3 MB.",
             },
-            400
+            400,
           );
         }
         const mimeMatch = voucherBase64.match(/^data:([^;]+);base64,/);
@@ -359,7 +365,7 @@ export default {
               message:
                 "Tipo de archivo no permitido. Solo JPG, PNG, WEBP o PDF.",
             },
-            400
+            400,
           );
         }
       }
@@ -371,7 +377,7 @@ export default {
         console.error("Faltan SENDGRID_API_KEY, FROM_EMAIL o ADMIN_EMAIL");
         return jsonResponse(
           { success: false, message: "Error de configuración del servidor." },
-          500
+          500,
         );
       }
 
@@ -404,7 +410,7 @@ export default {
           from: FROM_EMAIL,
           replyTo: cleanEmail,
           subject: sanitizeHeader(
-            `Nueva Reserva — ${cleanName} | REF: ${sanitize(refNumber)}`
+            `Nueva Reserva — ${cleanName} | REF: ${sanitize(refNumber)}`,
           ),
           html: buildAdminHtml(emailData),
           attachments,
@@ -418,7 +424,7 @@ export default {
             success: false,
             message: "Error al enviar la reserva. Intenta de nuevo.",
           },
-          502
+          502,
         );
       }
 
@@ -429,20 +435,20 @@ export default {
           from: FROM_EMAIL,
           replyTo: ADMIN_EMAIL,
           subject: sanitizeHeader(
-            `✓ Tu reserva fue recibida — REF: ${sanitize(refNumber)}`
+            `✓ Tu reserva fue recibida — REF: ${sanitize(refNumber)}`,
           ),
           text: buildClientMessage(emailData),
         });
 
         console.log("Email al cliente enviado exitosamente");
       } catch (clientErr) {
-        console.warn(
-          "Email al cliente falló (no crítico):",
-          clientErr.message
-        );
+        console.warn("Email al cliente falló (no crítico):", clientErr.message);
       }
 
-      return jsonResponse({ success: true, message: "Reserva enviada correctamente." });
+      return jsonResponse({
+        success: true,
+        message: "Reserva enviada correctamente.",
+      });
     } catch (err) {
       console.error("Error interno:", err);
       return jsonResponse(
@@ -450,7 +456,7 @@ export default {
           success: false,
           message: "Error interno del servidor. Intenta de nuevo.",
         },
-        500
+        500,
       );
     }
   },
