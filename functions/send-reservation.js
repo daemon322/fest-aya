@@ -214,8 +214,8 @@ export async function onRequest(context) {
     url: request.url,
     headers: {
       "content-type": request.headers.get("content-type"),
-      "purpose": request.headers.get("purpose"),
-      "origin": request.headers.get("origin"),
+      purpose: request.headers.get("purpose"),
+      origin: request.headers.get("origin"),
     },
   });
 
