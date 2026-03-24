@@ -404,9 +404,9 @@ export async function onRequest(context) {
         html: buildAdminHtml(emailData) + `\n${voucherInfo}`,
       });
 
-      console.log("Email al admin enviado exitosamente");
+      console.log("✓ Email al admin enviado exitosamente");
     } catch (adminErr) {
-      console.error("Error enviando email al admin:", adminErr.message);
+      console.error("✗ Error enviando email al admin:", adminErr.message);
       return jsonResponse(
         {
           success: false,
