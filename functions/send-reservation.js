@@ -386,17 +386,12 @@ export async function onRequest(context) {
       cartDetails: cartDetails || [],
     };
 
-    // 1. Email al ADMIN (con voucher como adjunto)
+    // 1. Email al ADMIN (SIN archivo adjunto — el usuario subirá el comprobante por separado)
     try {
-      const attachments = [];
-      if (voucherBase64 && voucherFileName) {
-        const b64Data = voucherBase64.split(",")[1] || voucherBase64;
-        attachments.push({
-          content: b64Data,
-          filename: voucherFileName,
-          type: "application/octet-stream",
-          disposition: "attachment",
-        });
+      // Información del voucher (si fue proporcionado)
+      let voucherInfo = "";
+      if (voucherFileName) {
+        voucherInfo = `\n📎 Archivo fornecido por el usuario: ${voucherFileName}\n   (El usuario debe compartir el comprobante a través del formulario de carga)`;
       }
 
       await sgMail.send({
@@ -406,8 +401,7 @@ export async function onRequest(context) {
         subject: sanitizeHeader(
           `Nueva Reserva — ${cleanName} | REF: ${sanitize(refNumber)}`,
         ),
-        html: buildAdminHtml(emailData),
-        attachments,
+        html: buildAdminHtml(emailData) + `\n${voucherInfo}`,
       });
 
       console.log("Email al admin enviado exitosamente");
