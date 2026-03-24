@@ -1,5 +1,5 @@
 // functions/send-reservation.js
-// Cloudflare Pages + SendGrid
+// Cloudflare Pages + SendGrid (usando API fetch directa, sin librerías Node.js)
 // Variables de entorno (.env.local para desarrollo, Cloudflare Dashboard para producción):
 //   SENDGRID_API_KEY     — API key de sendgrid.com
 //   ADMIN_EMAIL          — Tu correo donde recibirás las reservas
@@ -10,7 +10,24 @@
 //   RATE_LIMIT_WINDOW_MS — ventana rate limit ms (default: 60000)
 //   RATE_LIMIT_MAX       — máx peticiones/ventana (default: 5)
 
-import sgMail from "@sendgrid/mail";
+// Helper para enviar email via SendGrid API (fetch directo, sin módulos Node.js)
+async function sendEmailViaSendGrid(apiKey, emailData) {
+  const response = await fetch("https://api.sendgrid.com/v3/mail/send", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(emailData),
+  });
+
+  if (!response.ok) {
+    const error = await response.text();
+    throw new Error(`SendGrid API error (${response.status}): ${error}`);
+  }
+
+  return response;
+}
 
 // Rate limiter en memoria (por instancia de worker)
 const rateLimitMap = new Map();
@@ -375,8 +392,6 @@ export async function onRequest(context) {
       );
     }
 
-    sgMail.setApiKey(SENDGRID_API_KEY);
-
     const emailData = {
       name: cleanName,
       email: cleanEmail,
@@ -386,7 +401,7 @@ export async function onRequest(context) {
       cartDetails: cartDetails || [],
     };
 
-    // 1. Email al ADMIN (SIN archivo adjunto — el usuario subirá el comprobante por separado)
+    // 1. Email al ADMIN (SIN archivo adjunto)
     try {
       // Información del voucher (si fue proporcionado)
       let voucherInfo = "";
@@ -394,16 +409,26 @@ export async function onRequest(context) {
         voucherInfo = `\n📎 Archivo fornecido por el usuario: ${voucherFileName}\n   (El usuario debe compartir el comprobante a través del formulario de carga)`;
       }
 
-      await sgMail.send({
-        to: ADMIN_EMAIL,
-        from: FROM_EMAIL,
-        replyTo: cleanEmail,
-        subject: sanitizeHeader(
-          `Nueva Reserva — ${cleanName} | REF: ${sanitize(refNumber)}`,
-        ),
-        html: buildAdminHtml(emailData) + `\n${voucherInfo}`,
-      });
+      const adminEmailPayload = {
+        personalizations: [
+          {
+            to: [{ email: ADMIN_EMAIL }],
+            subject: sanitizeHeader(
+              `Nueva Reserva — ${cleanName} | REF: ${sanitize(refNumber)}`,
+            ),
+          },
+        ],
+        from: { email: FROM_EMAIL },
+        reply_to: { email: cleanEmail },
+        content: [
+          {
+            type: "text/html",
+            value: buildAdminHtml(emailData) + `\n${voucherInfo}`,
+          },
+        ],
+      };
 
+      await sendEmailViaSendGrid(SENDGRID_API_KEY, adminEmailPayload);
       console.log("✓ Email al admin enviado exitosamente");
     } catch (adminErr) {
       console.error("✗ Error enviando email al admin:", adminErr.message);
@@ -416,21 +441,31 @@ export async function onRequest(context) {
       );
     }
 
-    // 2. Confirmación al CLIENTE
+    // 2. Confirmación al CLIENTE (no crítico si falla)
     try {
-      await sgMail.send({
-        to: cleanEmail,
-        from: FROM_EMAIL,
-        replyTo: ADMIN_EMAIL,
-        subject: sanitizeHeader(
-          `✓ Tu reserva fue recibida — REF: ${sanitize(refNumber)}`,
-        ),
-        text: buildClientMessage(emailData),
-      });
+      const clientEmailPayload = {
+        personalizations: [
+          {
+            to: [{ email: cleanEmail }],
+            subject: sanitizeHeader(
+              `✓ Tu reserva fue recibida — REF: ${sanitize(refNumber)}`,
+            ),
+          },
+        ],
+        from: { email: FROM_EMAIL },
+        reply_to: { email: ADMIN_EMAIL },
+        content: [
+          {
+            type: "text/plain",
+            value: buildClientMessage(emailData),
+          },
+        ],
+      };
 
-      console.log("Email al cliente enviado exitosamente");
+      await sendEmailViaSendGrid(SENDGRID_API_KEY, clientEmailPayload);
+      console.log("✓ Email al cliente enviado exitosamente");
     } catch (clientErr) {
-      console.warn("Email al cliente falló (no crítico):", clientErr.message);
+      console.warn("⚠ Email al cliente falló (no crítico):", clientErr.message);
     }
 
     return jsonResponse({
