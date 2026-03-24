@@ -208,6 +208,11 @@ export async function onRequest(context) {
   const { request } = context;
   const env = context.env || {};
 
+  // Rechazar prefetch de navegadores
+  if (request.headers.get("purpose") === "prefetch") {
+    return jsonResponse({ success: false, message: "Prefetch no soportado." }, 403);
+  }
+
   // CORS preflight
   if (request.method === "OPTIONS") {
     return new Response(null, {
@@ -222,7 +227,7 @@ export async function onRequest(context) {
 
   if (request.method !== "POST") {
     return jsonResponse(
-      { success: false, message: "Método no permitido." },
+      { success: false, message: "Método no permitido (solo POST)." },
       405,
     );
   }
