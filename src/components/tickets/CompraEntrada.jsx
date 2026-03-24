@@ -18,7 +18,6 @@ import {
 } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Checkout from "./Checkout";
-import Tribuna from "./Tribuna";
 import Guide from "./Guide";
 import { Flyers } from "../../views/tickets/Flyer";
 
@@ -473,7 +472,6 @@ const CompraEntrada = () => {
       ) : (
         <div className="min-h-screen text-white font-sans selection:bg-amber-500/30 flex items-center justify-center flex-col">
           <Flyers />
-          <Tribuna />
           <CartSidebar
             isOpen={isCartOpen}
             onClose={() => setIsCartOpen(false)}
