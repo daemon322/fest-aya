@@ -359,25 +359,36 @@ export async function onRequest(context) {
 
     // reCAPTCHA v2
     if (!recaptchaToken) {
+      console.warn("❌ SIN TOKEN: Usuario no completó reCAPTCHA");
       return jsonResponse(
         { success: false, message: "Completa la verificación de seguridad." },
         400,
       );
     }
-    if (!env.RECAPTCHA_SECRET) {
+
+    const RECAPTCHA_SECRET = env.RECAPTCHA_SECRET;
+    if (!RECAPTCHA_SECRET) {
+      console.error(
+        "💥 FALTA VARIABLE: RECAPTCHA_SECRET no está en Cloudflare Environment Variables",
+      );
+      console.error(
+        "   Variables disponibles en env:",
+        Object.keys(env).sort(),
+      );
       return jsonResponse(
-        { success: false, message: "Error de configuración." },
+        { success: false, message: "Error de configuración del servidor (recaptcha)." },
         500,
       );
     }
 
+    console.log("✓ Verificando token reCAPTCHA con Google...");
     const captchaRes = await fetch(
       "https://www.google.com/recaptcha/api/siteverify",
       {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: new URLSearchParams({
-          secret: env.RECAPTCHA_SECRET,
+          secret: RECAPTCHA_SECRET,
           response: recaptchaToken,
           remoteip: ip,
         }).toString(),
@@ -385,7 +396,7 @@ export async function onRequest(context) {
     );
     const captchaJson = await captchaRes.json().catch(() => null);
     if (!captchaJson?.success) {
-      console.error("reCAPTCHA v2 falló:", captchaJson?.["error-codes"]);
+      console.error("❌ reCAPTCHA falló:", captchaJson?.["error-codes"]);
       return jsonResponse(
         {
           success: false,
@@ -395,6 +406,7 @@ export async function onRequest(context) {
         400,
       );
     }
+    console.log("✓ reCAPTCHA validado exitosamente");
 
     // Validar voucher
     if (voucherBase64 && voucherFileName) {
