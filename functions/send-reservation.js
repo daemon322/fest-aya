@@ -282,7 +282,10 @@ export async function onRequest(context) {
     let body = {};
     try {
       const text = await request.text();
-      console.log("📨 Body crudo recibido:", text ? text.substring(0, 200) : "(vacío)");
+      console.log(
+        "📨 Body crudo recibido:",
+        text ? text.substring(0, 200) : "(vacío)",
+      );
       body = text ? JSON.parse(text) : {};
       console.log("✓ Body parseado exitosamente");
     } catch (parseErr) {
