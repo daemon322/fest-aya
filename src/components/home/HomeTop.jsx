@@ -14,10 +14,10 @@ import {
 import diosas from "../../assets/logoa.png";
 import perritas from "../../assets/logob.png";
 import interrogacion from "../../assets/perin.png";
-import logoayacucho from "../../assets/logoayacucho.png";
+import logoayacucho from "../../assets/ayacucho.png";
 import logolimanorte from "../../assets/logolimanorte.png";
 import quiroz from "../../assets/quiroz.png";
-import logoruby from "../../assets/logoruby.png";
+import logoruby from "../../assets/ruby.png";
 
 const slides = [
   {
