@@ -4,8 +4,8 @@ import { useInView } from 'react-intersection-observer';
 import { Trophy, Zap, Users, Activity, Ticket, Flame, ShieldCheck, MousePointer2, Crown} from 'lucide-react';
 import dualidad from "../../assets/flyerlow.png";
 import logoayacucho from "../../assets/logoayacucho.png";
-import logofenix from "../../assets/logofen.png";
-import logoquirz from "../../assets/logoqui.png";
+import logofenix from "../../assets/logolimanorte.png";
+import logoquirz from "../../assets/quiroz.png";
 import logoruby from "../../assets/logoruby.png";
 import HomeTop from '../../components/home/HomeTop';
 // --- Gancho para Efecto Tilt 3D Suave (Spring Physics) ---

@@ -15,8 +15,8 @@ import diosas from "../../assets/logoa.png";
 import perritas from "../../assets/logob.png";
 import interrogacion from "../../assets/perin.png";
 import logoayacucho from "../../assets/logoayacucho.png";
-import logofenix from "../../assets/logofen.png";
-import logoquiroz from "../../assets/logoqui.png";
+import logolimanorte from "../../assets/logolimanorte.png";
+import quiroz from "../../assets/quiroz.png";
 import logoruby from "../../assets/logoruby.png";
 
 const slides = [
@@ -57,7 +57,7 @@ const slides = [
     tag: "VÓLEY MASCULINO",
     teamA: {
       name: "QUIROZ",
-      image: logoquiroz,
+      image: quiroz,
       wins: 18,
       losses: 6,
       bestPlayer: "???",
@@ -83,7 +83,7 @@ const slides = [
     tag: "CUARTOS · VÓLEY FEMENINO",
     teamA: {
       name: "LIMA NORTE",
-      image: logofenix,
+      image: logolimanorte,
       wins: 22,
       losses: 2,
       bestPlayer: "???",
