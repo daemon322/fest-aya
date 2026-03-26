@@ -16,6 +16,7 @@ import {
   Award,
 } from "lucide-react";
 import libroreclamaciones from "../../assets/libroreclamaciones.webp";
+import { href } from "react-router-dom";
 
 const Footer = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -180,13 +181,9 @@ const Footer = () => {
             </h4>
             <ul className="space-y-4">
               {[
-                {
-                  label: "Términos de Uso",
-                  icon: Zap,
-                  href: "/paginas/TerminoCondiciones",
-                },
-                { label: "Centro de Ayuda", icon: Mail },
-                { label: "Preguntas Frecuentes", icon: Globe },
+                { label: "Términos de Uso", icon: Zap, href: "/paginas/Terms-conditions",},
+                { label: "Centro de Ayuda", href:"#", icon: Mail },
+                { label: "Preguntas Frecuentes", href:"#", icon: Globe },
               ].map((item) => (
                 <li key={item.label}>
                   <a
@@ -214,7 +211,7 @@ const Footer = () => {
               <span className="text-white font-bold">Semana Santa</span>.
             </p>
             <a
-              href="/paginas/LibroReclamaciones"
+              href="/paginas/Complaints-book"
               className="text-gray-500 hover:text-white text-sm"
             >
               <span className="text-sm mb-6">Libro de reclamaciones</span>
@@ -260,12 +257,9 @@ const Footer = () => {
 
           <div className="flex flex-wrap justify-center gap-x-10 gap-y-4">
             {[
-              { label: "Privacidad", href: "/paginas/PrivacPoli" },
-              {
-                label: "Condiciones de Venta",
-                href: "/paginas/CondicionesVenta",
-              },
-              { label: "Cookies", href: "/paginas/PoliticCookies" },
+              { label: "Privacidad", href: "/paginas/Privacy-Policy" },
+              { label: "Condiciones de Venta", href: "/paginas/Terms-of-sale",},
+              { label: "Cookies", href: "/paginas/Policy-cookie" },
               { label: "Mapa del Sitio", href: "/location" },
             ].map((link) => (
               <a

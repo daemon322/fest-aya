@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { MapPin, Maximize, RotateCcw, Users, CheckCircle2, Info, Calendar } from 'lucide-react';
 
-const Tribuna = () => {
+const GrandStand = () => {
   const mountRef      = useRef(null);
   const [activeZone, setActiveZone] = useState('Overview');
 
@@ -250,7 +250,7 @@ const Tribuna = () => {
 
   return (
     <div className="relative w-full h-screen overflow-hidden font-sans text-white">
-      <div ref={mountRef} className="absolute sm:fixed inset-0 z-0" />
+      <div ref={mountRef} className="absolute inset-0 z-10" />
 
       <div className="relative z-10 h-full flex flex-col justify-between pointer-events-none pt-10 px-10">
         <div className="flex flex-col lg:flex-row justify-between items-start gap-4 pt-10 h-full">
@@ -325,4 +325,4 @@ const Tribuna = () => {
   );
 };
 
-export default Tribuna;
+export default GrandStand;

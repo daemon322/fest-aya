@@ -6,7 +6,6 @@ import Navbar from "./components/layouts/Navbar";
 import Footer from "./components/layouts/Footer";
 import ScrollToTop from "./components/layouts/ScrollToTop";
 import About from "./views/about/AboutPage";
-import Introduction from "./components/shared/Introduction";
 import TerminoCondiciones from "./views/paginas/TerminoCondiciones/TerminoCondiciones";
 import PoliticCookies from "./views/paginas/Politic_Cookies/PoliticCookies";
 import ClaimsBook from "./views/paginas/LibroReclamaciones/LibroReclamaciones";
@@ -15,6 +14,7 @@ import CondicionesVenta from "./views/paginas/CondicionesVenta/CondicionesVenta"
 import CartPage from "./views/tickets/CartPage";
 import Location from "./views/location/Location";
 import PointSale from "./views/location/PointSale";
+import VoleyaLimite from "./views/landing/VoleyaLimite";
 
 
 function App() {
@@ -24,17 +24,17 @@ function App() {
     <Router>
       <ScrollToTop/>
       <Navbar/>
-      <Introduction/>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/voley-al-limite" element={<TicketPage />} />
+        <Route path="/voley-al-limite/tickets" element={<TicketPage />} />
+        <Route path="/voley-al-limite" element={<VoleyaLimite/>} />
         <Route path="/about" element={<About/>} />
-        <Route path="/carrito" element={<CartPage/>} />
-        <Route path="/paginas/TerminoCondiciones" element={<TerminoCondiciones/>} />
-        <Route path="/paginas/PoliticCookies" element={<PoliticCookies/>} />
-        <Route path="/paginas/LibroReclamaciones" element={<ClaimsBook/>} />
-        <Route path="/paginas/PrivacPoli" element={<PrivacPoli/>} />
-        <Route path="/paginas/CondicionesVenta" element={<CondicionesVenta/>} />
+        <Route path="/Shopp-cart" element={<CartPage/>} />
+        <Route path="/paginas/Terms-conditions" element={<TerminoCondiciones/>} />
+        <Route path="/paginas/Policy-cookie" element={<PoliticCookies/>} />
+        <Route path="/paginas/Complaints-book" element={<ClaimsBook/>} />
+        <Route path="/paginas/Privacy-Policy" element={<PrivacPoli/>} />
+        <Route path="/paginas/Terms-of-sale" element={<CondicionesVenta/>} />
         <Route path="/location" element={<Location/>} />
         <Route path="/PointSale" element={<PointSale/>} />
       </Routes>

@@ -203,7 +203,7 @@ const CartPage = () => {
 
   const handleGoCheckout = () => {
     // ?checkout=1 hace que CompraEntrada abra el checkout directamente
-    navigate("/voley-al-limite?checkout=1");
+    navigate("/voley-al-limite/tickets?checkout=1");
   };
 
   const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
@@ -264,7 +264,7 @@ const CartPage = () => {
               </p>
             </div>
             <button
-              onClick={() => navigate("/voley-al-limite")}
+              onClick={() => navigate("/voley-al-limite/tickets")}
               className="opacity-100 px-8 py-4 bg-white text-black font-black uppercase text-[10px] tracking-widest rounded-2xl hover:bg-amber-500 transition-all cursor-pointer"
             >
               Ver Entradas

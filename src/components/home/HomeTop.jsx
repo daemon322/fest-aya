@@ -276,7 +276,7 @@ const HomeTop = () => {
               </div>
 
               {/* Columna central: VS visual */}
-              <div className="lg:col-span-4 order-1 lg:order-2 flex justify-center items-center">
+              <a href="/voley-al-limite" className="lg:col-span-4 order-1 lg:order-2 flex justify-center items-center">
                 <div className="relative w-full max-w-md aspect-square lg:aspect-[3/4] rounded-3xl overflow-hidden shadow-2xl border border-white/10">
                   <AnimatePresence mode="popLayout">
                     <motion.div
@@ -332,7 +332,7 @@ const HomeTop = () => {
                     </motion.div>
                   </AnimatePresence>
                 </div>
-              </div>
+              </a>
 
               {/* Columna derecha: info equipo B + CTA */}
               <div className="lg:col-span-4 order-3 space-y-6">
@@ -358,7 +358,7 @@ const HomeTop = () => {
                 {/* Botón de compra */}
                 <div className="pt-4">
                   <a
-                    href="/voley-al-limite"
+                    href="/voley-al-limite/tickets"
                     className="w-full sm:w-auto px-8 py-4 bg-white text-black font-bold text-sm tracking-wider hover:bg-zinc-200 transition-all rounded-full flex items-center justify-center gap-2 group shadow-xl"
                   >
                     COMPRAR ENTRADAS

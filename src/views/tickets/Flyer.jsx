@@ -1,8 +1,8 @@
-import FondoV from "../../assets/flyer.png";
+import FondoV from "../../assets/flyerlow.png";
 
 export const Flyers = () => {
   return (
-    <div className="relative inset-0 select-none w-full h-full z-10">
+    <div className="relative inset-0 select-none w-full h-full z-20">
       <img
         src={FondoV}
         className="relative w-full h-[700px] sm:h-full object-content transition-all duration-700 select-none pointer-events-none"

@@ -20,7 +20,7 @@ import {
   CheckCircle
 } from 'lucide-react';
 
-const App = () => {
+const Guide = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [isAnimate, setIsAnimate] = useState(false);
   const contentRef = useRef(null);
@@ -118,7 +118,7 @@ const App = () => {
   ];
 
   return (
-    <div className="min-h-screen text-white font-sans selection:bg-red-600">
+    <div className="min-h-screen text-white font-sans selection:bg-red-600 z-20">
       <div className="max-w-7xl mx-auto px-4 py-8 md:py-16 relative">
         
         {/* Header - Diseño Impactante */}
@@ -361,4 +361,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default Guide;

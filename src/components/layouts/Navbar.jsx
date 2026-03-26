@@ -21,8 +21,7 @@ const GalaNavbar = () => {
 
   const navLinks = [
     { name: "Inicio", href: "/" },
-    { name: "Entradas", href: "/voley-al-limite" },
-    { name: "Carrito", href: "/carrito" },
+    { name: "Entradas", href: "/voley-al-limite/tickets" },
     { name: "Ubicación", href: "/location"} ,
     { name: "About", href: "/about" },
   ];

@@ -60,7 +60,7 @@ export const EVENT_INFO = {
   name: "Voley al Límite 2026",
   shortName: "Voley al Límite",
   date: "Próximamente — 2026",
-  venue: "Estadio Ciudad de Ayacucho",
+  venue: "Polideportivo Capillapata",
   city: "Ayacucho, Perú",
   organizer: "Ayacucho Vóley Club",
 };

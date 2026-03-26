@@ -11,6 +11,8 @@ import {
   X,
   CheckCircle,
 } from "lucide-react";
+import { GiExitDoor } from "react-icons/gi";
+import { BsFillFileImageFill } from "react-icons/bs";
 
 /* ─── Seguridad / Sanitización ─────────────────────────────────────────── */
 const sanitizeInput = (input) => {
@@ -211,23 +213,23 @@ const Checkout = ({ cart = [], onBack, onComplete }) => {
 
   /* ── Indicador de pasos ─────────────────────────────────────────────── */
   const renderStepIndicator = () => (
-    <div className="flex items-center justify-center space-x-4 mb-16">
+    <div className="flex items-center justify-center mb-16 select-none">
       {[1, 2, 3, 4].map((i) => (
         <div key={i} className="flex items-center">
           <div
             className={`w-10 h-10 rounded-full flex items-center justify-center text-[10px] font-bold border transition-all duration-500 ${
               step === i
-                ? "bg-amber-500 border-amber-500 text-black scale-110 shadow-[0_0_20px_rgba(245,158,11,0.3)]"
+                ? "bg-amber-500 border-amber-500 text-white scale-110 shadow-[0_0_20px_rgba(245,158,11,0.3)]"
                 : step > i
-                  ? "bg-white border-white text-black"
-                  : "border-white/10 text-white/20"
+                  ? "bg-green-500 border-green-500 text-white"
+                  : "border-red-500/50 text-white/80"
             }`}
           >
             {step > i ? <CheckCircle2 size={16} /> : i}
           </div>
           {i < 4 && (
             <div
-              className={`w-16 h-[1px] mx-2 ${step > i ? "bg-white" : "bg-white/5"}`}
+              className={`sm:w-16 w-12 h-[1px] mx-2 ${step > i ? "bg-green-500" : "bg-red-500/50"}`}
             />
           )}
         </div>
@@ -238,19 +240,19 @@ const Checkout = ({ cart = [], onBack, onComplete }) => {
   /* ── Render ─────────────────────────────────────────────────────────── */
   return (
     <div className="relative min-h-screen bg-black overflow-y-auto flex flex-col items-center">
-      <div className="max-w-4xl w-full p-8 pt-20">
+      <div className="max-w-4xl w-full p-4 pt-20">
         {/* Navegación Superior */}
-        <div className="flex justify-between items-center mb-12">
+        <div className="flex justify-between items-center mb-12 pt-10">
           <button
             onClick={step === 1 ? onBack : prevStep}
-            className="group flex items-center gap-3 text-white/40 hover:text-white transition-all uppercase text-[9px] tracking-[0.4em]"
+            className="group flex items-center gap-3 text-white/80 hover:text-white transition-all uppercase text-[9px] tracking-[0.4em] cursor-pointer"
           >
-            <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:border-white/30">
+            <div className="w-8 h-8 rounded-full border border-white/50 flex items-center justify-center group-hover:border-white/80">
               <ArrowLeft size={12} />
             </div>
-            {step === 1 ? "Volver a la selección" : "Paso anterior"}
+            {step === 1 ? "Volver" : "Paso anterior"}
           </button>
-          <div className="text-right">
+          <div className="text-right select-none">
             <p className="text-[8px] uppercase tracking-[0.5em] text-amber-500 mb-1 font-bold">
               Checkout Seguro
             </p>
@@ -312,39 +314,42 @@ const Checkout = ({ cart = [], onBack, onComplete }) => {
                 )}
               </div>
 
-              <div className="bg-white/[0.02] p-10 rounded-[2.5rem] border border-white/5 mt-10 space-y-6">
-                <div className="flex justify-between text-[14px] uppercase tracking-[0.3em] text-white/90">
+              <div className="bg-white/[0.02] p-8 rounded-[2.5rem] border border-white/5 mt-10 space-y-6">
+                <div className="flex justify-between text-[14px] uppercase tracking-[0.2em] text-white/90 gap-2">
                   <span>Monto Tickets</span>
-                  <span className="font-mono text-white/80">
-                    S/ {subtotal.toFixed(2)}
+                  <span className="font-mono text-white sm:text-xl text-[14px]">
+                    S/{subtotal.toFixed(2)}
+                    <span className="text-amber-400 text-[10px]"> PEN</span>
                   </span>
                 </div>
-                <div className="pt-8 border-t border-white/10 flex justify-between items-center">
+                <div className="pt-8 border-t border-white/10 flex justify-between items-center gap-2">
                   <div className="space-y-1">
-                    <span className="text-xs font-bold uppercase tracking-[0.5em] text-white">
+                    <span className="text-xs font-bold uppercase tracking-[0.2em] text-white">
                       Total Final
                     </span>
-                    <p className="text-[9px] text-white/70 uppercase tracking-widest italic">
+                    <p className="text-[9px] text-white/90 uppercase tracking-widest italic">
                       Incluye impuestos y cargos
                     </p>
                   </div>
-                  <span className="text-5xl font-mono text-amber-500 tracking-tighter">
-                    S/ {subtotal.toFixed(2)}
+                  <span className="sm:text-5xl text-2xl font-mono text-amber-500 tracking-tighter">
+                    S/{subtotal.toFixed(2)}
+                    <span className="text-white sm:text-lg text-sm"> PEN</span>
                   </span>
                 </div>
               </div>
-
-              <button
-                disabled={safeCart.length === 0}
-                onClick={nextStep}
-                className="w-full py-7 bg-white text-black font-black uppercase text-[11px] tracking-[0.5em] rounded-2xl hover:bg-amber-500 transition-all duration-500 flex items-center justify-center gap-4 group disabled:opacity-20 cursor-pointer disabled:cursor-not-allowed mt-10"
-              >
-                Confirmar e ir a Datos
-                <ChevronRight
-                  size={16}
-                  className="group-hover:translate-x-2 transition-transform"
-                />
-              </button>
+              <div className="flex m-auto justify-center">
+                <button
+                  disabled={safeCart.length === 0}
+                  onClick={nextStep}
+                  className="p-10 py-7 bg-white text-black hover:text-white font-black uppercase text-[11px] tracking-[0.2em] rounded-2xl hover:bg-amber-500 transition-all duration-500 flex items-center justify-center gap-4 group disabled:opacity-20 cursor-pointer disabled:cursor-not-allowed mt-10"
+                >
+                  Confirmar e ir a Datos
+                  <ChevronRight
+                    size={16}
+                    className="group-hover:translate-x-2 transition-transform"
+                  />
+                </button>
+              </div>
             </div>
           )}
 
@@ -425,22 +430,23 @@ const Checkout = ({ cart = [], onBack, onComplete }) => {
                   ))}
                 </div>
               )}
-
-              <button
-                onClick={() => {
-                  if (honeypot) return; // bot detectado
-                  const validation = validateFormData(formData);
-                  if (!validation.isValid) {
-                    setFormErrors(validation.errors);
-                    return;
-                  }
-                  setFormErrors([]);
-                  nextStep();
-                }}
-                className="w-full py-7 bg-white text-black font-black uppercase text-[11px] tracking-[0.5em] rounded-2xl hover:bg-amber-500 transition-all disabled:opacity-10 mt-6 cursor-pointer"
-              >
-                Siguiente: Registrar Pago
-              </button>
+              <div className="flex m-auto justify-center">
+                <button
+                  onClick={() => {
+                    if (honeypot) return; // bot detectado
+                    const validation = validateFormData(formData);
+                    if (!validation.isValid) {
+                      setFormErrors(validation.errors);
+                      return;
+                    }
+                    setFormErrors([]);
+                    nextStep();
+                  }}
+                  className="p-6 py-6 bg-white text-black hover:text-white font-black uppercase text-[11px] tracking-[0.3em] rounded-2xl hover:bg-amber-500 transition-all disabled:opacity-10 mt-6 cursor-pointer flex gap-2 justify-center items-center"
+                >
+                  Siguiente: Adjuntar Pago <BsFillFileImageFill size={14}/>
+                </button>
+              </div>
             </div>
           )}
 
@@ -494,14 +500,15 @@ const Checkout = ({ cart = [], onBack, onComplete }) => {
                   </p>
                 </label>
               </div>
-
-              <button
-                disabled={!voucher}
-                onClick={nextStep}
-                className="w-full py-7 bg-white text-black font-black uppercase text-[11px] tracking-[0.5em] rounded-2xl hover:bg-amber-500 transition-all disabled:opacity-10 cursor-pointer disabled:cursor-not-allowed"
-              >
-                Último paso de validación
-              </button>
+              <div className="flex m-auto justify-center">
+                <button
+                  disabled={!voucher}
+                  onClick={nextStep}
+                  className="p-10 py-7 bg-white text-black font-black uppercase text-[11px] tracking-[0.5em] rounded-2xl hover:bg-amber-500 transition-all disabled:opacity-10 cursor-pointer disabled:cursor-not-allowed"
+                >
+                  Último paso de validación
+                </button>
+              </div>
             </div>
           )}
 
@@ -582,32 +589,33 @@ const Checkout = ({ cart = [], onBack, onComplete }) => {
                     ))}
                   </div>
                 )}
-
-                <button
-                  disabled={!agreed}
-                  onClick={() => {
-                    const validation = validateFormData(formData);
-                    if (!validation.isValid) {
-                      setFormErrors(validation.errors);
-                      return;
-                    }
-                    if (
-                      !formData.name ||
-                      !formData.email ||
-                      !formData.phone ||
-                      !formData.document ||
-                      !voucher ||
-                      !agreed
-                    ) {
-                      alert("Por favor completa todos los campos requeridos");
-                      return;
-                    }
-                    setShowConfirmDialog(true);
-                  }}
-                  className="w-full py-8 bg-amber-500 text-black font-black uppercase text-[12px] tracking-[0.6em] rounded-2xl hover:bg-white transition-all shadow-[0_20px_60px_rgba(245,158,11,0.15)] disabled:opacity-10 cursor-pointer disabled:cursor-not-allowed mt-10"
-                >
-                  Finalizar Reserva
-                </button>
+                <div className="flex m-auto justify-center">
+                  <button
+                    disabled={!agreed}
+                    onClick={() => {
+                      const validation = validateFormData(formData);
+                      if (!validation.isValid) {
+                        setFormErrors(validation.errors);
+                        return;
+                      }
+                      if (
+                        !formData.name ||
+                        !formData.email ||
+                        !formData.phone ||
+                        !formData.document ||
+                        !voucher ||
+                        !agreed
+                      ) {
+                        alert("Por favor completa todos los campos requeridos");
+                        return;
+                      }
+                      setShowConfirmDialog(true);
+                    }}
+                    className="p-10 py-8 bg-amber-500 text-white hover:text-black font-black uppercase text-[12px] tracking-[0.6em] rounded-2xl hover:bg-white transition-all shadow-[0_20px_60px_rgba(245,158,11,0.15)] disabled:opacity-10 cursor-pointer disabled:cursor-not-allowed mt-10"
+                  >
+                    Finalizar Reserva
+                  </button>
+                </div>
               </div>
             </div>
           )}
@@ -650,7 +658,9 @@ const Checkout = ({ cart = [], onBack, onComplete }) => {
                         {formData.email}
                       </span>{" "}
                       con los detalles de tu reserva. Nuestro equipo la revisará
-                      y te enviará la confirmación dentro de 24 horas.
+                      y te enviará la confirmación dentro de 24 horas.<br></br>
+                      REVISA TU CORREO (INCLUYENDO SPAM) PARA NO PERDER TU
+                      RESERVA.
                     </p>
                   </div>
                 </div>
@@ -667,7 +677,7 @@ const Checkout = ({ cart = [], onBack, onComplete }) => {
                 <button
                   onClick={handleConfirmAndSubmit}
                   disabled={isSubmitting}
-                  className="flex-1 py-4 bg-amber-500 text-black rounded-2xl font-black uppercase text-[10px] tracking-widest hover:bg-white transition-all disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
+                  className="flex-1 py-4 bg-amber-500 text-black hover:text-green-500 rounded-2xl font-black uppercase text-[10px] tracking-widest hover:bg-white transition-all disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
                 >
                   {isSubmitting ? (
                     <>
@@ -707,7 +717,7 @@ const Checkout = ({ cart = [], onBack, onComplete }) => {
 
               {/* Correo */}
               <div className="bg-green-500/5 border border-green-500/20 rounded-2xl px-6 py-4 text-center space-y-1">
-                <p className="text-[10px] uppercase tracking-widest text-white/40">
+                <p className="text-[10px] uppercase tracking-widest text-white/80">
                   Confirmación enviada a
                 </p>
                 <p className="text-sm font-mono text-green-400 break-all">
@@ -717,7 +727,7 @@ const Checkout = ({ cart = [], onBack, onComplete }) => {
 
               {/* Proceso detallado */}
               <div className="space-y-4">
-                <p className="text-[10px] uppercase tracking-[0.3em] text-white/30 font-black">
+                <p className="text-[10px] uppercase tracking-[0.3em] text-white/70 font-black">
                   ¿Qué sigue ahora?
                 </p>
 
@@ -734,6 +744,8 @@ const Checkout = ({ cart = [], onBack, onComplete }) => {
                       <p className="text-[11px] text-white/50 leading-relaxed">
                         Nuestro equipo verificará el voucher que adjuntaste. Una
                         vez validado recibirás una confirmación en tu correo.
+                        <br></br>REVISA TU CORREO (INCLUYENDO SPAM) PARA NO
+                        PERDER TU RESERVA.
                       </p>
                     </div>
                   </div>
@@ -786,7 +798,7 @@ const Checkout = ({ cart = [], onBack, onComplete }) => {
 
               {/* Nota final */}
               <div className="bg-white/[0.02] border border-white/5 rounded-xl px-5 py-4">
-                <p className="text-[10px] text-white/30 leading-relaxed text-center">
+                <p className="text-[10px] text-white/70 leading-relaxed text-center">
                   ¿Dudas? Contáctanos por WhatsApp al{" "}
                   <a
                     href="https://wa.me/51961379018"
@@ -801,10 +813,11 @@ const Checkout = ({ cart = [], onBack, onComplete }) => {
               {/* Botón cerrar */}
               <button
                 onClick={onComplete}
-                className="w-full py-5 bg-green-500 text-black font-black uppercase text-[11px] tracking-[0.5em] rounded-2xl hover:bg-white transition-all duration-500 flex items-center justify-center gap-3 cursor-pointer"
+                className="w-full py-5 bg-green-500 text-white hover:text-black font-black uppercase text-[11px] tracking-[0.5em] rounded-2xl hover:bg-white transition-all duration-500 flex items-center justify-center gap-3 cursor-pointer"
               >
                 <CheckCircle size={16} />
-                Entendido, cerrar
+                Entendido
+                <GiExitDoor size={16} />
               </button>
             </div>
           </div>
