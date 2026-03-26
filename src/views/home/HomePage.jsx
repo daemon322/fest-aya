@@ -4,8 +4,8 @@ import { useInView } from 'react-intersection-observer';
 import { Trophy, Zap, Users, Activity, Ticket, Flame, ShieldCheck, MousePointer2, Crown} from 'lucide-react';
 import dualidad from "../../assets/flyerlow.png";
 import logoayacucho from "../../assets/logoayacucho.png";
-import logofenix from "../../assets/logofenix.png";
-import logoquiroz from "../../assets/logoquiroz.png";
+import logofenix from "../../assets/logofen.png";
+import logoquirz from "../../assets/logoqui.png";
 import logoruby from "../../assets/logoruby.png";
 import HomeTop from '../../components/home/HomeTop';
 // --- Gancho para Efecto Tilt 3D Suave (Spring Physics) ---
@@ -251,7 +251,7 @@ const App = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 select-none">
               <GuestCard name="???? ???" role="LIMA NORTE" img={logofenix} delay={0.1}/>
               <GuestCard name="???? ???" role="TEAM AYACUCHO" img={logoayacucho} delay={0.2}/>
-              <GuestCard name="???? ???" role="QUIROZ" img={logoquiroz} delay={0.3}/>
+              <GuestCard name="???? ???" role="QUIROZ" img={logoquirz} delay={0.3}/>
               <GuestCard name="???? ???" role="LAS VILLANAS" img={logoruby} delay={0.4}/>
             </div>
           </div>

@@ -15,8 +15,8 @@ import diosas from "../../assets/logoa.png";
 import perritas from "../../assets/logob.png";
 import interrogacion from "../../assets/perin.png";
 import logoayacucho from "../../assets/logoayacucho.png";
-import logofenix from "../../assets/logofenix.png";
-import logoquiroz from "../../assets/logoquiroz.png";
+import logofenix from "../../assets/logofen.png";
+import logoquiroz from "../../assets/logoqui.png";
 import logoruby from "../../assets/logoruby.png";
 
 const slides = [
