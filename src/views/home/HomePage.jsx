@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform, useSpring } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Trophy, Zap, Users, Activity, Ticket, Flame, ShieldCheck, MousePointer2, Crown} from 'lucide-react';
-import dualidad from '../../assets/dualidad.png';
-import nataliam from '../../assets/nataliam.webp';
-import ceciliat from '../../assets/ceciliat.webp';
-import angelal from '../../assets/angelal.webp';
+import dualidad from "../../assets/flyerlow.png";
+import logoayacucho from "../../assets/logoayacucho.png";
+import logofenix from "../../assets/logofenix.png";
+import logoquiroz from "../../assets/logoquiroz.png";
+import logoruby from "../../assets/logoruby.png";
 import HomeTop from '../../components/home/HomeTop';
 // --- Gancho para Efecto Tilt 3D Suave (Spring Physics) ---
 const useTilt = () => {
@@ -52,13 +53,13 @@ const DualidadVHS = () => {
   const y2 = useTransform(scrollYProgress, [0.1, 0.4], [100, 0]);
   
   return (
-    <section className="relative min-h-[140vh] md:min-h-[160vh] bg-[#050505] overflow-hidden py-24 px-6 md:px-0">
+    <section className="relative min-h-[140vh] md:min-h-[160vh] overflow-hidden py-24 px-6 md:px-0">
       <div className="container mx-auto h-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-start sticky top-24">
         
         {/* Lado Texto */}
         <div className="lg:col-span-5 z-20 select-none">
           <SectionReveal>
-            <div className="inline-flex items-center gap-4 mb-6 bg-zinc-900/50 p-2 pr-6 rounded-full border border-white/5 backdrop-blur-sm">
+            <div className="inline-flex items-center gap-4 mb-6 p-2 pr-6 rounded-full">
               <div className="w-10 h-10 bg-[#FF1E1E] flex items-center justify-center rounded-full animate-pulse">
                 <Flame size={18} />
               </div>
@@ -90,7 +91,7 @@ const DualidadVHS = () => {
             >
               <img 
                 src={dualidad} 
-                className="w-full h-full object-content sm:object-cover transition-all duration-700"
+                className="w-full sm:h-[900px] h-full object-content sm:object-cover transition-all duration-700"
                 alt="Voley Masculino"
               />
               <div className="pointer-events-none absolute inset-x-0 top-0 h-[15%] bg-gradient-to-t from-transparent via-transparent to-black" />
@@ -244,14 +245,14 @@ const App = () => {
                 <h2 className="text-7xl md:text-[10rem] font-[1000] uppercase italic tracking-tighter leading-none mb-8">
                   EL <span className="text-[#fc0000]">OLIMPO</span>
                 </h2>
-                <p className="text-zinc-200 font-black tracking-[0.5em] text-xs uppercase italic">LEGADO VIVO EN EL RECTÁNGULO DE JUEGO</p>
+                <p className="text-zinc-200 font-black tracking-[0.5em] text-xs uppercase italic">EQUIPOS INVITADOS PARA ESTA OCACIÓN</p>
             </SectionReveal>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 select-none">
-              <GuestCard name="???? ???" role="Comando Técnico" img={nataliam} delay={0.1}/>
-              <GuestCard name="???? ???" role="Comité Honorario" img={ceciliat} delay={0.2}/>
-              <GuestCard name="???? ???" role="Atleta Global" img={angelal} delay={0.3}/>
-              <GuestCard name="???? ???" role="Analista Pro" img="https://images.unsplash.com/photo-1589156280159-27698a70f29e?auto=format&fit=crop&q=80&w=800" delay={0.4}/>
+              <GuestCard name="???? ???" role="LIMA NORTE" img={logofenix} delay={0.1}/>
+              <GuestCard name="???? ???" role="TEAM AYACUCHO" img={logoayacucho} delay={0.2}/>
+              <GuestCard name="???? ???" role="QUIROZ" img={logoquiroz} delay={0.3}/>
+              <GuestCard name="???? ???" role="LAS VILLANAS" img={logoruby} delay={0.4}/>
             </div>
           </div>
         </section>

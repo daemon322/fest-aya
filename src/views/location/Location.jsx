@@ -13,7 +13,7 @@ export default function Location() {
   //  INFORMACIÓN DE LA UBICACIÓN (personalizable por el cliente)
   // ============================================================
   const eventLocation = {
-    name: "Losa Deportiva Capillapata",
+    name: "Polideportivo Capillapata",
     address: "Capillapata, Ayacucho 05000, Perú",
     lat: -13.1667677,
     lng: -74.2186018,
@@ -50,31 +50,31 @@ export default function Location() {
     ruta12: {
       name: "Ruta 12 – Empresa San Luis S.R.L.",
       description:
-        "✅ Confirmado: Pasa directamente por la Losa Deportiva Capillapata. Es la ruta más recomendada para llegar al evento.",
+        "✅ Confirmado: Pasa directamente por el Polideportivo Capillapata. Es la ruta más recomendada para llegar al evento.",
       stops: [
         "Centro de Ayacucho",
-        "**LOSA DEPORTIVA CAPILLAPATA** (frente al ingreso)",
+        "**POLIDEPORTIVO CAPILLAPATA** (frente al ingreso)",
         "Puente Nuevo",
       ],
       frequency: "Cada 15-20 minutos (diurno)",
       fare: "S/ 1.50 - S/ 2.00",
-      nearestStop: "Frente a la losa (paradero señalizado)",
+      nearestStop: "Frente al Polideportivo (paradero señalizado)",
       status: "verified",
       color: "green",
     },
     ruta21: {
       name: "Ruta 21 – Turismo Chancos",
       description:
-        "✅ Confirmado: Pasa por la Losa Deportiva Capillapata en su recorrido Mollepata - Ayacucho.",
+        "✅ Confirmado: Pasa por el Polideportivo Capillapata en su recorrido Mollepata - Ayacucho.",
       stops: [
         "Santa Clara",
-        "**LOSA DEPORTIVA CAPILLAPATA** (a media cuadra)",
+        "**POLIDEPORTIVO CAPILLAPATA** (frente al ingreso)",
         "Puente Nuevo",
         "Centro de Ayacucho",
       ],
       frequency: "Cada 20-30 minutos",
       fare: "S/ 1.50 - S/ 2.00",
-      nearestStop: "A media cuadra de la losa (referencia: Comedor Acuchimay)",
+      nearestStop: "Frente al Polideportivo (paradero señalizado)",
       status: "verified",
       color: "green",
     },
@@ -164,7 +164,7 @@ export default function Location() {
                 allowFullScreen
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                title="Vista inmersiva de la Losa Deportiva Capillapata"
+                title="Vista inmersiva del Polideportivo Capillapata"
                 className="w-full h-full"
               />
             </div>
@@ -211,8 +211,8 @@ export default function Location() {
 
           <p className="text-lg text-gray-300 mb-8 max-w-3xl">
             Las rutas <strong className="text-white">12 (San Luis)</strong> y{" "}
-            <strong className="text-white">21 (Turismo Chancos)</strong> pasan directamente por la{" "}
-            <strong className="text-white">Losa Deportiva Capillapata</strong>. La Ruta 11 está
+            <strong className="text-white">21 (Turismo Chancos)</strong> pasan directamente por el{" "}
+            <strong className="text-white">Polideportivo Capillapata</strong>. La Ruta 11 está
             pendiente de confirmación.
           </p>
 

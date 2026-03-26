@@ -13,15 +13,17 @@ import {
 
 import diosas from "../../assets/logoa.png";
 import perritas from "../../assets/logob.png";
-import ayacucho from "../../assets/logoc.png";
-import arequipa from "../../assets/logod.png";
 import interrogacion from "../../assets/perin.png";
+import logoayacucho from "../../assets/logoayacucho.png";
+import logofenix from "../../assets/logofenix.png";
+import logoquiroz from "../../assets/logoquiroz.png";
+import logoruby from "../../assets/logoruby.png";
 
 const slides = [
   {
     title: "DIOSAS DE LA AMAZONÍA",
     opponent: "LAS PERRITAS",
-    date: "28 y 29 MAR 2026",
+    date: "28 MAR 2026",
     location: "LOSA DEPORTIVA DE CAPILLAPATA · AYACUCHO",
     description:
       "El poder ancestral de los Andes se encuentra con la tormenta salvaje de la selva en un duelo histórico por la supremacía.",
@@ -45,25 +47,25 @@ const slides = [
     },
   },
   {
-    title: "AYACUCHO",
-    opponent: "AREQUIPA",
-    date: "28 y 29 MAR 2026",
+    title: "QUIROZ",
+    opponent: "LAS VILLANAS",
+    date: "28 MAR 2026",
     location: "LOSA DEPORTIVA DE CAPILLAPATA · AYACUCHO",
     description:
       "Este enfrentamiento forma parte de un torneo regional que busca promover el desarrollo del vóley en las regiones..",
     colors: ["#a855f7", "#ec4899"],
     tag: "VÓLEY MASCULINO",
     teamA: {
-      name: "AYACUCHO",
-      image: ayacucho,
+      name: "QUIROZ",
+      image: logoquiroz,
       wins: 18,
       losses: 6,
       bestPlayer: "???",
       role: "??????",
     },
     teamB: {
-      name: "AREQUIPA",
-      image: arequipa,
+      name: "LAS VILLANAS",
+      image: logoruby,
       wins: 15,
       losses: 9,
       bestPlayer: "???",
@@ -71,9 +73,35 @@ const slides = [
     },
   },
   {
+    title: "LIMA NORTE",
+    opponent: "TEAM AYACUCHO",
+    date: "28 MAR 2026",
+    location: "LOSA DEPORTIVA DE CAPILLAPATA · AYACUCHO",
+    description:
+      "La juventud y la experiencia se fusionan para dar paso a una nueva dinastía en el voley peruano.",
+    colors: ["#06b6d4", "#f43f5e"],
+    tag: "CUARTOS · VÓLEY FEMENINO",
+    teamA: {
+      name: "LIMA NORTE",
+      image: logofenix,
+      wins: 22,
+      losses: 2,
+      bestPlayer: "???",
+      role: "??????",
+    },
+    teamB: {
+      name: "TEAM AYACUCHO",
+      image: logoayacucho,
+      wins: 14,
+      losses: 10,
+      bestPlayer: "???",
+      role: "?????",
+    },
+  },
+    {
     title: "HUANCAYO",
-    opponent: "LIMA NORTE",
-    date: "28 y 29 MAR 2026",
+    opponent: "LAS ZORRITAS",
+    date: "28 MAR 2026",
     location: "LOSA DEPORTIVA DE CAPILLAPATA · AYACUCHO",
     description:
       "La juventud y la experiencia se fusionan para dar paso a una nueva dinastía en el voley peruano.",
@@ -88,7 +116,7 @@ const slides = [
       role: "??????",
     },
     teamB: {
-      name: "LIMA NORTE",
+      name: "LAS ZORRITAS",
       image: interrogacion,
       wins: 14,
       losses: 10,
