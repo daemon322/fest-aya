@@ -1,6 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { Star, Minus, Plus, ShoppingCart, X, Trash2, Ticket, ChevronRight, Sparkles, AlertCircle, List } from "lucide-react";
-import { AiFillSignal  } from "react-icons/ai";
+import {
+  Star,
+  Minus,
+  Plus,
+  ShoppingCart,
+  X,
+  Trash2,
+  Ticket,
+  ChevronRight,
+  Sparkles,
+  AlertCircle,
+  List,
+} from "lucide-react";
+import { AiFillSignal } from "react-icons/ai";
 import { FaRegUser } from "react-icons/fa";
 import { RiDrinks2Fill, RiVipCrown2Fill } from "react-icons/ri";
 import { GiChickenOven } from "react-icons/gi";
@@ -134,7 +146,8 @@ const CartSidebar = ({
                         </span>
                         <button
                           onClick={() => onUpdateQty(idx, 1)}
-                          className="w-7 h-7 flex items-center justify-center rounded-full text-white/70 hover:text-black hover:bg-white transition-all duration-200 cursor-pointer active:scale-90"
+                          disabled={item.quantity >= 10}
+                          className="w-7 h-7 flex items-center justify-center rounded-full text-white/70 hover:text-black hover:bg-white transition-all duration-200 cursor-pointer active:scale-90 disabled:opacity-20 disabled:cursor-not-allowed"
                           aria-label="Aumentar cantidad"
                         >
                           <Plus size={12} />
@@ -308,8 +321,9 @@ const TicketCard = ({
             {quantity}
           </span>
           <button
-            onClick={() => setQuantity(Math.max(0, quantity + 1))}
-            className="w-10 h-10 flex items-center justify-center text-white/90 hover:text-black hover:bg-white/90 rounded-full transition-all cursor-pointer active:scale-90 border border-white/10 hover:border-white"
+            onClick={() => setQuantity(Math.min(10, Math.max(0, quantity + 1)))}
+            disabled={quantity >= 10}
+            className="w-10 h-10 flex items-center justify-center text-white/90 hover:text-black hover:bg-white/90 rounded-full transition-all cursor-pointer active:scale-90 border border-white/10 hover:border-white disabled:opacity-20 disabled:cursor-not-allowed"
           >
             <Plus size={14} />
           </button>
@@ -375,7 +389,10 @@ const CompraEntrada = () => {
       maxAvailability: 200,
       features: [
         { icon: <RiVipCrown2Fill />, text: "Pase rápido de acceso" },
-        { icon: <MdAirlineSeatReclineExtra />, text: "Zona baja con buena vista" },
+        {
+          icon: <MdAirlineSeatReclineExtra />,
+          text: "Zona baja con buena vista",
+        },
         { icon: <GiChickenOven />, text: "1/4 de pollo + silla" },
       ],
     },
@@ -403,14 +420,19 @@ const CompraEntrada = () => {
       if (existingIdx > -1) {
         return prev.map((item, i) =>
           i === existingIdx
-            ? { ...item, quantity: item.quantity + info.quantity }
+            ? { ...item, quantity: Math.min(10, item.quantity + info.quantity) }
             : item,
         );
       }
       const ticketDef = ticketData.find((t) => t.title === info.title);
       return [
         ...prev,
-        { ...info, phaseName, id: ticketDef ? ticketDef.id : info.title },
+        {
+          ...info,
+          quantity: Math.min(10, info.quantity),
+          phaseName,
+          id: ticketDef ? ticketDef.id : info.title,
+        },
       ];
     });
     setIsCartOpen(true);
@@ -423,7 +445,10 @@ const CompraEntrada = () => {
     setCart((prev) =>
       prev.map((item, i) =>
         i === index
-          ? { ...item, quantity: Math.max(1, item.quantity + delta) }
+          ? {
+              ...item,
+              quantity: Math.max(1, Math.min(10, item.quantity + delta)),
+            }
           : item,
       ),
     );
@@ -456,7 +481,7 @@ const CompraEntrada = () => {
         />
       ) : (
         <div className="min-h-screen text-white font-sans selection:bg-amber-500/30 flex items-center justify-center flex-col">
-          <ScrollToTop/>
+          <ScrollToTop />
           <CartSidebar
             isOpen={isCartOpen}
             onClose={() => setIsCartOpen(false)}

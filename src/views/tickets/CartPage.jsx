@@ -141,7 +141,8 @@ const CartItemDetail = ({ item, index, onRemove, onUpdateQty }) => {
             </span>
             <button
               onClick={() => onUpdateQty(index, 1)}
-              className="w-8 h-8 flex items-center justify-center rounded-full text-white/60 hover:text-black hover:bg-white transition-all duration-200 cursor-pointer"
+              disabled={item.quantity >= 10}
+              className="w-8 h-8 flex items-center justify-center rounded-full text-white/60 hover:text-black hover:bg-white transition-all duration-200 cursor-pointer disabled:opacity-20 disabled:cursor-not-allowed"
             >
               <Plus size={13} />
             </button>
@@ -191,9 +192,9 @@ const CartPage = () => {
     setCart((prev) =>
       prev.map((item, i) => {
         if (i !== index) return item;
-        const newQty = Math.max(1, item.quantity + delta);
+        const newQty = Math.max(1, Math.min(10, item.quantity + delta));
         return { ...item, quantity: newQty };
-      })
+      }),
     );
   };
 
@@ -206,13 +207,15 @@ const CartPage = () => {
     navigate("/voley-al-limite/tickets?checkout=1");
   };
 
-  const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const subtotal = cart.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0,
+  );
   const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
 
   return (
     <div className="min-h-screen bg-black text-white">
       <div className="w-full mx-auto px-5 py-24 sm:py-32">
-
         {/* Encabezado */}
         <div className="mb-16">
           <button
@@ -327,7 +330,10 @@ const CartPage = () => {
 
               {/* Garantías */}
               <div className="flex items-start gap-4 p-6 bg-white/[0.02] border border-white/5 rounded-2xl">
-                <ShieldCheck size={18} className="text-amber-500 shrink-0 mt-0.5" />
+                <ShieldCheck
+                  size={18}
+                  className="text-amber-500 shrink-0 mt-0.5"
+                />
                 <div className="space-y-1">
                   <p className="text-[10px] font-black uppercase tracking-widest text-white">
                     Reserva Segura

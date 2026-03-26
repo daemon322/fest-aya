@@ -92,7 +92,9 @@ const Checkout = ({ cart = [], onBack, onComplete }) => {
   // reCAPTCHA v2
   const recaptchaRef = useRef(null);
 
-  const safeCart = Array.isArray(cart) ? cart : [];
+  const safeCart = Array.isArray(cart)
+    ? cart.map((item) => ({ ...item, quantity: Math.min(10, item.quantity) }))
+    : [];
   const subtotal = safeCart.reduce(
     (acc, item) => acc + item.price * item.quantity,
     0,
@@ -444,7 +446,7 @@ const Checkout = ({ cart = [], onBack, onComplete }) => {
                   }}
                   className="p-6 py-6 bg-white text-black hover:text-white font-black uppercase text-[11px] tracking-[0.3em] rounded-2xl hover:bg-amber-500 transition-all disabled:opacity-10 mt-6 cursor-pointer flex gap-2 justify-center items-center"
                 >
-                  Siguiente: Adjuntar Pago <BsFillFileImageFill size={14}/>
+                  Siguiente: Adjuntar Pago <BsFillFileImageFill size={14} />
                 </button>
               </div>
             </div>
