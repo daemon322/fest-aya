@@ -3,6 +3,8 @@ import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import Busboy from "busboy";
 
+import { cloudflare } from "@cloudflare/vite-plugin";
+
 // Plugin personalizado para manejar API en desarrollo
 const apiPlugin = {
   name: "api-plugin",
@@ -151,5 +153,5 @@ const apiPlugin = {
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), tailwindcss(), apiPlugin],
+  plugins: [react(), tailwindcss(), apiPlugin, cloudflare()],
 });
